@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-
+#import "Scheduler.h"
 @implementation ViewController
 
 - (void)didReceiveMemoryWarning
@@ -21,6 +21,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    Scheduler * s = [[Scheduler alloc] initWithDate:nil andRule:@"RRULE:FREQ=WEEKLY;COUNT=5;BYDAY="];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import "RruleParserTests.h"
-
+#import "Scheduler.h"
 @implementation RruleParserTests
 
 - (void)setUp
@@ -24,14 +24,12 @@
     [super tearDown];
 }
 
-- (void)testExample
-{
-    STFail(@"Unit tests are not implemented yet in RruleParserTests");
-}
+
 
 
 - (void) test1{
-
-
+    Scheduler * s = [[Scheduler alloc] initWithDate:nil andRule:@"RRULE:FREQ=DAILY;UNTIL=20111231T090000Z"];
+    STAssertNotNil(s, @"Yay");
+    
 }
 @end

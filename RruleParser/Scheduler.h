@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface Scheduler : NSObject{
+    NSDate * _start_date;
+    
     NSString*   _rrule_freq;
     
     // both count & until are forbidden
@@ -17,22 +19,26 @@
     
     // facultative
     NSInteger   _rrule_interval;
-    NSString*   _rrule_bysecond ;
-    NSString*   _rrule_byminute ;
-    NSString*   _rrule_byhour ;
-    NSString*   _rrule_byday ; // +1, -2, etc. only for monthly or yearly
-    NSString*   _rrule_bymonthday ;
-    NSString*   _rrule_byyearday ;
-    NSString*   _rrule_byweekno ; // only for yearly
-    NSString*   _rrule_bymonth ;
-    NSString*   _rrule_bysetpos ; // only in conjonction with others BYxxx rules
+    NSArray*   _rrule_bysecond ;
+    NSArray*   _rrule_byminute ;
+    NSArray*   _rrule_byhour ;
+    NSArray*   _rrule_byday ; // +1, -2, etc. only for monthly or yearly
+    NSArray*   _rrule_bymonthday ;
+    NSArray*   _rrule_byyearday ;
+    NSArray*   _rrule_byweekno ; // only for yearly
+    NSArray*   _rrule_bymonth ;
+    NSArray*   _rrule_bysetpos ; // only in conjonction with others BYxxx rules
     NSString*   _rrule_wkst;
 
+    
+    NSArray * _exception_dates;
+    NSArray * _dayFromDayNo;
+    NSDictionary * _dayNoFromDay;
 }
 
 
 
--(id) initWithDate:(NSDate*)date andRule:(NSString*) rrule;
+-(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rrule;
 
 -(void) addReccurenceRules:(NSString*) rrule;
 -(void) removeReccurenceRules;

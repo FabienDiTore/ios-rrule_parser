@@ -29,4 +29,9 @@
     STFail(@"Unit tests are not implemented yet in RruleParserTests");
 }
 
+
+- (void) test1{
+
+
+}
 @end

@@ -21,6 +21,7 @@
 		4BF7C13F14B36B7600EA8786 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11D14B36B7600EA8786 /* Foundation.framework */; };
 		4BF7C14714B36B7600EA8786 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BF7C14514B36B7600EA8786 /* InfoPlist.strings */; };
 		4BF7C14A14B36B7600EA8786 /* RruleParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF7C14914B36B7600EA8786 /* RruleParserTests.m */; };
+		4BF7C15514B36BDB00EA8786 /* Scheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF7C15414B36BDB00EA8786 /* Scheduler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,22 +39,24 @@
 		4BF7C11B14B36B7600EA8786 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4BF7C11D14B36B7600EA8786 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4BF7C11F14B36B7600EA8786 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		4BF7C12314B36B7600EA8786 /* RruleParser-Info.plist */ = {isa = PBXFileReference; path = "RruleParser-Info.plist"; sourceTree = "<group>"; };
+		4BF7C12314B36B7600EA8786 /* RruleParser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RruleParser-Info.plist"; sourceTree = "<group>"; };
 		4BF7C12514B36B7600EA8786 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4BF7C12714B36B7600EA8786 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4BF7C12914B36B7600EA8786 /* RruleParser-Prefix.pch */ = {isa = PBXFileReference; path = "RruleParser-Prefix.pch"; sourceTree = "<group>"; };
-		4BF7C12A14B36B7600EA8786 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		4BF7C12914B36B7600EA8786 /* RruleParser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RruleParser-Prefix.pch"; sourceTree = "<group>"; };
+		4BF7C12A14B36B7600EA8786 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4BF7C12B14B36B7600EA8786 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		4BF7C12D14B36B7600EA8786 /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		4BF7C12D14B36B7600EA8786 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		4BF7C12E14B36B7600EA8786 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		4BF7C13114B36B7600EA8786 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		4BF7C13414B36B7600EA8786 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
 		4BF7C13B14B36B7600EA8786 /* RruleParserTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RruleParserTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF7C13C14B36B7600EA8786 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		4BF7C14414B36B7600EA8786 /* RruleParserTests-Info.plist */ = {isa = PBXFileReference; path = "RruleParserTests-Info.plist"; sourceTree = "<group>"; };
+		4BF7C14414B36B7600EA8786 /* RruleParserTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RruleParserTests-Info.plist"; sourceTree = "<group>"; };
 		4BF7C14614B36B7600EA8786 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		4BF7C14814B36B7600EA8786 /* RruleParserTests.h */ = {isa = PBXFileReference; path = RruleParserTests.h; sourceTree = "<group>"; };
+		4BF7C14814B36B7600EA8786 /* RruleParserTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RruleParserTests.h; sourceTree = "<group>"; };
 		4BF7C14914B36B7600EA8786 /* RruleParserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RruleParserTests.m; sourceTree = "<group>"; };
+		4BF7C15314B36BDB00EA8786 /* Scheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scheduler.h; sourceTree = "<group>"; };
+		4BF7C15414B36BDB00EA8786 /* Scheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scheduler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,8 @@
 				4BF7C13014B36B7600EA8786 /* ViewController_iPhone.xib */,
 				4BF7C13314B36B7600EA8786 /* ViewController_iPad.xib */,
 				4BF7C12214B36B7600EA8786 /* Supporting Files */,
+				4BF7C15314B36BDB00EA8786 /* Scheduler.h */,
+				4BF7C15414B36BDB00EA8786 /* Scheduler.m */,
 			);
 			path = RruleParser;
 			sourceTree = "<group>";
@@ -265,6 +270,7 @@
 				4BF7C12814B36B7600EA8786 /* main.m in Sources */,
 				4BF7C12C14B36B7600EA8786 /* AppDelegate.m in Sources */,
 				4BF7C12F14B36B7600EA8786 /* ViewController.m in Sources */,
+				4BF7C15514B36BDB00EA8786 /* Scheduler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

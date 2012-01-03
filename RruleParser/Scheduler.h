@@ -42,7 +42,7 @@
 
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rrule;
-
+-(void) initReccurenceRules;
 -(void) addReccurenceRules:(NSString*) rrule;
 -(void) removeReccurenceRules;
 -(void) addExceptionDates:(NSArray*) dates;

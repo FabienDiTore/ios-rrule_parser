@@ -22,7 +22,8 @@
         
         self.exception_dates =[NSArray array];
         
-       
+        [self initReccurenceRules];
+        
         if (rfc_rrule) {
             [self addReccurenceRules:rfc_rrule];
         }
@@ -30,11 +31,33 @@
     }
     return self;
 }
+
 -(void) dealloc{
     
     self.exception_dates = nil;
 
     [super dealloc];
+}
+-(void) initReccurenceRules{
+    _rrule_freq = nil;
+    
+    // both count & until are forbidden
+    _rrule_count = 0;
+    _rrule_until = 0;
+    
+    // facultative
+    _rrule_interval = 1;
+    _rrule_bysecond = nil;
+    _rrule_byminute = nil;
+    _rrule_byhour = nil;
+    _rrule_byday = nil; // +1, -2, etc. only for monthly or yearly
+    _rrule_bymonthday = nil;
+    _rrule_byyearday = nil;
+    _rrule_byweekno = nil; // only for yearly
+    _rrule_bymonth = nil;
+    _rrule_bysetpos = nil; // only in conjonction with others BYxxx rules
+    _rrule_wkst = @"MO"; // significant where weekly interval > 1 & where yearly byweekno is specified
+
 }
 
 -(void) addReccurenceRules:(NSString*) rfc_rrule {

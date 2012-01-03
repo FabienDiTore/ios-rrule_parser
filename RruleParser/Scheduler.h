@@ -32,10 +32,13 @@
 
     
     NSArray * _exception_dates;
-    NSArray * _dayFromDayNo;
-    NSDictionary * _dayNoFromDay;
+
 }
 
+
+#pragma mark -
+#pragma mark Properties
+@property (nonatomic, copy) NSArray *exception_dates;
 
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rrule;
@@ -52,6 +55,6 @@
 
 -(void) checkDay:(NSDate*) date;
 
-
+-(NSString*) dayFromNoDay:(NSInteger) day;
 
 @end

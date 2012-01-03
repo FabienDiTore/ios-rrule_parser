@@ -10,17 +10,32 @@
 
 @implementation Scheduler
 
+#pragma mark -
+#pragma mark Properties
+@synthesize exception_dates = _exception_dates;
+
+
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rfc_rrule{
     if (self = [super init]) {
         _rrule_wkst =   @"MO";
         _start_date = start_date;
+        
+        self.exception_dates =[NSArray array];
+        
+       
         if (rfc_rrule) {
             [self addReccurenceRules:rfc_rrule];
         }
+        
     }
     return self;
 }
+-(void) dealloc{
+    
+    self.exception_dates = nil;
 
+    [super dealloc];
+}
 
 -(void) addReccurenceRules:(NSString*) rfc_rrule {
     rfc_rrule = [rfc_rrule stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -106,19 +121,35 @@
         }
         if ([rule_name isEqualToString:@"BYYEARDAY"]) {
             if(![_rrule_freq isEqualToString:@"YEARLY"]){
-                _rrule_byyearday= [rule_value componentsSeparatedByString:@","];
+                if([rule_value isEqualToString:@""] || !rule_value){
+                    _rrule_byyearday = nil;
+                }else{
+                    _rrule_byyearday= [rule_value componentsSeparatedByString:@","];
+                }
             }
         }
         if ([rule_name isEqualToString:@"BYWEEKNO"]) {
             if(![_rrule_freq isEqualToString:@"YEARLY"]){
-                _rrule_byweekno= [rule_value componentsSeparatedByString:@","];
+                if([rule_value isEqualToString:@""] || !rule_value){
+                    _rrule_byweekno = nil;
+                }else{
+                    _rrule_byweekno= [rule_value componentsSeparatedByString:@","];
+                }
             }
         }
         if ([rule_name isEqualToString:@"BYMONTH"]) {
+            if([rule_value isEqualToString:@""] || !rule_value){
+                _rrule_bymonth = nil;
+                }else{
             _rrule_bymonth= [rule_value componentsSeparatedByString:@","];
+            }
         }
         if ([rule_name isEqualToString:@"BYSETPOS"]) {
-            _rrule_bysetpos= [rule_value componentsSeparatedByString:@","];
+            if([rule_value isEqualToString:@""] || !rule_value){
+                _rrule_bysetpos = nil;
+            }else{
+                _rrule_bysetpos= [rule_value componentsSeparatedByString:@","];
+            }
         }
         if ([rule_name isEqualToString:@"WKST"]) {
             _rrule_wkst= rule_value;
@@ -163,41 +194,56 @@
                            ];
     }
     if(!_rrule_byday && [_rrule_freq isEqualToString:@"WEEKLY"]){
-        NSString * d = [NSString stringWithFormat:@"%d",
-                        
-                        [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:_start_date].weekday
-                        ,
-                        nil];
-        NSLog(@"blalba",[[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:_start_date].weekday);
+
         _rrule_byday = [NSArray arrayWithObject: 
                          
-                            nil
-                         ];
-    }
-   // [dc release];
-  /*  
+                        [self dayFromNoDay:[[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:_start_date].weekday]
+                        ];
     
-    //if BYSECOND, BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH unspecified, fetch values from start date
-    if (!this.rrule_bysecond) {
-        this.rrule_bysecond = [ this.start_date.getSeconds().toString() ];
     }
-    if (!this.rrule_byminute) {
-        this.rrule_byminute = [ this.start_date.getMinutes().toString() ];
+    
+    if(!_rrule_byday && ! _rrule_bymonthday && !_rrule_byyearday && ([_rrule_freq isEqualToString:@"MONTHLY"] || [_rrule_freq isEqualToString:@"YEARLY"])){
+        _rrule_bymonthday = [NSArray arrayWithObject: 
+                             [NSString stringWithFormat:@"%d",
+                              
+                              [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:_start_date].day
+                              ,
+                              nil]
+                             
+                             ];
     }
-    if (!this.rrule_byhour) {
-        this.rrule_byhour = [ this.start_date.getHours().toString() ];
-    }
-    if (!this.rrule_byday && this.rrule_freq == "WEEKLY") {// auto value only when freq=weekly i guess...
-        this.rrule_byday = [ this.dayFromDayNo[this.start_date.getDay()] ];
-    }
-    if (!this.rrule_byday && !this.rrule_bymonthday && !this.rrule_byyearday && (this.rrule_freq == "MONTHLY" || this.rrule_freq == "YEARLY")) {
-        this.rrule_bymonthday = [ this.start_date.getDate().toString() ];
-    }
-    //    if (!this.rrule_bymonth && (this.rrule_freq == "YEARLY")) {
-    //        this.rrule_bymonth = [ (this.start_date.getMonth() + 1).toString() ];
-    //    }
-    */
+ 
 
 }
 
+
+-(NSString*) dayFromNoDay:(NSInteger) day{
+    switch (day) {
+        case 1:
+            return @"SU";
+            break;
+        case 2:
+            return @"MO";
+            break;
+        case 3:
+            return @"TU";
+            break;
+        case 4:
+            return @"WE";
+            break;
+        case 5:
+            return @"TH";
+            break;
+        case 6:
+            return @"FR";
+            break;
+        case 7:
+            return @"MO";
+            break;
+
+        default:
+            break;
+    }
+    return nil;
+}
 @end

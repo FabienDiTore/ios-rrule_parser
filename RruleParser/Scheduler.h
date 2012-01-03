@@ -14,8 +14,8 @@
     NSString*   _rrule_freq;
     
     // both count & until are forbidden
-    NSInteger   _rrule_count ;
-    NSInteger   _rrule_until ;
+    NSNumber *   _rrule_count ;
+    NSNumber *   _rrule_until ;
     
     // facultative
     NSInteger   _rrule_interval;
@@ -31,14 +31,14 @@
     NSString*   _rrule_wkst;
 
     
-    NSArray * _exception_dates;
+    NSMutableArray * _exception_dates;
 
 }
 
 
 #pragma mark -
 #pragma mark Properties
-@property (nonatomic, copy) NSArray *exception_dates;
+@property (nonatomic, retain) NSMutableArray *exception_dates;
 
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rrule;
@@ -47,7 +47,7 @@
 -(void) removeReccurenceRules;
 -(void) addExceptionDates:(NSArray*) dates;
 -(void) removeExceptionDates;
--(void) allOccurences;
+-(NSArray*) allOccurencesSince:(NSTimeInterval) filter_begin_ts until:(NSTimeInterval) filter_end_ts;
 -(void) nextPeriod:(NSDate*) date;
 -(void) checkRule:(NSDate*) date;
 

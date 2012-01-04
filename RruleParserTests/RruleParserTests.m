@@ -476,7 +476,7 @@
     NSDateComponents * dc = [[NSDateComponents alloc] init];
     [dc setYear:2011];
     [dc setMonth:1];
-    [dc setDay:14];
+    [dc setDay:1];
     [dc setHour:20];
     [dc setMinute:05];
     [dc setSecond:12];

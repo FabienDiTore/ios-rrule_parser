@@ -292,7 +292,36 @@
 }
 
 
--(void) checkRule:(NSDate*) date{
+-(BOOL) checkRule:(NSDate*) date{
+    NSString * day = [self dayFromNoDay:  
+                      [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:date].weekday];
+    
+    NSUInteger d =   [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:date].day;
+    NSUInteger m =   [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:date].month;
+    NSUInteger y =   [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:date].year;
+    NSUInteger week_no = [[NSCalendar currentCalendar] components:NSWeekOfYearCalendarUnit fromDate:date].weekOfYear;
+    NSUInteger h =   [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:date].hour;
+    NSUInteger min =   [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:date].minute;
+    NSUInteger s =   [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:date].second;
+    if ([_rrule_freq isEqualToString:@"DAILY"]) {
+        return ((!_rrule_bymonth || [_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]) &&
+            (!_rrule_bymonthday || [_rrule_bymonthday containsObject:[NSString stringWithFormat:@"%d",d,nil]]) &&
+            (!_rrule_byday || [_rrule_byday containsObject:day])
+                );
+    }
+    if ([_rrule_freq isEqualToString:@"WEEKLY"]) {
+        return ((!_rrule_bymonth || [_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]) &&
+                (!_rrule_bymonthday || [_rrule_bymonthday containsObject:[NSString stringWithFormat:@"%d",d,nil]])
+                );
+    }
+    if ([_rrule_freq isEqualToString:@"MONTHLY"]) {
+        return ((!_rrule_bymonth || [_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]])
+                
+                );
+    }
+    if ([_rrule_freq isEqualToString:@"YEARLY"]) {
+        return true;
+    } 
     /*  switch (this.rrule_freq) {
      case "DAILY":
      return ((m === undefined || this.rrule_bymonth === false || this.rrule_bymonth.in_array(m.toString())) &&
@@ -308,25 +337,6 @@
      }*/
 }
 -(NSDate*) nextPeriod:(NSDate*) date{
-    /*Scheduler.prototype.next_period = function(date) {
-     switch (this.rrule_freq) {
-     case "DAILY":
-     var new_date = new Date(date);
-     new_date.setDate(date.getDate() + 1);
-     return new_date;
-     case "WEEKLY":
-     return date.nextWeek();
-     case "MONTHLY":
-     new_date = new Date(date);
-     new_date.setMonth(date.getMonth() + 1, 1);
-     return new_date;
-     case "YEARLY":
-     new_date = new Date(date);
-     new_date.setFullYear(date.getFullYear() + 1);
-     return new_date;
-     }
-     
-     }*/
     NSDateComponents * dc = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSWeekCalendarUnit fromDate:date];
     if([_rrule_freq isEqualToString:@"DAILY"]){
         
@@ -389,7 +399,7 @@
         self.current_pos = 1;
         self.old_pos = [NSMutableArray array];
         
-        if(count_period % _rrule_interval ==0){
+        if(count_period % _rrule_interval ==0 && [self checkRule:current_date]){
             if ([_rrule_freq isEqualToString:@"DAILY"]) {
                 for (int h_it = 0; h_it < [_rrule_byhour count]; h_it++) {
                     for(int min_it = 0 ; min_it < [_rrule_byminute count];min_it++){

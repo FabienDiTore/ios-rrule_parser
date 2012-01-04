@@ -68,7 +68,7 @@
 -(void) removeExceptionDates;
 -(NSArray*) allOccurencesSince:(NSNumber*) filter_begin_ts until:(NSNumber*) filter_end_ts;
 -(NSDate*) nextPeriod:(NSDate*) date;
--(void) checkRule:(NSString*) day;
+-(BOOL) checkRule:(NSDate*) date;
 
 -(NSArray*) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end;
 

@@ -221,6 +221,11 @@
     STAssertTrue([occurences containsObject:d4], @"");
     
     NSLog(@"%@",[occurences description]);
+    
+    Scheduler * s2 = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY"];
+    occurences = [s2 allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertNil(occurences, @"");
     /*
      console.log("--- Daily for 5 occurrences ---");
      d = new Date(2011, 10, 14, 20, 05, 12);
@@ -239,5 +244,31 @@
      
 
      */
+}
+
+- (void) test6{
+    /*console.log("--- Daily for 5 occurrences, but get only 2 days ---");
+     d = new Date(2011, 10, 14, 20, 05, 12);
+     scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;COUNT=5", true);
+     start_at = new Date(2011, 10, 16);
+     end_at = new Date(2011, 10, 18);
+     occurrences = scheduler.occurrences_between(start_at, end_at);
+     console.assert(occurrences.length == 2);
+     console.assert(occurrences.in_array(new Date(2011, 10, 16, 20, 05, 12).getTime()));
+     console.assert(occurrences.in_array(new Date(2011, 10, 17, 20, 05, 12).getTime()));
+     
+     start_at = new Date(2012, 10, 16);
+     end_at = new Date(2012, 10, 18);
+     occurrences = scheduler.occurrences_between(start_at, end_at);
+     console.assert(occurrences.length == 0);
+     
+     //		==> 	"Mon Nov 14 2011 20:05:12 GMT+0100 (CET)",
+     //			"Tue Nov 15 2011 20:05:12 GMT+0100 (CET)",
+     //			…,
+     //			"Wed Nov 18 2011 20:05:12 GMT+0100 (CET)"
+*/
+    
+    
+
 }
 @end

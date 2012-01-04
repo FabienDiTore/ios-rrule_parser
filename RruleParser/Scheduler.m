@@ -349,7 +349,11 @@
 
 -(NSArray*) allOccurencesSince:(NSNumber*) filter_begin_ts until:(NSNumber*) filter_end_ts{
     NSMutableArray* occurences = [NSMutableArray array];
-    
+    if ((filter_begin_ts ==nil || filter_end_ts == nil) &&
+        _rrule_count == nil && _rrule_until == nil) { 
+        return nil; // infinity of results => must be processed with filter_begin_ts & filter_end_ts
+    }
+
     NSDate * current_date = _start_date;
     NSUInteger count = 0;
     NSUInteger count_period = 0;

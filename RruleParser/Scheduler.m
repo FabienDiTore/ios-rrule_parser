@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Atipik Sarl. All rights reserved.
 //
 
-
+#define ALL_DATE_FLAGS NSWeekdayCalendarUnit |NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSWeekOfYearCalendarUnit|NSHourCalendarUnit|NSHourCalendarUnit|NSSecondCalendarUnit
 #import "Scheduler.h"
 #import "NSString+Atipik.h"
 @implementation Scheduler
@@ -320,22 +320,73 @@
                 );
     }
     if ([_rrule_freq isEqualToString:@"YEARLY"]) {
-        return true;
+        return YES;
     } 
-    /*  switch (this.rrule_freq) {
-     case "DAILY":
-     return ((m === undefined || this.rrule_bymonth === false || this.rrule_bymonth.in_array(m.toString())) &&
-     (d === undefined || this.rrule_bymonthday === false || this.rrule_bymonthday.in_array(d.toString())) &&
-     (day === undefined || this.rrule_byday === false || this.rrule_byday.in_array(day.toString())));
-     case "WEEKLY":
-     return ((m === undefined || this.rrule_bymonth === false || this.rrule_bymonth.in_array(m.toString())) &&
-     (d === undefined || this.rrule_bymonthday === false || this.rrule_bymonthday.in_array(d.toString())));
-     case "MONTHLY":
-     return (m === undefined || this.rrule_bymonth === false || this.rrule_bymonth.in_array(m.toString()));
-     case "YEARLY":
-     return true;
-     }*/
+    return NO;
 }
+
+-(BOOL) checkDay:(NSDate*) date{
+    BOOL is_yearly = [_rrule_freq isEqualToString:@"YEARLY"];
+    BOOL is_weekly = [_rrule_freq isEqualToString:@"WEEKLY"];
+    NSString * day = [self dayFromNoDay:  
+                      [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:date].weekday];
+    
+    NSUInteger d =   [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:date].day;
+    NSUInteger m =   [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:date].month;
+    NSUInteger y =   [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:date].year;
+    NSUInteger week_no = [[NSCalendar currentCalendar] components:NSWeekOfYearCalendarUnit fromDate:date].weekOfYear;
+  
+    
+    if(_rrule_bymonth){
+        if(![_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]){
+            return NO;
+        }
+    }
+    
+    if(_rrule_byday){
+        if(is_weekly){
+            if(![_rrule_byday containsObject:[NSString stringWithFormat:@"%d",d,nil]]){
+                return NO;
+            }
+        } else {
+            NSLog(@"%@",[_rrule_byday description]);
+            NSError *error = NULL;
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\b(a|b)(c|d)\\b"
+                                                                                   options:NSRegularExpressionCaseInsensitive
+                                                                                     error:&error];
+
+            /*BOOL found = NO;
+            for (int it_wd = 0; it_wd < [_rrule_byday count]; it_wd++) {
+                
+            }*/
+            return NO; //not supported
+        }
+    }
+    
+    if(is_weekly){
+        if(_rrule_bymonthday){
+            
+            NSDateComponents * dc = [[NSDateComponents alloc] init];
+           
+            [dc setMonth:m];
+            
+            NSRange range = [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit
+                                      inUnit:NSMonthCalendarUnit
+                                     forDate:[[NSCalendar currentCalendar] dateFromComponents:dc]];
+            NSLog(@"%d", range.length);
+            
+            NSUInteger month_days_count = 0;
+            NSInteger d_neg = d - 1 - month_days_count;
+            BOOL found =NO;
+            
+        }
+    
+    }
+    
+    return NO;
+}
+
+
 -(NSDate*) nextPeriod:(NSDate*) date{
     NSDateComponents * dc = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSWeekCalendarUnit fromDate:date];
     if([_rrule_freq isEqualToString:@"DAILY"]){
@@ -358,6 +409,7 @@
 }
 
 -(NSArray*) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end{
+   
     return [self allOccurencesSince:
                 [NSNumber numberWithFloat:
                     [start timeIntervalSince1970]
@@ -380,21 +432,25 @@
     NSDate * current_date = _start_date;
     NSUInteger count = 0;
     NSUInteger count_period = 0;
-   
+  /*  if ([_rrule_freq isEqualToString:@"WEEKLY"]) {
+        NSLog(@"%@",current_date);
+        NSLog(@"bla %d %d %d %f %f %d",(!_rrule_count || count < [_rrule_count intValue]),(!_rrule_until || [current_date timeIntervalSince1970] <= [_rrule_until floatValue]), (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts floatValue]),[current_date timeIntervalSince1970], [filter_end_ts floatValue],[current_date timeIntervalSince1970]<= [filter_end_ts floatValue]);
+    }*/
     while ((!_rrule_count || count < [_rrule_count intValue])
-           && (!_rrule_until || [current_date timeIntervalSince1970] <= [_rrule_until intValue])
+           && (!_rrule_until || [current_date timeIntervalSince1970] <= [_rrule_until floatValue])
            && (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts floatValue])
            ){
-        NSString * day = [self dayFromNoDay:  
-                          [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:current_date].weekday];
+
+        NSDateComponents * current_date_components = [[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:current_date];
+        NSString * day = [self dayFromNoDay:current_date_components.weekday];
         
-        NSUInteger d =   [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:current_date].day;
-        NSUInteger m =   [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:current_date].month;
-        NSUInteger y =   [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:current_date].year;
-        NSUInteger week_no = [[NSCalendar currentCalendar] components:NSWeekOfYearCalendarUnit fromDate:current_date].weekOfYear;
-        NSUInteger h =   [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:current_date].hour;
-        NSUInteger min =   [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:current_date].minute;
-        NSUInteger s =   [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:current_date].second;
+        NSUInteger d        =       current_date_components.day;
+        NSUInteger m        =       current_date_components.month;
+        NSUInteger y        =       current_date_components.year;
+        NSUInteger week_no  =       current_date_components.weekOfYear;
+        NSUInteger h        =       current_date_components.hour;
+        NSUInteger min      =       current_date_components.minute;
+        NSUInteger s        =       current_date_components.second;
         
         self.current_pos = 1;
         self.old_pos = [NSMutableArray array];
@@ -435,10 +491,56 @@
                             if(_rrule_count != nil && count > [_rrule_count intValue]){
                                 goto period_loop;
                             }
-                           // goto fuck;
+                          
                         }
                     }
                 }
+            }else{
+                NSDate * period_begin=nil;
+                NSDate * until = nil;
+                NSDateComponents * dc = [[NSDateComponents alloc] init];
+              
+                if([_rrule_freq isEqualToString:@"WEEKLY"]){
+                    [[NSCalendar currentCalendar] rangeOfUnit:NSWeekCalendarUnit startDate:&period_begin
+                                            interval:NULL forDate: current_date];
+                                      dc.weekOfYear =1;
+                    until =[[NSCalendar currentCalendar] dateByAddingComponents:dc toDate:period_begin options:0];
+                }
+                
+                if([_rrule_freq isEqualToString:@"MONTHLY"]){
+                    [dc setDay:1];
+                    [dc setMonth:m];
+                    [dc setYear:y];
+                    period_begin = [[NSCalendar currentCalendar] dateFromComponents:dc];
+                    [dc setMonth:m+1];
+                    until = [[NSCalendar currentCalendar] dateFromComponents:dc];
+                } 
+                
+                if([_rrule_freq isEqualToString:@"YEARLY"]){
+                    [dc setDay:1];
+                    [dc setMonth:1];
+                    [dc setYear:y];
+                    period_begin = [[NSCalendar currentCalendar] dateFromComponents:dc];
+                    [dc setYear:y+1];
+                    until = [[NSCalendar currentCalendar] dateFromComponents:dc];
+                }
+                
+                NSDate * it_date = period_begin;
+                while ([it_date timeIntervalSince1970] < [until timeIntervalSince1970]) {
+                    NSTimeInterval it_date_ts = [it_date timeIntervalSince1970];
+                    if ((_rrule_until && it_date_ts > [_rrule_until floatValue])||
+                        (filter_end_ts && it_date_ts > [filter_end_ts floatValue])
+                        ) 
+                    {
+                        goto period_loop;
+                    
+                    }
+                    if([self checkDay:it_date]){
+                    
+                    }
+                    
+                }
+                    
             }
         }
         
@@ -447,111 +549,7 @@
     }
 
     period_loop:
-    /*
-     
-period_loop:
-    while ((this.rrule_count === false || count < this.rrule_count)
-           && (this.rrule_until === false || current_date.getTime() <= this.rrule_until)
-           && (filter_end_ts === undefined || current_date.getTime() <= filter_end_ts)) {
-       ...
-
-            } else if (["WEEKLY", "MONTHLY", "YEARLY"].in_array(this.rrule_freq)) {
-                switch (this.rrule_freq) {
-                    case "WEEKLY":
-                        var period_begin = Date.fromWeek(week_no, y, this.rrule_wkst == "MO" ? 1 : 0);
-                        var until = Date.fromWeek(week_no + 1, y, this.rrule_wkst == "MO" ? 1 : 0);
-                        break;
-                    case "MONTHLY":
-                        period_begin = new Date(y, m - 1, 1)
-                        until = new Date(y, m, 1);
-                        break;
-                    case "YEARLY":
-                        period_begin = new Date(y, 0, 1);
-                        until = new Date(y + 1, 0, 1);
-                        break;
-                }
-                
-                var it_date = period_begin;
-                
-                while (it_date.getTime() < until.getTime()) {
-                    var it_date_ts = it_date.getTime();
-                    if ((this.rrule_until !== false && it_date_ts > this.rrule_until) ||
-                        (filter_end_ts !== undefined && it_date_ts > filter_end_ts)) {
-                        break period_loop;
-                    }
-                    
-                    if (this.check_day(it_date)) {
-                        
-                        for (h_it = 0; h_it < this.rrule_byhour.length; h_it++) {
-                            for (min_it = 0; min_it < this.rrule_byminute.length; min_it++) {
-                                for (s_it = 0; s_it < this.rrule_bysecond.length; s_it++) {
-                                    date_to_push = new Date(it_date.getFullYear(), it_date.getMonth(), it_date.getDate(), this.rrule_byhour[h_it], this.rrule_byminute[min_it], this.rrule_bysecond[s_it]);
-                                    ts_to_push = date_to_push.getTime();
-                                    if (this.rrule_bysetpos !== false && !this.rrule_bysetpos.in_array(this.current_pos.toString())) {
-                                        this.current_pos++;
-                                        this.old_pos.push(date_to_push);
-                                        continue;
-                                    }
-                                    if ((this.rrule_until !== false && ts_to_push > this.rrule_until) ||
-                                        (filter_end_ts !== undefined && ts_to_push > filter_end_ts)) {
-                                        break period_loop;
-                                    }
-                                    if (ts_to_push >= this.start_ts) {
-                                        if (filter_begin_ts === undefined || ts_to_push >= filter_begin_ts) {
-                                            occurrences.push(date_to_push);
-                                        }
-                                        count++;
-                                    }
-                                    
-                                    this.current_pos++;
-                                    this.old_pos.push(date_to_push);
-                                    
-                                    if (this.rrule_count !== false && count >= this.rrule_count) {
-                                        break period_loop;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    it_date = new Date(it_date);
-                    it_date.setDate(it_date.getDate() + 1);
-                }
-                // process negative values of rrule_bysetpos
-                if (this.rrule_bysetpos instanceof Array) {
-                    for (var it_pos = 0; it_pos < this.rrule_bysetpos.length; it_pos++) {
-                        var pos = parseInt(this.rrule_bysetpos[it_pos], 10);
-                        if (pos < 0) {
-                            pos = Math.abs(pos);
-                            var last_matching_dates = this.old_pos.reverse();
-                            var matching_date = last_matching_dates[pos - 1];
-                            if (matching_date && matching_date >= this.start_ts) {
-                                occurrences.push(matching_date);
-                                count++;
-                            }
-                            if (this.rrule_count !== false && count >= this.rrule_count) {
-                                break period_loop;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        count_period++;
-        current_date = this.next_period(current_date);
-    }
-    
-    // removes exdates
-    var nb_occurrences = occurrences.length;
-    var occurrences_without_exdates = [];
-    for (var i = 0; i < nb_occurrences; i++) {
-        var occurrence = occurrences[i];
-        var ts = occurrence.getTime();
-        if (!(this.exception_dates.in_array(ts))) {
-            occurrences_without_exdates.push(this.test_mode ? ts : occurrence);
-        }
-    }
-    return occurrences_without_exdates;*/
+   
     
     return occurences;
 }

@@ -72,7 +72,7 @@
 
 -(NSArray*) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end;
 
--(void) checkDay:(NSDate*) date;
+-(BOOL) checkDay:(NSDate*) date;
 
 -(NSString*) dayFromNoDay:(NSInteger) day;
 

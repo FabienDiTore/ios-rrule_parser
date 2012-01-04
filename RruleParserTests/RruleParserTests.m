@@ -505,6 +505,17 @@
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
+    
+    //[s release];
+    s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;UNTIL=20130131T090000Z;BYMONTH=1;BYDAY=SU,MO,TU,WE,TH,FR,SA"];
+    occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([occurences count] < 94, @""); 
+    STAssertTrue([occurences containsObject:d], @"");
+    STAssertTrue([occurences containsObject:d1], @"");
+    STAssertTrue([occurences containsObject:d2], @"");
+    STAssertTrue([occurences containsObject:d3], @"");
+    STAssertTrue([occurences containsObject:d4], @"");
 /*
  console.log("--- Everyday in January, for 2 years ---");
  d = new Date(2011, 0, 1, 9, 0, 0);
@@ -514,5 +525,46 @@
  console.assert(occurrences[31] == new Date(2012, 0, 1, 9, 0, 0).getTime());
  console.assert(occurrences[62] == new Date(2013, 0, 1, 9, 0, 0).getTime());
  */
+}
+
+-(void) test12{
+    NSDateComponents * dc = [[NSDateComponents alloc] init];
+    [dc setYear:2010];
+    [dc setMonth:8];
+    [dc setDay:2];
+    [dc setHour:9];
+    [dc setMinute:0];
+    [dc setSecond:0];
+    NSDate * d = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setDay:11];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:9];
+    [dc setDay:1];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;COUNT=10"];
+    NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==3, @"");
+    STAssertTrue([s.rrule_freq isEqualToString:@"WEEKLY"], @"");
+
+/*
+ 
+ console.log("--- Weekly for 10 occurrences ---");
+ d = new Date(1997, 8, 2, 9, 0, 0);
+ start_at = new Date(1997, 8, 11, 9, 0, 0);
+ end_at = new Date(1997, 9, 1, 9, 0, 0);
+ scheduler = new Scheduler(d, "RRULE:FREQ=WEEKLY;COUNT=10", true);
+ console.assert(scheduler.all_occurrences().length == 10);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 3);
+ console.assert(occurrences.in_array(new Date(1997, 8, 16, 9, 0, 0).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 23, 9, 0, 0).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 30, 9, 0, 0).getTime()));
+ //  ==> 	(1997 9:00 AM EDT)September 2,9,16,23,30;October 7,14,21
+ //   	  	(1997 9:00 AM EST)October 28;November 4
+ 
+ */
+
 }
 @end

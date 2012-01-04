@@ -37,8 +37,24 @@
     NSMutableArray * _old_pos;
 }
 
+
 #pragma mark -
 #pragma mark Properties
+@property (nonatomic, copy) NSDate *start_date;
+@property (nonatomic, copy) NSString *rrule_freq;
+@property (nonatomic, copy) NSNumber *rrule_count;
+@property (nonatomic, copy) NSNumber *rrule_until;
+@property (nonatomic) NSInteger rrule_interval;
+@property (nonatomic, copy) NSArray *rrule_bysecond;
+@property (nonatomic, copy) NSArray *rrule_byminute;
+@property (nonatomic, copy) NSArray *rrule_byhour;
+@property (nonatomic, copy) NSArray *rrule_byday;
+@property (nonatomic, copy) NSArray *rrule_bymonthday;
+@property (nonatomic, copy) NSArray *rrule_byyearday;
+@property (nonatomic, copy) NSArray *rrule_byweekno;
+@property (nonatomic, copy) NSArray *rrule_bymonth;
+@property (nonatomic, copy) NSArray *rrule_bysetpos;
+@property (nonatomic, copy) NSString *rrule_wkst;
 @property (nonatomic, retain) NSMutableArray *exception_dates;
 @property (nonatomic) NSUInteger current_pos;
 @property (nonatomic, retain) NSMutableArray *old_pos;
@@ -51,7 +67,7 @@
 -(void) removeExceptionDates;
 -(NSArray*) allOccurencesSince:(NSDate*) filter_begin_ts until:(NSDate*) filter_end_ts;
 -(void) nextPeriod:(NSDate*) date;
--(void) checkRule:(NSDate*) date;
+-(void) checkRule:(NSString*) day;
 
 -(void) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end;
 

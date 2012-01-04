@@ -6,16 +6,34 @@
 //  Copyright (c) 2012 Atipik Sarl. All rights reserved.
 //
 
+
 #import "Scheduler.h"
 
 @implementation Scheduler
 
 
+
 #pragma mark -
 #pragma mark Properties
+@synthesize start_date = _start_date;
+@synthesize rrule_freq = _rrule_freq;
+@synthesize rrule_count = _rrule_count;
+@synthesize rrule_until = _rrule_until;
+@synthesize rrule_interval = _rrule_interval;
+@synthesize rrule_bysecond = _rrule_bysecond;
+@synthesize rrule_byminute = _rrule_byminute;
+@synthesize rrule_byhour = _rrule_byhour;
+@synthesize rrule_byday = _rrule_byday;
+@synthesize rrule_bymonthday = _rrule_bymonthday;
+@synthesize rrule_byyearday = _rrule_byyearday;
+@synthesize rrule_byweekno = _rrule_byweekno;
+@synthesize rrule_bymonth = _rrule_bymonth;
+@synthesize rrule_bysetpos = _rrule_bysetpos;
+@synthesize rrule_wkst = _rrule_wkst;
 @synthesize exception_dates = _exception_dates;
 @synthesize current_pos = _current_pos;
 @synthesize old_pos = _old_pos;
+
 
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rfc_rrule{
@@ -37,7 +55,20 @@
 
 -(void) dealloc{
     
-    
+    self.start_date = nil;
+    self.rrule_freq = nil;
+    self.rrule_count = nil;
+    self.rrule_until = nil;
+    self.rrule_bysecond = nil;
+    self.rrule_byminute = nil;
+    self.rrule_byhour = nil;
+    self.rrule_byday = nil;
+    self.rrule_bymonthday = nil;
+    self.rrule_byyearday = nil;
+    self.rrule_byweekno = nil;
+    self.rrule_bymonth = nil;
+    self.rrule_bysetpos = nil;
+    self.rrule_wkst = nil;
     self.exception_dates = nil;
     self.old_pos = nil;
 
@@ -96,8 +127,8 @@
                 dc.minute = [[nf numberFromString:[until substringWithRange:NSMakeRange(11, 2)]]intValue];
                 dc.second = [[nf numberFromString:[until substringWithRange:NSMakeRange(13, 2)]]intValue];
             }
-            
-            _rrule_until = [NSNumber numberWithInt:[[[NSCalendar currentCalendar] dateFromComponents:dc] timeIntervalSince1970]];
+            NSDate * d =[[NSCalendar currentCalendar] dateFromComponents:dc] ;
+            _rrule_until = [NSNumber numberWithFloat:[d timeIntervalSince1970]];
             
             [dc release];
             
@@ -262,7 +293,19 @@
 
 
 -(void) checkRule:(NSDate*) date{
-
+    /*  switch (this.rrule_freq) {
+     case "DAILY":
+     return ((m === undefined || this.rrule_bymonth === false || this.rrule_bymonth.in_array(m.toString())) &&
+     (d === undefined || this.rrule_bymonthday === false || this.rrule_bymonthday.in_array(d.toString())) &&
+     (day === undefined || this.rrule_byday === false || this.rrule_byday.in_array(day.toString())));
+     case "WEEKLY":
+     return ((m === undefined || this.rrule_bymonth === false || this.rrule_bymonth.in_array(m.toString())) &&
+     (d === undefined || this.rrule_bymonthday === false || this.rrule_bymonthday.in_array(d.toString())));
+     case "MONTHLY":
+     return (m === undefined || this.rrule_bymonth === false || this.rrule_bymonth.in_array(m.toString()));
+     case "YEARLY":
+     return true;
+     }*/
 }
 
 -(NSArray*) allOccurencesSince:(NSDate*) filter_begin_ts until:(NSDate*) filter_end_ts{
@@ -290,7 +333,9 @@
         self.current_pos = 1;
         self.old_pos = [NSMutableArray array];
         
-        if(count_period % _rrule_interval ==0  && 
+    //    if(count_period % _rrule_interval ==0  &&
+           
+    }
     /*
      
 period_loop:

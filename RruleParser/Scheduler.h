@@ -30,16 +30,18 @@
     NSArray*   _rrule_bysetpos ; // only in conjonction with others BYxxx rules
     NSString*   _rrule_wkst;
 
+   
     
     NSMutableArray * _exception_dates;
-
+    NSUInteger _current_pos;
+    NSMutableArray * _old_pos;
 }
-
 
 #pragma mark -
 #pragma mark Properties
 @property (nonatomic, retain) NSMutableArray *exception_dates;
-
+@property (nonatomic) NSUInteger current_pos;
+@property (nonatomic, retain) NSMutableArray *old_pos;
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rrule;
 -(void) initReccurenceRules;
@@ -47,7 +49,7 @@
 -(void) removeReccurenceRules;
 -(void) addExceptionDates:(NSArray*) dates;
 -(void) removeExceptionDates;
--(NSArray*) allOccurencesSince:(NSTimeInterval) filter_begin_ts until:(NSTimeInterval) filter_end_ts;
+-(NSArray*) allOccurencesSince:(NSDate*) filter_begin_ts until:(NSDate*) filter_end_ts;
 -(void) nextPeriod:(NSDate*) date;
 -(void) checkRule:(NSDate*) date;
 

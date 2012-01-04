@@ -10,9 +10,12 @@
 
 @implementation Scheduler
 
+
 #pragma mark -
 #pragma mark Properties
 @synthesize exception_dates = _exception_dates;
+@synthesize current_pos = _current_pos;
+@synthesize old_pos = _old_pos;
 
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rfc_rrule{
@@ -34,7 +37,9 @@
 
 -(void) dealloc{
     
+    
     self.exception_dates = nil;
+    self.old_pos = nil;
 
     [super dealloc];
 }
@@ -255,7 +260,12 @@
     [self.exception_dates removeAllObjects];
 }
 
--(NSArray*) allOccurencesSince:(NSTimeInterval) filter_begin_ts until:(NSTimeInterval) filter_end_ts{
+
+-(void) checkRule:(NSDate*) date{
+
+}
+
+-(NSArray*) allOccurencesSince:(NSDate*) filter_begin_ts until:(NSDate*) filter_end_ts{
     NSMutableArray* occurences = [NSMutableArray array];
     
     NSDate * current_date = _start_date;
@@ -264,8 +274,23 @@
     
     while ((!_rrule_count || count < [_rrule_count intValue])
            && (!_rrule_until || [current_date timeIntervalSince1970] <= [_rrule_until intValue])
-           && ([current_date timeIntervalSince1970] <= filter_end_ts)
+           && (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts timeIntervalSince1970])
            ){
+        NSString * day = [self dayFromNoDay:  
+                          [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:current_date].weekday];
+        
+        NSUInteger d =   [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:current_date].day;
+        NSUInteger m =   [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:current_date].month;
+        NSUInteger y =   [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:current_date].year;
+        NSUInteger week_no = [[NSCalendar currentCalendar] components:NSWeekOfYearCalendarUnit fromDate:current_date].weekOfYear;
+        NSUInteger h =   [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:current_date].hour;
+        NSUInteger min =   [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:current_date].minute;
+        NSUInteger s =   [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:current_date].second;
+        
+        self.current_pos = 1;
+        self.old_pos = [NSMutableArray array];
+        
+        if(count_period % _rrule_interval ==0  && 
     /*
      
 period_loop:

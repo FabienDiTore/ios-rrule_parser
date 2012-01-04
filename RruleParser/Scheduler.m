@@ -351,14 +351,27 @@
         } else {
             NSLog(@"%@",[_rrule_byday description]);
             NSError *error = NULL;
-            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\b(a|b)(c|d)\\b"
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"([A-Z]+)"
                                                                                    options:NSRegularExpressionCaseInsensitive
                                                                                      error:&error];
-
-            /*BOOL found = NO;
+           
+            BOOL found = NO;
             for (int it_wd = 0; it_wd < [_rrule_byday count]; it_wd++) {
-                
-            }*/
+                id matchesInString = [regex firstMatchInString:[_rrule_byday objectAtIndex:it_wd]
+                                                                    options:0
+                                                                      range:NSMakeRange(0, [[_rrule_byday objectAtIndex:it_wd] length])];
+            
+                NSRange range = [matchesInString range];
+                NSString* str_number=@"";
+                NSString* str_day=@"";
+                if (range.location != 0 && range.location != NSNotFound) {
+                    str_number = [[_rrule_byday objectAtIndex:it_wd] substringToIndex:range.location];
+                    str_day = [[_rrule_byday objectAtIndex:it_wd] substringFromIndex:range.location];
+                }
+                NSLog(@"%@ %@",str_number,str_day);
+           
+
+            }
             return NO; //not supported
         }
     }

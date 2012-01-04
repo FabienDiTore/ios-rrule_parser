@@ -499,7 +499,7 @@
     Scheduler * s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY;UNTIL=20130131T090000Z;BYMONTH=1"];
     NSArray * occurences = [s allOccurencesSince:nil until:nil];
     NSLog(@"%@",[occurences description]);
-    STAssertTrue([occurences count] < 94, @"");
+    STAssertTrue([occurences count] < 94, @""); 
     STAssertTrue([occurences containsObject:d], @"");
     STAssertTrue([occurences containsObject:d1], @"");
     STAssertTrue([occurences containsObject:d2], @"");

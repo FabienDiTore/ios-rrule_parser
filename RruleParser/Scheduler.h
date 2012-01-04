@@ -10,6 +10,7 @@
 
 @interface Scheduler : NSObject{
     NSDate * _start_date;
+    NSTimeInterval _start_ts;
     
     NSString*   _rrule_freq;
     
@@ -65,8 +66,8 @@
 -(void) removeReccurenceRules;
 -(void) addExceptionDates:(NSArray*) dates;
 -(void) removeExceptionDates;
--(NSArray*) allOccurencesSince:(NSDate*) filter_begin_ts until:(NSDate*) filter_end_ts;
--(void) nextPeriod:(NSDate*) date;
+-(NSArray*) allOccurencesSince:(NSNumber*) filter_begin_ts until:(NSNumber*) filter_end_ts;
+-(NSDate*) nextPeriod:(NSDate*) date;
 -(void) checkRule:(NSString*) day;
 
 -(void) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end;

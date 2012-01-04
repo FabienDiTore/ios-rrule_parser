@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4BA24E0C14B46A7C005AB614 /* NSString+Atipik.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */; };
 		4BF7C11C14B36B7600EA8786 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11B14B36B7600EA8786 /* UIKit.framework */; };
 		4BF7C11E14B36B7600EA8786 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11D14B36B7600EA8786 /* Foundation.framework */; };
 		4BF7C12014B36B7600EA8786 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11F14B36B7600EA8786 /* CoreGraphics.framework */; };
@@ -35,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4BA24E0A14B46A7C005AB614 /* NSString+Atipik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Atipik.h"; sourceTree = "<group>"; };
+		4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Atipik.m"; sourceTree = "<group>"; };
 		4BF7C11714B36B7600EA8786 /* RruleParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RruleParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF7C11B14B36B7600EA8786 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4BF7C11D14B36B7600EA8786 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -86,6 +89,8 @@
 		4BF7C10C14B36B7400EA8786 = {
 			isa = PBXGroup;
 			children = (
+				4BA24E0A14B46A7C005AB614 /* NSString+Atipik.h */,
+				4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */,
 				4BF7C12114B36B7600EA8786 /* RruleParser */,
 				4BF7C14214B36B7600EA8786 /* RruleParserTests */,
 				4BF7C11A14B36B7600EA8786 /* Frameworks */,
@@ -271,6 +276,7 @@
 				4BF7C12C14B36B7600EA8786 /* AppDelegate.m in Sources */,
 				4BF7C12F14B36B7600EA8786 /* ViewController.m in Sources */,
 				4BF7C15514B36BDB00EA8786 /* Scheduler.m in Sources */,
+				4BA24E0C14B46A7C005AB614 /* NSString+Atipik.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +454,7 @@
 				4BF7C14F14B36B7600EA8786 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BF7C15014B36B7600EA8786 /* Build configuration list for PBXNativeTarget "RruleParserTests" */ = {
 			isa = XCConfigurationList;
@@ -456,6 +463,7 @@
 				4BF7C15214B36B7600EA8786 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

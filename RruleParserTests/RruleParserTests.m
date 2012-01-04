@@ -165,12 +165,62 @@
     
     [dc release];
     
+    dc = [[NSDateComponents alloc] init];
+    [dc setYear:2011];
+    [dc setMonth:10];
+    [dc setDay:15];
+    [dc setHour:20];
+    [dc setMinute:05];
+    [dc setSecond:12];
+    
+    NSDate * d1 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    
+    [dc release];
+    dc = [[NSDateComponents alloc] init];
+    [dc setYear:2011];
+    [dc setMonth:10];
+    [dc setDay:16];
+    [dc setHour:20];
+    [dc setMinute:05];
+    [dc setSecond:12];
+    
+    NSDate * d2 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    
+    [dc release];
+    dc = [[NSDateComponents alloc] init];
+    [dc setYear:2011];
+    [dc setMonth:10];
+    [dc setDay:17];
+    [dc setHour:20];
+    [dc setMinute:05];
+    [dc setSecond:12];
+    
+    NSDate * d3 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    
+    [dc release];
+    dc = [[NSDateComponents alloc] init];
+    [dc setYear:2011];
+    [dc setMonth:10];
+    [dc setDay:18];
+    [dc setHour:20];
+    [dc setMinute:05];
+    [dc setSecond:12];
+    
+    NSDate * d4 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    
+    [dc release];
     
     Scheduler * s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY;COUNT=5"];
     NSArray * occurences = [s allOccurencesSince:nil until:nil];
     STAssertNotNil(d, @"date is nil");
     STAssertNotNil(occurences, @"date is nil");
     STAssertTrue([occurences count] > 0, @"date is nil");
+    STAssertTrue([occurences containsObject:d1], @"");
+    STAssertTrue([occurences containsObject:d2], @"");
+    STAssertTrue([occurences containsObject:d3], @"");
+    STAssertTrue([occurences containsObject:d4], @"");
+    
+    NSLog(@"%@",[occurences description]);
     /*
      console.log("--- Daily for 5 occurrences ---");
      d = new Date(2011, 10, 14, 20, 05, 12);

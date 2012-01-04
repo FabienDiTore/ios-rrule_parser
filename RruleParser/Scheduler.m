@@ -347,6 +347,19 @@
     return [[NSCalendar currentCalendar] dateFromComponents:dc];
 }
 
+-(NSArray*) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end{
+    return [self allOccurencesSince:
+                [NSNumber numberWithFloat:
+                    [start timeIntervalSince1970]
+                 ] 
+            until:
+                [NSNumber numberWithFloat:
+                    [end timeIntervalSince1970]
+                 ]
+            ];
+
+}
+
 -(NSArray*) allOccurencesSince:(NSNumber*) filter_begin_ts until:(NSNumber*) filter_end_ts{
     NSMutableArray* occurences = [NSMutableArray array];
     if ((filter_begin_ts ==nil || filter_end_ts == nil) &&
@@ -360,7 +373,7 @@
    
     while ((!_rrule_count || count < [_rrule_count intValue])
            && (!_rrule_until || [current_date timeIntervalSince1970] <= [_rrule_until intValue])
-           && (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts timeIntervalSince1970])
+           && (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts floatValue])
            ){
         NSString * day = [self dayFromNoDay:  
                           [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:current_date].weekday];

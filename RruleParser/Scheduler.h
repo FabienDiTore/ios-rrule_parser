@@ -70,7 +70,7 @@
 -(NSDate*) nextPeriod:(NSDate*) date;
 -(void) checkRule:(NSString*) day;
 
--(void) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end;
+-(NSArray*) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end;
 
 -(void) checkDay:(NSDate*) date;
 

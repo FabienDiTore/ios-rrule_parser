@@ -474,7 +474,7 @@
 -(void) test11
 {
     NSDateComponents * dc = [[NSDateComponents alloc] init];
-    [dc setYear:2011];
+    [dc setYear:2013];
     [dc setMonth:1];
     [dc setDay:1];
     [dc setHour:20];
@@ -528,7 +528,7 @@
 }
 
 -(void) test12{
-    NSDateComponents * dc = [[NSDateComponents alloc] init];
+   /* NSDateComponents * dc = [[NSDateComponents alloc] init];
     [dc setYear:2010];
     [dc setMonth:8];
     [dc setDay:2];
@@ -541,13 +541,16 @@
     [dc setMonth:9];
     [dc setDay:1];
     NSDate * end_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
-    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;COUNT=10"];
+  //  Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;COUNT=10"];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200"];
     NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
     NSLog(@"%@",[occurences description]);
     STAssertTrue([s checkRule:d], @"");
     STAssertTrue([occurences count]==3, @"");
     STAssertTrue([s.rrule_freq isEqualToString:@"WEEKLY"], @"");
-
+    */
+   // s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200"];
+   // occurences = [s occurencesBetween:start_at andDate:end_at];
 /*
  
  console.log("--- Weekly for 10 occurrences ---");

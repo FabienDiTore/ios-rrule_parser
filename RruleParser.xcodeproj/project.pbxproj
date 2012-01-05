@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B5F288D14B5DA4C00507B6F /* NSArray+Atipik.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F288C14B5DA4C00507B6F /* NSArray+Atipik.m */; };
+		4B5F289114B5DC1D00507B6F /* NSMutableArray+Atipik.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F289014B5DC1D00507B6F /* NSMutableArray+Atipik.m */; };
 		4BA24E0C14B46A7C005AB614 /* NSString+Atipik.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */; };
 		4BF7C11C14B36B7600EA8786 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11B14B36B7600EA8786 /* UIKit.framework */; };
 		4BF7C11E14B36B7600EA8786 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11D14B36B7600EA8786 /* Foundation.framework */; };
@@ -36,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B5F288B14B5DA4C00507B6F /* NSArray+Atipik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Atipik.h"; sourceTree = "<group>"; };
+		4B5F288C14B5DA4C00507B6F /* NSArray+Atipik.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Atipik.m"; sourceTree = "<group>"; };
+		4B5F288F14B5DC1D00507B6F /* NSMutableArray+Atipik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Atipik.h"; sourceTree = "<group>"; };
+		4B5F289014B5DC1D00507B6F /* NSMutableArray+Atipik.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Atipik.m"; sourceTree = "<group>"; };
 		4BA24E0A14B46A7C005AB614 /* NSString+Atipik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Atipik.h"; sourceTree = "<group>"; };
 		4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Atipik.m"; sourceTree = "<group>"; };
 		4BF7C11714B36B7600EA8786 /* RruleParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RruleParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +97,10 @@
 			children = (
 				4BA24E0A14B46A7C005AB614 /* NSString+Atipik.h */,
 				4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */,
+				4B5F288B14B5DA4C00507B6F /* NSArray+Atipik.h */,
+				4B5F288C14B5DA4C00507B6F /* NSArray+Atipik.m */,
+				4B5F288F14B5DC1D00507B6F /* NSMutableArray+Atipik.h */,
+				4B5F289014B5DC1D00507B6F /* NSMutableArray+Atipik.m */,
 				4BF7C12114B36B7600EA8786 /* RruleParser */,
 				4BF7C14214B36B7600EA8786 /* RruleParserTests */,
 				4BF7C11A14B36B7600EA8786 /* Frameworks */,
@@ -277,6 +287,8 @@
 				4BF7C12F14B36B7600EA8786 /* ViewController.m in Sources */,
 				4BF7C15514B36BDB00EA8786 /* Scheduler.m in Sources */,
 				4BA24E0C14B46A7C005AB614 /* NSString+Atipik.m in Sources */,
+				4B5F288D14B5DA4C00507B6F /* NSArray+Atipik.m in Sources */,
+				4B5F289114B5DC1D00507B6F /* NSMutableArray+Atipik.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

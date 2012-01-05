@@ -9,6 +9,7 @@
 #define ALL_DATE_FLAGS NSWeekdayCalendarUnit |NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSWeekOfYearCalendarUnit|NSHourCalendarUnit|NSHourCalendarUnit|NSSecondCalendarUnit
 #import "Scheduler.h"
 #import "NSString+Atipik.h"
+#import "NSArray+Atipik.h"
 @implementation Scheduler
 
 
@@ -362,21 +363,35 @@
                                                                       range:NSMakeRange(0, [[_rrule_byday objectAtIndex:it_wd] length])];
             
                 NSRange range = [matchesInString range];
-                NSString* str_number=@"";
+                NSNumber* str_number=[NSNumber numberWithInt:0];
                 NSString* str_day=@"";
                 if (range.location != 0 && range.location != NSNotFound) {
-                    str_number = [[_rrule_byday objectAtIndex:it_wd] substringToIndex:range.location];
+                    NSNumberFormatter * nf = [[NSNumberFormatter alloc] init];
+                    str_number = [nf numberFromString:[[_rrule_byday objectAtIndex:it_wd] substringToIndex:range.location]];
                     str_day = [[_rrule_byday objectAtIndex:it_wd] substringFromIndex:range.location];
+                }else{
+                    str_day = [_rrule_byday objectAtIndex:it_wd];
                 }
+                
                 NSLog(@"%@ %@",str_number,str_day);
-           
-
+                NSArray * matching_dates = [self findWeeksDay:[NSNumber numberWithInt:y] :[NSNumber numberWithInt:m] :str_number :str_day];
+                NSLog(@"%@",[matching_dates description]);
+                for (int it=0; it < [matching_dates count]; it++) {
+                    if ([[matching_dates objectAtIndex:it]isEqualToDate:date]) {
+                        found = YES;
+                        break;
+                    }
+                }
+                
+               
             }
-            return NO; //not supported
+            if(!found){
+                return NO;
+            }
         }
     }
     
-    if(is_weekly){
+    if(!is_weekly){
         if(_rrule_bymonthday){
             
             NSDateComponents * dc = [[NSDateComponents alloc] init];
@@ -391,12 +406,37 @@
             NSUInteger month_days_count = 0;
             NSInteger d_neg = d - 1 - month_days_count;
             BOOL found =NO;
-            
+            for (int it_md=0; it_md < [_rrule_bymonthday count]; it_md++) {
+                int md = [[[_rrule_bymonthday objectAtIndex:it_md] toNumber] intValue];
+               
+                if(d==md || d_neg == md){
+                    found = YES;
+                    break;
+                }
+            }
+            if(!found){
+                return NO;
+            }
         }
     
     }
     
-    return NO;
+    if(is_yearly){
+        if (_rrule_byyearday) {
+            BOOL found = NO;
+            for (int it_yd= 0; it_yd < [_rrule_byyearday count] ; it_yd++) {
+                int year_day = [[[_rrule_byyearday objectAtIndex:it_yd] toNumber]intValue];
+                if (year_day > 0) {
+                    NSDateComponents * dc =[[NSDateComponents alloc] init];
+                    dc.year = y ;
+                    dc.weekdayOrdinal = 200;
+                    
+                    NSDate * year_date=[[NSCalendar currentCalendar] dateFromComponents:dc];
+                }
+            }
+        }
+    }
+    return YES;
 }
 
 
@@ -549,9 +589,71 @@
                     
                     }
                     if([self checkDay:it_date]){
-                    
+                        for (int h_it = 0; h_it < [_rrule_byhour count]; h_it++) {
+                            for(int min_it = 0 ; min_it < [_rrule_byminute count];min_it++){
+                                for(int s_it = 0 ; s_it < [_rrule_byminute count];s_it++){
+                                    NSDateComponents * dc =[[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:it_date];
+                                    [dc setYear:y];
+                                    [dc setMonth:m];
+                                    [dc setDay:d];
+                                    [dc setHour:[[[_rrule_byhour objectAtIndex:h_it] toNumber] intValue]];
+                                    [dc setMinute:[[[_rrule_byminute objectAtIndex:min_it] toNumber] intValue]];
+                                    [dc setSecond:[[[_rrule_bysecond objectAtIndex:s_it] toNumber] intValue]];
+                                    NSDate * date_to_push = [[NSCalendar currentCalendar] dateFromComponents:dc];
+                                    NSTimeInterval ts_to_push = [date_to_push timeIntervalSince1970];
+                                    if(_rrule_bysetpos && [_rrule_bysetpos containsObject:[NSString stringWithFormat:@"%d",self.current_pos,nil]]){
+                                        self.current_pos++;
+                                        [self.old_pos addObject:date_to_push];
+                                        continue;
+                                    }
+                                    if ((_rrule_until && ts_to_push > [_rrule_until floatValue]) ||
+                                        (filter_end_ts && ts_to_push > [filter_end_ts floatValue])) {
+                                        goto period_loop;
+                                    }
+                                    if (ts_to_push >= _start_ts) {
+                                        if (!filter_begin_ts ||  ts_to_push>= [filter_begin_ts floatValue]) {
+                                            [occurences addObject:date_to_push];
+                                        }
+                                        count++;
+                                    }
+                                    
+                                    self.current_pos++;
+                                    [self.old_pos addObject:date_to_push];
+                                    
+                                    if (_rrule_count && count >= [_rrule_count intValue]) {
+                                        goto period_loop;
+                                    }
+                                  
+                                     
+                                }
+                            }
+                        }
                     }
                     
+                    NSDateComponents * dc =[[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:it_date];
+                    
+                    dc.day +=1;
+                    it_date = [[NSCalendar currentCalendar] dateFromComponents:dc];
+                    
+                    
+                }
+                
+                if ([_rrule_bysetpos isKindOfClass:[NSArray class]]) {
+                    for (int it_pos = 0; it_pos < [_rrule_bysetpos count]; it_pos++) {
+                        int pos = [[[_rrule_bysetpos objectAtIndex:it_pos]toNumber] intValue];
+                        if (pos < 0) {
+                            pos = abs(pos);
+                            NSArray * last_matching_dates = [self.old_pos reverse];
+                            NSDate * matching_date = [last_matching_dates objectAtIndex:pos-1];
+                            if (matching_date && [matching_date timeIntervalSince1970] >= _start_ts) {
+                                [occurences addObject:matching_date];
+                                count ++;
+                            }
+                            if (_rrule_count && count >= [_rrule_count intValue]) {
+                                goto period_loop;
+                            }
+                        }
+                    }
                 }
                     
             }
@@ -566,7 +668,42 @@
     
     return occurences;
 }
-
+-(NSArray*) findWeeksDay:(NSNumber*) year :(NSNumber*) month :(NSNumber*) ordinal :(NSString*)week_day{
+    NSUInteger week_day_n = [self noDayFromDay:week_day];
+    NSMutableArray* dates = [NSMutableArray array];
+    //if only year is specified returning each month occurence 
+    // if ordinal is == 0 return all occurences
+    int count = 0;
+    if([ordinal intValue] >=0){
+        if (!month) {
+            
+        }else{
+            NSDateComponents * dc = [[NSDateComponents alloc] init];
+            dc.year = [year intValue];
+            dc.month = [month intValue];
+            dc.day = 1;
+            NSDate * date = [[NSCalendar currentCalendar] dateFromComponents:dc];
+            dc.month = [month intValue]+1;
+            
+            NSTimeInterval end_month_ts = [[[NSCalendar currentCalendar] dateFromComponents:dc] timeIntervalSince1970];
+            while ([date timeIntervalSince1970] < end_month_ts) {
+                dc = [[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:date];
+                if (dc.weekday == week_day_n) {
+                    count++;
+                    if ([ordinal intValue] == 0 || count == [ordinal intValue]) {
+                        [dates addObject:date];
+                    }
+                }
+                dc.day+=1;
+                date = [[NSCalendar currentCalendar] dateFromComponents:dc];
+            }
+            
+            [dc release];
+        }
+    
+    }
+    return dates;
+}
 
 -(NSString*) dayFromNoDay:(NSInteger) day{
     switch (day) {
@@ -589,7 +726,7 @@
             return @"FR";
             break;
         case 7:
-            return @"MO";
+            return @"SA";
             break;
 
         default:
@@ -597,4 +734,28 @@
     }
     return nil;
 }
+-(NSUInteger) noDayFromDay:(NSString*) day{
+    if ([day isEqualToString:@"SU"]) {
+        return 1;
+    }
+    if ([day isEqualToString:@"MO"]) {
+        return 2;
+    }
+    if ([day isEqualToString:@"TU"]) {
+        return 3;
+    }
+    if ([day isEqualToString:@"WE"]) {
+        return 4;
+    }
+    if ([day isEqualToString:@"TH"]) {
+        return 5;
+    }
+    if ([day isEqualToString:@"FR"]) {
+        return 6;
+    }
+    if ([day isEqualToString:@"SA"]) {
+        return 7;
+    }
+}
+
 @end

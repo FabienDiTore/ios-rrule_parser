@@ -73,7 +73,8 @@
 -(NSArray*) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end;
 
 -(BOOL) checkDay:(NSDate*) date;
+-(NSArray*) findWeeksDay:(NSNumber*) year :(NSNumber*) month :(NSNumber*) ordinal :(NSString*)week_day;
 
 -(NSString*) dayFromNoDay:(NSInteger) day;
-
+-(NSUInteger) noDayFromDay:(NSString*) day;
 @end

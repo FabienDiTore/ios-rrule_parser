@@ -471,7 +471,7 @@
  */
 }
 
-/*-(void) test11
+-(void) test11
 {
     NSDateComponents * dc = [[NSDateComponents alloc] init];
     [dc setYear:2011];
@@ -517,7 +517,7 @@
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
 
-}*/
+}
 
 -(void) test12{
    NSDateComponents * dc = [[NSDateComponents alloc] init];
@@ -533,36 +533,152 @@
     [dc setMonth:9];
     [dc setDay:1];
     NSDate * end_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:8];
+    [dc setDay:16];
+    NSDate * d1 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:8];
+    [dc setDay:23];
+    NSDate * d2 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:8];
+    [dc setDay:30];
+    NSDate * d3 = [[NSCalendar currentCalendar] dateFromComponents:dc];
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;COUNT=10"];
-  //  Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200"];
     NSArray *occurences = [s occurencesBetween:start_at  andDate:end_at];
     NSLog(@"%@",[occurences description]);
     STAssertTrue([s checkRule:d], @"");
     
     STAssertTrue([[s allOccurencesSince:nil until:nil] count]==10, @"");
     STAssertTrue([occurences count]==3, @"");
-//    STAssertTrue(<#expr#>, <#description#>, <#...#>)
-   // STAssertTrue([s.rrule_freq isEqualToString:@"WEEKLY"], @"");
+    STAssertTrue([occurences containsObject:d1], @"");
+    STAssertTrue([occurences containsObject:d2], @"");
+    STAssertTrue([occurences containsObject:d3], @"");
+
+
+}
+
+-(void) test13{
+    NSDateComponents * dc = [[NSDateComponents alloc] init];
+    [dc setYear:2011];
+    [dc setMonth:12];
+    [dc setDay:5];
     
-   // s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200"];
-   // occurences = [s occurencesBetween:start_at andDate:end_at];
-/*
- 
- console.log("--- Weekly for 10 occurrences ---");
- d = new Date(1997, 8, 2, 9, 0, 0);
- start_at = new Date(1997, 8, 11, 9, 0, 0);
- end_at = new Date(1997, 9, 1, 9, 0, 0);
- scheduler = new Scheduler(d, "RRULE:FREQ=WEEKLY;COUNT=10", true);
- console.assert(scheduler.all_occurrences().length == 10);
- occurrences = scheduler.occurrences_between(start_at, end_at);
- console.assert(occurrences.length == 3);
- console.assert(occurrences.in_array(new Date(1997, 8, 16, 9, 0, 0).getTime()));
- console.assert(occurrences.in_array(new Date(1997, 8, 23, 9, 0, 0).getTime()));
- console.assert(occurrences.in_array(new Date(1997, 8, 30, 9, 0, 0).getTime()));
- //  ==> 	(1997 9:00 AM EDT)September 2,9,16,23,30;October 7,14,21
- //   	  	(1997 9:00 AM EST)October 28;November 4
- 
- */
+    NSDate * d = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setDay:1];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:1];
+    [dc setDay:1];
+    [dc setYear:2012];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:12];
+    [dc setDay:6];
+    [dc setYear:2011];
+    NSDate * d1 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:12];
+    [dc setDay:13];
+    [dc setYear:2011];
+    NSDate * d2 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"FREQ=WEEKLY;INTERVAL=1;BYDAY=TU;COUNT=2"];
+    NSArray *occurences = [s occurencesBetween:start_at  andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    STAssertTrue([occurences count]==2, @"");
+    STAssertTrue([occurences containsObject:d1], @"");
+    STAssertTrue([occurences containsObject:d2], @"");
+}
+
+-(void) test14{
+    NSDateComponents * dc = [[NSDateComponents alloc] init];
+    [dc setYear:2011];
+    [dc setMonth:12];
+    [dc setDay:8];
+    
+    NSDate * d = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setDay:1];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:1];
+    [dc setDay:1];
+    [dc setYear:2012];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:12];
+    [dc setDay:13];
+    [dc setYear:2011];
+    NSDate * d1 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:12];
+    [dc setDay:20];
+    [dc setYear:2011];
+    NSDate * d2 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:12];
+    [dc setDay:27];
+    [dc setYear:2011];
+    NSDate * d3 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"FREQ=WEEKLY;INTERVAL=1;BYDAY=TU;UNTIL=20111231"];
+    NSArray *occurences = [s occurencesBetween:start_at  andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    STAssertTrue([occurences count]==3, @"");
+    STAssertTrue([occurences containsObject:d1], @"");
+    STAssertTrue([occurences containsObject:d2], @"");
+    
+    STAssertTrue([occurences containsObject:d3], @"");
+
+
+}
+
+-(void) test15{
+    NSDateComponents * dc = [[NSDateComponents alloc] init];
+    [dc setYear:2011];
+    [dc setMonth:11];
+    [dc setDay:14];
+    
+    NSDate * d = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:1];
+    [dc setDay:1];
+    [dc setYear:1950];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:1];
+    [dc setDay:1];
+    [dc setYear:2050];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:11];
+    [dc setDay:14];
+    [dc setYear:2011];
+    NSDate * d1 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:11];
+    [dc setDay:21];
+    [dc setYear:2011];
+    NSDate * d2 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:11];
+    [dc setDay:28];
+    [dc setYear:2011];
+    NSDate * d3 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:12];
+    [dc setDay:5];
+    [dc setYear:2011];
+    NSDate * d4 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:12];
+    [dc setDay:12];
+    [dc setYear:2011];
+    NSDate * d5 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    [dc setMonth:12];
+    [dc setDay:19];
+    [dc setYear:2011];
+    NSDate * d6 = [[NSCalendar currentCalendar] dateFromComponents:dc];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;UNTIL=20111224T000000Z"];
+    NSArray *occurences = [s occurencesBetween:start_at  andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    STAssertTrue([occurences count]==6, @"");
+    STAssertTrue([occurences containsObject:d1], @"");
+    STAssertTrue([occurences containsObject:d2], @"");
+    
+    STAssertTrue([occurences containsObject:d3], @"");
+     STAssertTrue([occurences containsObject:d4], @"");
+     STAssertTrue([occurences containsObject:d5], @"");
+     STAssertTrue([occurences containsObject:d6], @"");
 
 }
 @end

@@ -442,24 +442,26 @@
 
 
 -(NSDate*) nextPeriod:(NSDate*) date{
-    NSDateComponents * dc = [[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:date];
+    NSDateComponents * dc = [[NSDateComponents alloc] init];//[[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:date];
     if([_rrule_freq isEqualToString:@"DAILY"]){
         
-        dc.day +=1;
+        dc.day =1;
     }
     if([_rrule_freq isEqualToString:@"WEEKLY"]){
         
-        dc.weekOfYear +=1;
+        dc.weekOfYear =1;
     }
     if([_rrule_freq isEqualToString:@"MONTHLY"]){
         
-        dc.month +=1;
+        dc.month =1;
     }
     if([_rrule_freq isEqualToString:@"YEARLY"]){
         
-        dc.year +=1;
+        dc.year =1;
     }
-    NSDate * d =  [[NSCalendar currentCalendar] dateFromComponents:dc];
+    
+    NSDate * d =  [[NSCalendar currentCalendar] dateByAddingComponents:dc toDate:date options:0];
+    [dc release];
     return d;
 }
 

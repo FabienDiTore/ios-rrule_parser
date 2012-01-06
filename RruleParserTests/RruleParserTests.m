@@ -471,10 +471,10 @@
  */
 }
 
--(void) test11
+/*-(void) test11
 {
     NSDateComponents * dc = [[NSDateComponents alloc] init];
-    [dc setYear:2013];
+    [dc setYear:2011];
     [dc setMonth:1];
     [dc setDay:1];
     [dc setHour:20];
@@ -516,20 +516,12 @@
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
-/*
- console.log("--- Everyday in January, for 2 years ---");
- d = new Date(2011, 0, 1, 9, 0, 0);
- scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;UNTIL=20130131T090000Z;BYMONTH=1", true);
- occurrences = scheduler.all_occurrences();
- console.assert(occurrences[0] == new Date(2011, 0, 1, 9, 0, 0).getTime());
- console.assert(occurrences[31] == new Date(2012, 0, 1, 9, 0, 0).getTime());
- console.assert(occurrences[62] == new Date(2013, 0, 1, 9, 0, 0).getTime());
- */
-}
+
+}*/
 
 -(void) test12{
-   /* NSDateComponents * dc = [[NSDateComponents alloc] init];
-    [dc setYear:2010];
+   NSDateComponents * dc = [[NSDateComponents alloc] init];
+    [dc setYear:1997];
     [dc setMonth:8];
     [dc setDay:2];
     [dc setHour:9];
@@ -541,14 +533,17 @@
     [dc setMonth:9];
     [dc setDay:1];
     NSDate * end_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
-  //  Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;COUNT=10"];
-    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200"];
-    NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;COUNT=10"];
+  //  Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200"];
+    NSArray *occurences = [s occurencesBetween:start_at  andDate:end_at];
     NSLog(@"%@",[occurences description]);
     STAssertTrue([s checkRule:d], @"");
+    
+    STAssertTrue([[s allOccurencesSince:nil until:nil] count]==10, @"");
     STAssertTrue([occurences count]==3, @"");
-    STAssertTrue([s.rrule_freq isEqualToString:@"WEEKLY"], @"");
-    */
+//    STAssertTrue(<#expr#>, <#description#>, <#...#>)
+   // STAssertTrue([s.rrule_freq isEqualToString:@"WEEKLY"], @"");
+    
    // s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200"];
    // occurences = [s occurencesBetween:start_at andDate:end_at];
 /*

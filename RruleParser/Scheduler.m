@@ -345,8 +345,9 @@
     }
     
     if(_rrule_byday){
+        NSLog(@"%@",[_rrule_byday description]);
         if(is_weekly){
-            if(![_rrule_byday containsObject:[NSString stringWithFormat:@"%d",d,nil]]){
+            if(![_rrule_byday containsObject:day]){
                 return NO;
             }
         } else {
@@ -441,14 +442,14 @@
 
 
 -(NSDate*) nextPeriod:(NSDate*) date{
-    NSDateComponents * dc = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSWeekCalendarUnit fromDate:date];
+    NSDateComponents * dc = [[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:date];
     if([_rrule_freq isEqualToString:@"DAILY"]){
         
         dc.day +=1;
     }
     if([_rrule_freq isEqualToString:@"WEEKLY"]){
         
-        dc.week +=1;
+        dc.weekOfYear +=1;
     }
     if([_rrule_freq isEqualToString:@"MONTHLY"]){
         
@@ -458,7 +459,8 @@
         
         dc.year +=1;
     }
-    return [[NSCalendar currentCalendar] dateFromComponents:dc];
+    NSDate * d =  [[NSCalendar currentCalendar] dateFromComponents:dc];
+    return d;
 }
 
 -(NSArray*) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end{
@@ -593,9 +595,6 @@
                             for(int min_it = 0 ; min_it < [_rrule_byminute count];min_it++){
                                 for(int s_it = 0 ; s_it < [_rrule_byminute count];s_it++){
                                     NSDateComponents * dc =[[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:it_date];
-                                    [dc setYear:y];
-                                    [dc setMonth:m];
-                                    [dc setDay:d];
                                     [dc setHour:[[[_rrule_byhour objectAtIndex:h_it] toNumber] intValue]];
                                     [dc setMinute:[[[_rrule_byminute objectAtIndex:min_it] toNumber] intValue]];
                                     [dc setSecond:[[[_rrule_bysecond objectAtIndex:s_it] toNumber] intValue]];
@@ -655,7 +654,8 @@
                         }
                     }
                 }
-                    
+               
+                
             }
         }
         
@@ -686,6 +686,7 @@
             dc.month = [month intValue]+1;
             
             NSTimeInterval end_month_ts = [[[NSCalendar currentCalendar] dateFromComponents:dc] timeIntervalSince1970];
+             [dc release];
             while ([date timeIntervalSince1970] < end_month_ts) {
                 dc = [[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:date];
                 if (dc.weekday == week_day_n) {
@@ -698,7 +699,7 @@
                 date = [[NSCalendar currentCalendar] dateFromComponents:dc];
             }
             
-            [dc release];
+          //  [dc release];
         }
     
     }

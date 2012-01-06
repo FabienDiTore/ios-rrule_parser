@@ -8,6 +8,7 @@
 
 #import "RruleParserTests.h"
 #import "Scheduler.h"
+#import "NSCalendar+NSCalendar_Atipik.h"
 @implementation RruleParserTests
 
 - (void)setUp
@@ -680,5 +681,103 @@
      STAssertTrue([occurences containsObject:d5], @"");
      STAssertTrue([occurences containsObject:d6], @"");
 
+}
+-(void) test16{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;UNTIL=19971007T000000Z;WKST=SU;BYDAY=TU,TH"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+     NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    STAssertTrue([occurences count]==10, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:4 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:9 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:11 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:16 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:18 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:23 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:25 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:30 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:2 hour:8 minute:0]], @"");
+
+}
+
+-(void) test17{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;COUNT=10;WKST=SU;BYDAY=TU,TH"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    STAssertTrue([occurences count]==10, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:4 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:9 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:11 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:16 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:18 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:23 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:25 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:30 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:2 hour:8 minute:0]], @"");
+
+}
+
+-(void) test18{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;INTERVAL=2;UNTIL=19971224T000000Z;WKST=SU;BYDAY=MO,WE,FR"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    STAssertTrue([occurences count]==24, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:3 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:5 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:15 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:17 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:19 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:29 hour:8 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:1 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:3 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:13 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:15 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:17 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:29 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:31 hour:8 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:10 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:12 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:14 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:24 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:26 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:28 hour:8 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:8 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:10 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:12 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:22 hour:8 minute:0]], @"");
+    
+   
+}
+
+-(void) test19{
+
+    /*console.log("--- Monthly on the 1st Friday for 3 occurrences ---");
+     d = new Date(1997, 8, 5, 8);
+     scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;COUNT=3;BYDAY=1FR", true);
+     occurrences = scheduler.all_occurrences();
+     console.assert(occurrences.length == 3);
+     console.assert(occurrences.in_array(new Date(1997, 8, 5, 8).getTime()));
+     console.assert(occurrences.in_array(new Date(1997, 9, 3, 8).getTime()));
+     console.assert(occurrences.in_array(new Date(1997, 10, 7, 8).getTime()));
+     //		==>	(1997 9:00 AM EDT)September 5;October 3;November 7;
+     
+     // occurrence after nov 7 shouldn't exist
+     start_at = new Date(1997, 10, 8);
+     end_at = new Date(1997, 11, 31);
+     occurrences = scheduler.occurrences_between(start_at, end_at);
+     console.assert(occurrences.length == 0);*/
 }
 @end

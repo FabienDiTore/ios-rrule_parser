@@ -803,19 +803,7 @@
     STAssertTrue([occurences count]==0, @"");
 }
 -(void) test21{
-    /*console.log("--- Every other month on the 1st and last Sunday of the month for 5 occurrences ---");
-     d = new Date(1997, 8, 7, 9);
-     scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;INTERVAL=2;COUNT=5;BYDAY=1SU,-1SU", true);
-     occurrences = scheduler.all_occurrences();
-     console.assert(occurrences.length == 5);
-     console.assert(occurrences.in_array(new Date(1997, 8, 7, 9).getTime()));
-     console.assert(occurrences.in_array(new Date(1997, 8, 28, 9).getTime()));
-     console.assert(occurrences.in_array(new Date(1997, 10, 2, 9).getTime()));
-     console.assert(occurrences.in_array(new Date(1997, 10, 30, 9).getTime()));
-     console.assert(occurrences.in_array(new Date(1998, 0, 4, 9).getTime()));
-     //		==>	(1997 9:00 AM EDT)September 7,28
-     //		     (1997 9:00 AM EST)November 2,30
-     //			(1998 9:00 AM EST)January 4*/
+
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:7 hour:9 minute:0];
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;INTERVAL=2;COUNT=5;BYDAY=1SU,-1SU"];
     NSArray *occurences = [s allOccurencesSince:nil until:nil];
@@ -833,4 +821,468 @@
    
 }
 
+-(void) test22{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:7 hour:9 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=6;BYDAY=-2MO"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==6, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:22 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:20 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:17 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:22 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:19 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:16 hour:9 minute:0]], @"");
+
+}
+
+-(void) test23{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:28 hour:9 minute:0];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:27 hour:9 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:1998 month:3 day:28 hour:8 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;BYMONTHDAY=-3"];
+    NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==6, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:28 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:29 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:28 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:29 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:29 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:26 hour:9 minute:0]], @"");
+
+    
+}
+
+-(void) test24{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:9 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=6;BYMONTHDAY=2,15"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==6, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:15 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:2 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:15 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:2 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:15 hour:9 minute:0]], @"");
+
+}
+
+-(void) test26{
+
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:30 hour:9 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=10;BYMONTHDAY=1,-1"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==10, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:30 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:1 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:31 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:1 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:30 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:1 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:31 hour:9 minute:0]], @"");
+
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:1 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:31 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:1 hour:9 minute:0]], @"");
+}
+
+-(void) test27 {
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:10 hour:9 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;INTERVAL=18;COUNT=10;BYMONTHDAY=10,11,12,13,14,15"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==10, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:10 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:11 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:12 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:13 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:14 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:15 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:10 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:11 hour:9 minute:0]], @"");
+
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:12 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:13 hour:9 minute:0]], @"");
+
+}
+-(void) test28 {
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:9 minute:0];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:18 hour:9 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:18 hour:8 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;INTERVAL=2;BYDAY=TU"];
+    NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==4, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:18 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:25 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:6 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:13 hour:9 minute:0]], @"");
+    
+    
+}
+
+
+/*
+
+ 
+ console.log("--- Yearly in June and July for 10 occurrences ---");
+ d = new Date(1997, 5, 10, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;COUNT=10;BYMONTH=6,7", true);
+ occurrences = scheduler.all_occurrences();
+ console.assert(occurrences.length == 10);
+ console.assert(occurrences.in_array(new Date(1997, 5, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 6, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1998, 5, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1998, 6, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 5, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 6, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2000, 5, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2000, 6, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2001, 5, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2001, 6, 10, 9).getTime()));
+ //		==>	(1997 9:00 AM EDT)June 10;July 10
+ //			(1998 9:00 AM EDT)June 10;July 10
+ //		     (1999 9:00 AM EDT)June 10;July 10
+ //			(2000 9:00 AM EDT)June 10;July 10
+ //			(2001 9:00 AM EDT)June 10;July 10
+ //
+ //  		Note: Since none of the BYDAY, BYMONTHDAY or BYYEARDAY components are specified, the day is gotten from DTSTART
+ 
+ 
+ 
+ console.log("--- Every other year on January, February, and March for 10 occurrences ---");
+ d = new Date(1997, 2, 10, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;INTERVAL=2;COUNT=10;BYMONTH=1,2,3", true);
+ occurrences = scheduler.all_occurrences();
+ console.assert(occurrences.length == 10);
+ console.assert(occurrences.in_array(new Date(1997, 2, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 0, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 1, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 2, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2001, 0, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2001, 1, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2001, 2, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2003, 0, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2003, 1, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2003, 2, 10, 9).getTime()));
+ //	==>	(1997 9:00 AM EST)March 10
+ //		(1999 9:00 AM EST)January 10;February 10;March 10
+ //		(2001 9:00 AM EST)January 10;February 10;March 10
+ //		(2003 9:00 AM EST)January 10;February 10;March 10
+ 
+ // occurrence after 10 march 2003 shouldn't exist
+ start_at = new Date(2003, 2, 11);
+ end_at = new Date(2010, 0, 1);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 0);
+ 
+ 
+ 
+ console.log("--- Every 3rd year on the 1st, 100th and 200th day for 10 occurrences ---");
+ d = new Date(1997, 0, 1, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200", true);
+ occurrences = scheduler.all_occurrences();
+ console.assert(occurrences.length == 10);
+ console.assert(occurrences.in_array(new Date(1997, 0, 1, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 3, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 6, 19, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2000, 0, 1, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2000, 3, 9, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2000, 6, 18, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2003, 0, 1, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2003, 3, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2003, 6, 19, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2006, 0, 1, 9).getTime()));
+ //		==>	(1997 9:00 AM EST)January 1
+ //		     (1997 9:00 AM EDT)April 10;July 19
+ //			(2000 9:00 AM EST)January 1
+ //			(2000 9:00 AM EDT)April 9;July 18
+ //			(2003 9:00 AM EST)January 1
+ //			(2003 9:00 AM EDT)April 10;July 19
+ //			(2006 9:00 AM EST)January 1
+ 
+ 
+ 
+ console.log("--- Every 20th Monday of the year, forever ---");
+ d = new Date(1997, 4, 19, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;BYDAY=20MO", true);
+ start_at = new Date(1997, 4, 1);
+ end_at = new Date(1997, 4, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 1);
+ console.assert(occurrences.in_array(new Date(1997, 4, 19, 9).getTime()));
+ 
+ 
+ start_at = new Date(1999, 4, 1);
+ end_at = new Date(1999, 4, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 1);
+ console.assert(occurrences.in_array(new Date(1999, 4, 17, 9).getTime()));
+ //	==> 	(1997 9:00 AM EDT)May 19
+ //      	(1998 9:00 AM EDT)May 18
+ //      	(1999 9:00 AM EDT)May 17
+ //		...
+ 
+ 
+ 
+ console.log("--- Monday of week number 20 (where the default start of the week is Monday), forever ---");
+ d = new Date(1997, 4, 12, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;BYWEEKNO=20;BYDAY=MO", true);
+ start_at = new Date(1997, 4, 1);
+ end_at = new Date(1997, 4, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 1);
+ console.assert(occurrences.in_array(new Date(1997, 4, 12, 9).getTime()));
+ 
+ 
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;BYWEEKNO=20;BYDAY=MO", true);
+ start_at = new Date(1999, 4, 1);
+ end_at = new Date(1999, 4, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 1);
+ console.assert(occurrences.in_array(new Date(1999, 4, 17, 9).getTime()));
+ //		==>	(1997 9:00 AM EDT)May 12
+ //		     (1998 9:00 AM EDT)May 11
+ //		     (1999 9:00 AM EDT)May 17
+ //			...
+ 
+ 
+ 
+ console.log("--- Every Thursday in March, forever ---");
+ d = new Date(1997, 2, 13, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=TH", true);
+ start_at = new Date(1997, 2, 1);
+ end_at = new Date(1997, 2, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 3);
+ console.assert(occurrences.in_array(new Date(1997, 2, 13, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 2, 20, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 2, 27, 9).getTime()));
+ 
+ 
+ start_at = new Date(1999, 2, 1);
+ end_at = new Date(1999, 2, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 4);
+ console.assert(occurrences.in_array(new Date(1999, 2, 4, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 2, 11, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 2, 18, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 2, 25, 9).getTime()));
+ //		==>	(1997 9:00 AM EST)March 13,20,27
+ //		     (1998 9:00 AM EST)March 5,12,19,26
+ //		     (1999 9:00 AM EST)March 4,11,18,25
+ //			...
+ 
+ 
+ 
+ console.log("--- Every Thursday, but only during June, July, and August, forever ---");
+ d = new Date(1997, 5, 5, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;BYDAY=TH;BYMONTH=6,7,8", true);
+ start_at = new Date(1997, 5, 15);
+ end_at = new Date(1997, 6, 15);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 4);
+ console.assert(occurrences.in_array(new Date(1997, 5, 19, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 5, 26, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 6, 3, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 6, 10, 9).getTime()));
+ 
+ 
+ start_at = new Date(1999, 5, 15);
+ end_at = new Date(1999, 6, 15);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 4);
+ console.assert(occurrences.in_array(new Date(1999, 5, 17, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 5, 24, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 6, 1, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 6, 8, 9).getTime()));
+ //		==>	(1997 9:00 AM EDT)June 5,12,19,26;July 3,10,17,24,31;August 7,14,21,28
+ //		     (1998 9:00 AM EDT)June 4,11,18,25;July 2,9,16,23,30;August 6,13,20,27
+ //			(1999 9:00 AM EDT)June 3,10,17,24;July 1,8,15,22,29;August 5,12,19,26
+ //			...
+ // ...modified...
+ 
+ 
+ 
+ console.log("--- Every Friday the 13th, forever (occurrences between) ---");
+ d = new Date(1997, 8, 2, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;BYDAY=FR;BYMONTHDAY=13", true);
+ start_at = new Date(1997, 8, 15);
+ end_at = new Date(1999, 11, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 4);
+ console.assert(occurrences.in_array(new Date(1998, 1, 13, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1998, 2, 13, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1998, 10, 13, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 7, 13, 9).getTime()));
+ //		==>	(1998 9:00 AM EST)February 13;March 13;November 13
+ //			(1999 9:00 AM EDT)August 13
+ //			(2000 9:00 AM EDT)October 13
+ //			...
+ // ...modified...
+ 
+ 
+ console.log("--- Every Friday the 13th, forever (exdate) ---");
+ d = new Date(1997, 8, 2, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;UNTIL=19991231T090000Z;BYDAY=FR;BYMONTHDAY=13", true);
+ scheduler.add_exception_dates([ new Date(1997, 8, 2, 9) ]);
+ occurrences = scheduler.all_occurrences();
+ console.assert(occurrences.length == 4);
+ //console.assert(occurrences.in_array(new Date(1997, 8, 2, 9).getTime())); <-- exdate not matched !
+ console.assert(occurrences.in_array(new Date(1998, 1, 13, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1998, 2, 13, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1998, 10, 13, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1999, 7, 13, 9).getTime()));
+ //		==>	(1998 9:00 AM EST)February 13;March 13;November 13
+ //			(1999 9:00 AM EDT)August 13
+ //			(2000 9:00 AM EDT)October 13
+ //			...
+ // ...added...
+ 
+ 
+ 
+ console.log("--- Every four years, the first Tuesday after a Monday in November, forever (U.S. Presidential Election day) ---")
+ d = new Date(1996, 10, 5, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=YEARLY;INTERVAL=4;BYMONTH=11;BYDAY=TU;BYMONTHDAY=2,3,4,5,6,7,8", true);
+ start_at = new Date(1996, 0, 1);
+ end_at = new Date(2004, 11, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 3);
+ console.assert(occurrences.in_array(new Date(1996, 10, 5, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2000, 10, 7, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(2004, 10, 2, 9).getTime()));
+ 
+ //		==> 	(1996 9:00 AM EST)November 5
+ //			(2000 9:00 AM EST)November 7
+ //			(2004 9:00 AM EST)November 2
+ 
+ 
+ console.log("--- The 3rd instance into the month of one of Tuesday, Wednesday or Thursday, for the next 3 months ---");
+ d = new Date(1997, 8, 4, 9);
+ 
+ scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;COUNT=3;BYDAY=TU,WE,TH;BYSETPOS=3", true);
+ occurrences = scheduler.all_occurrences();
+ console.assert(occurrences.length == 3);
+ console.assert(occurrences.in_array(new Date(1997, 8, 4, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 9, 7, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 10, 6, 9).getTime()));
+ // 		==>	(1997 9:00 AM EDT)September 4;October 7;November 6
+ 
+ 
+ 
+ console.log("--- The 2nd to last weekday of the month ---");
+ d = new Date(1997, 8, 29, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-2", true);
+ start_at = new Date(1996, 0, 1);
+ end_at = new Date(1998, 1, 1);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.length == 5);
+ console.assert(occurrences.in_array(new Date(1997, 8, 29, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 9, 30, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 10, 27, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 11, 30, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1998, 0, 29, 9).getTime()));
+ //		==>	(1997 9:00 AM EDT)September 29
+ //			(1997 9:00 AM EST)October 30;November 27;December 30
+ //			(1998 9:00 AM EST)January 29;February 26;March 30
+ //			 ...
+ 
+ 
+ 
+ console.log("--- Every 20 minutes from 9:00 AM to 4:40 PM every day ---");
+ d = new Date(1997, 8, 2, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;BYHOUR=9,10,11,12,13,14,15,16;BYMINUTE=0,20,40", true);
+ start_at = new Date(1996, 0, 1);
+ end_at = new Date(2004, 11, 31);
+ occurrences = scheduler.occurrences_between(start_at, end_at);
+ console.assert(occurrences.in_array(new Date(1997, 8, 2, 9, 0).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 2, 9, 20).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 2, 9, 40).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 2, 10, 0).getTime()));
+ // ...
+ console.assert(occurrences.in_array(new Date(1997, 8, 2, 16, 20).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 2, 16, 40).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 3, 9, 0).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 3, 9, 20).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 3, 9, 40).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 3, 10, 0).getTime()));
+ // ...
+ console.assert(occurrences.in_array(new Date(1997, 8, 3, 16, 0).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 3, 16, 20).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 8, 3, 16, 40).getTime()));
+ //  ==> (September 2, 1997 EDT)9:00,9:20,9:40,10:00,10:20,
+ //                             ... 16:00,16:20,16:40
+ //      (September 3, 1997 EDT)9:00,9:20,9:40,10:00,10:20,
+ //                            ...16:00,16:20,16:40
+ 
+ 
+ console.log("--- An example where the days generated makes a difference because of WKST ---");
+ d = new Date(1997, 7, 5, 9);
+ scheduler = new Scheduler(d, "RRULE:FREQ=WEEKLY;INTERVAL=2;COUNT=4;BYDAY=TU,SU;WKST=MO", true);
+ occurrences = scheduler.all_occurrences();
+ console.assert(occurrences.length == 4);
+ console.assert(occurrences.in_array(new Date(1997, 7, 5, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 7, 10, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 7, 19, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 7, 24, 9).getTime()));
+ //              ==> (1997 EDT)Aug 5,10,19,24
+ 
+ 
+ 
+ scheduler = new Scheduler(d, "RRULE:FREQ=WEEKLY;INTERVAL=2;COUNT=4;BYDAY=TU,SU;WKST=SU", true);
+ occurrences = scheduler.all_occurrences();
+ console.assert(occurrences.length == 4);
+ console.assert(occurrences.in_array(new Date(1997, 7, 5, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 7, 17, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 7, 19, 9).getTime()));
+ console.assert(occurrences.in_array(new Date(1997, 7, 31, 9).getTime()));
+ //              ==> (1997 EDT)August 5,17,19,31*/
 @end

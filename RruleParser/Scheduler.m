@@ -405,7 +405,7 @@
                                      forDate:[[NSCalendar currentCalendar] dateFromComponents:dc]];
             NSLog(@"%d", range.length);
             
-            NSUInteger month_days_count = 0;
+            NSUInteger month_days_count = range.length;
             NSInteger d_neg = d - 1 - month_days_count;
             BOOL found =NO;
             for (int it_md=0; it_md < [_rrule_bymonthday count]; it_md++) {
@@ -710,7 +710,7 @@
         
         }else{
             NSUInteger nth = abs([ordinal intValue]);
-            NSDate * date = [[NSCalendar currentCalendar] dateFromYear:[year intValue] month:[month intValue]+1 day:1];
+            NSDate * date = [[NSCalendar currentCalendar] dateFromYear:[year intValue] month:[month intValue]+1 day:0];
             NSTimeInterval begin_month_ts = [[[NSCalendar currentCalendar] dateFromYear:[year intValue] month:[month intValue] day:1] timeIntervalSince1970];
             count = 0;
             

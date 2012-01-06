@@ -763,21 +763,74 @@
 }
 
 -(void) test19{
-
-    /*console.log("--- Monthly on the 1st Friday for 3 occurrences ---");
-     d = new Date(1997, 8, 5, 8);
-     scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;COUNT=3;BYDAY=1FR", true);
-     occurrences = scheduler.all_occurrences();
-     console.assert(occurrences.length == 3);
-     console.assert(occurrences.in_array(new Date(1997, 8, 5, 8).getTime()));
-     console.assert(occurrences.in_array(new Date(1997, 9, 3, 8).getTime()));
-     console.assert(occurrences.in_array(new Date(1997, 10, 7, 8).getTime()));
-     //		==>	(1997 9:00 AM EDT)September 5;October 3;November 7;
-     
-     // occurrence after nov 7 shouldn't exist
-     start_at = new Date(1997, 10, 8);
-     end_at = new Date(1997, 11, 31);
-     occurrences = scheduler.occurrences_between(start_at, end_at);
-     console.assert(occurrences.length == 0);*/
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=3;BYDAY=1FR"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==3, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:5 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:3 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:7 hour:8 minute:0]], @"");
+    
+    
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:8 hour:8 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:31 hour:8 minute:0];
+    occurences = [s occurencesBetween:start_at andDate:end_at];
+    
+    
+    STAssertTrue([occurences count]==0, @"");
 }
+
+-(void) test20{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:5 hour:8 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;UNTIL=19971224T000000Z;BYDAY=1FR"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==4, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:5 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:3 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:7 hour:8 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:5 hour:8 minute:0]], @"");
+    
+    
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:6 hour:8 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:31 hour:8 minute:0];
+    occurences = [s occurencesBetween:start_at andDate:end_at];
+    
+    
+    STAssertTrue([occurences count]==0, @"");
+}
+-(void) test21{
+    /*console.log("--- Every other month on the 1st and last Sunday of the month for 5 occurrences ---");
+     d = new Date(1997, 8, 7, 9);
+     scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;INTERVAL=2;COUNT=5;BYDAY=1SU,-1SU", true);
+     occurrences = scheduler.all_occurrences();
+     console.assert(occurrences.length == 5);
+     console.assert(occurrences.in_array(new Date(1997, 8, 7, 9).getTime()));
+     console.assert(occurrences.in_array(new Date(1997, 8, 28, 9).getTime()));
+     console.assert(occurrences.in_array(new Date(1997, 10, 2, 9).getTime()));
+     console.assert(occurrences.in_array(new Date(1997, 10, 30, 9).getTime()));
+     console.assert(occurrences.in_array(new Date(1998, 0, 4, 9).getTime()));
+     //		==>	(1997 9:00 AM EDT)September 7,28
+     //		     (1997 9:00 AM EST)November 2,30
+     //			(1998 9:00 AM EST)January 4*/
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:7 hour:9 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;INTERVAL=2;COUNT=5;BYDAY=1SU,-1SU"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==5, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:7 hour:9 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:28 hour:9 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:2 hour:9 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:30 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:4 hour:9 minute:0]], @"");
+    
+    
+   
+}
+
 @end

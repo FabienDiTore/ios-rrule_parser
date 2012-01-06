@@ -10,6 +10,7 @@
 #import "Scheduler.h"
 #import "NSString+Atipik.h"
 #import "NSArray+Atipik.h"
+#import "NSCalendar+NSCalendar_Atipik.h"
 @implementation Scheduler
 
 
@@ -704,6 +705,28 @@
           //  [dc release];
         }
     
+    }else{
+        if(!month){
+        
+        }else{
+            NSUInteger nth = abs([ordinal intValue]);
+            NSDate * date = [[NSCalendar currentCalendar] dateFromYear:[year intValue] month:[month intValue]+1 day:1];
+            NSTimeInterval begin_month_ts = [[[NSCalendar currentCalendar] dateFromYear:[year intValue] month:[month intValue] day:1] timeIntervalSince1970];
+            count = 0;
+            
+            while ([date timeIntervalSince1970] >= begin_month_ts) {
+                NSDateComponents * dc = [[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:date];;
+                if (dc.weekday == week_day_n) {
+                    count++;
+                    if (nth == 0 || count == nth) {
+                        [dates addObject:date];
+                    }
+                }
+                dc.day-=1;
+                date = [[NSCalendar currentCalendar] dateFromComponents:dc];
+            }
+            
+        }
     }
     return dates;
 }

@@ -1,7 +1,4 @@
 //
-//  AKStringExtension.h
-//  jobup
-//
 //  Created by Fabien Di Tore on 15.07.10.
 //  Copyright 2010 Atipik Sarl. All rights reserved.
 //

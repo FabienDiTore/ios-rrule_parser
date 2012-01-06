@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Atipik Sarl. All rights reserved.
 //
 
-#define ALL_DATE_FLAGS NSWeekdayCalendarUnit |NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSWeekOfYearCalendarUnit|NSHourCalendarUnit|NSHourCalendarUnit|NSSecondCalendarUnit
+#define ALL_DATE_FLAGS NSWeekdayCalendarUnit |NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSWeekOfYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
 #import "Scheduler.h"
 #import "NSString+Atipik.h"
 #import "NSArray+Atipik.h"
@@ -346,13 +346,13 @@
     }
     
     if(_rrule_byday){
-        NSLog(@"%@",[_rrule_byday description]);
+     //   NSLog(@"%@",[_rrule_byday description]);
         if(is_weekly){
             if(![_rrule_byday containsObject:day]){
                 return NO;
             }
         } else {
-            NSLog(@"%@",[_rrule_byday description]);
+       //     NSLog(@"%@",[_rrule_byday description]);
             NSError *error = NULL;
             NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"([A-Z]+)"
                                                                                    options:NSRegularExpressionCaseInsensitive
@@ -375,9 +375,9 @@
                     str_day = [_rrule_byday objectAtIndex:it_wd];
                 }
                 
-                NSLog(@"%@ %@",str_number,str_day);
+              //  NSLog(@"%@ %@",str_number,str_day);
                 NSArray * matching_dates = [self findWeeksDay:[NSNumber numberWithInt:y] :[NSNumber numberWithInt:m] :str_number :str_day];
-                NSLog(@"%@",[matching_dates description]);
+           //     NSLog(@"%@",[matching_dates description]);
                 for (int it=0; it < [matching_dates count]; it++) {
                     if ([[matching_dates objectAtIndex:it]isEqualToDate:date]) {
                         found = YES;
@@ -403,7 +403,7 @@
             NSRange range = [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit
                                       inUnit:NSMonthCalendarUnit
                                      forDate:[[NSCalendar currentCalendar] dateFromComponents:dc]];
-            NSLog(@"%d", range.length);
+         //   NSLog(@"%d", range.length);
             
             NSUInteger month_days_count = range.length;
             NSInteger d_neg = d - 1 - month_days_count;
@@ -500,16 +500,16 @@
            ){
 
         NSDateComponents * current_date_components = [[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:current_date];
-        NSString * day = [self dayFromNoDay:current_date_components.weekday];
+       // NSString * day = [self dayFromNoDay:current_date_components.weekday];
         
         NSUInteger d        =       current_date_components.day;
         NSUInteger m        =       current_date_components.month;
         NSUInteger y        =       current_date_components.year;
-        NSUInteger week_no  =       current_date_components.weekOfYear;
+    /*    NSUInteger week_no  =       current_date_components.weekOfYear;
         NSUInteger h        =       current_date_components.hour;
         NSUInteger min      =       current_date_components.minute;
         NSUInteger s        =       current_date_components.second;
-        
+      */  
         self.current_pos = 1;
         self.old_pos = [NSMutableArray array];
         

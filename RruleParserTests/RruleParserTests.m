@@ -27,7 +27,7 @@
 
 
 
-/*
+
 - (void) test1{
     NSDateComponents * dc = [[NSDateComponents alloc] init];
     [dc setYear:2011];
@@ -874,24 +874,24 @@
     
     
 }
-*/
+
 -(void) test28_more {
-    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:1 day:1 hour:9 minute:0];
-    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:1996 month:1 day:1 hour:9 minute:0];
-    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:2010 month:1 day:18 hour:8 minute:0];
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:2014 month:1 day:1 hour:9 minute:0];
     
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=1"];
     NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
     NSLog(@"%@",[occurences description]);
     STAssertTrue([s checkRule:d], @"");
     STAssertTrue([occurences count]==4, @"");
-    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:1 day:1 hour:9 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0]], @"");
     
-    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:1 hour:9 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:2012 month:1 day:1 hour:9 minute:0]], @"");
     
-    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:1 day:1 hour:9 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:2013 month:1 day:1 hour:9 minute:0]], @"");
     
-    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:2000 month:1 day:1 hour:9 minute:0]], @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:2014 month:1 day:1 hour:9 minute:0]], @"");
     
     
 }

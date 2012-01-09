@@ -21,8 +21,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    Scheduler * s = [[Scheduler alloc] initWithDate:[NSDate date] andRule:@"RRULE:FREQ=WEEKLY;COUNT=5;BYDAY="];
-	// Do any additional setup after loading the view, typically from a nib.
+   // Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)viewDidUnload

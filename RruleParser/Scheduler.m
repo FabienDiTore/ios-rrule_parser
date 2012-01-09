@@ -108,6 +108,7 @@
     NSArray * rules = [rfc_rrule componentsSeparatedByString:@";"];
     NSUInteger nb_rules = [rules count];
     NSNumberFormatter * nf = [[NSNumberFormatter alloc]init];
+    NSLog(@"%@",[rules description]);
     for (int i = 0; i < nb_rules; i++) {
         NSArray*  rule = [[rules objectAtIndex:i] componentsSeparatedByString:@"="];
         NSString * rule_value = [rule objectAtIndex:1];
@@ -276,6 +277,16 @@
           NSLog(@"%@",_rrule_bymonthday);
     }
  
+    if (!_rrule_byday && !_rrule_byyearday && !_rrule_bymonth && [_rrule_freq isEqualToString:@"YEARLY"]) {
+        _rrule_bymonth =  [NSArray arrayWithObject: 
+                           [NSString stringWithFormat:@"%d",
+                            
+                            [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:_start_date].month
+                            ,
+                            nil]
+                           
+                           ];
+    }
 
 }
 
@@ -342,6 +353,7 @@
   
     
     if(_rrule_bymonth){
+      //  NSLog(@"%@",_rrule_bymonth);
         if(![_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]){
             return NO;
         }

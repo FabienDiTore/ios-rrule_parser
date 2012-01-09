@@ -264,6 +264,7 @@
     }
     
     if(!_rrule_byday && ! _rrule_bymonthday && !_rrule_byyearday && ([_rrule_freq isEqualToString:@"MONTHLY"] || [_rrule_freq isEqualToString:@"YEARLY"])){
+      
         _rrule_bymonthday = [NSArray arrayWithObject: 
                              [NSString stringWithFormat:@"%d",
                               
@@ -272,6 +273,7 @@
                               nil]
                              
                              ];
+          NSLog(@"%@",_rrule_bymonthday);
     }
  
 

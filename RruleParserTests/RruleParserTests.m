@@ -27,7 +27,7 @@
 
 
 
-
+/*
 - (void) test1{
     NSDateComponents * dc = [[NSDateComponents alloc] init];
     [dc setYear:2011];
@@ -227,24 +227,7 @@
     occurences = [s2 allOccurencesSince:nil until:nil];
     NSLog(@"%@",[occurences description]);
     STAssertNil(occurences, @"");
-    /*
-     console.log("--- Daily for 5 occurrences ---");
-     d = new Date(2011, 10, 14, 20, 05, 12);
-     scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;COUNT=5", true);
-     var occurrences = scheduler.all_occurrences();
-     console.assert(occurrences.length == 5);
-     console.assert(occurrences.in_array(d.getTime()));
-     console.assert(occurrences.in_array(new Date(2011, 10, 15, 20, 05, 12).getTime()));
-     console.assert(occurrences.in_array(new Date(2011, 10, 16, 20, 05, 12).getTime()));
-     console.assert(occurrences.in_array(new Date(2011, 10, 17, 20, 05, 12).getTime()));
-     console.assert(occurrences.in_array(new Date(2011, 10, 18, 20, 05, 12).getTime()));
-     //		==> 	"Mon Nov 14 2011 20:05:12 GMT+0100 (CET)",
-     //			"Tue Nov 15 2011 20:05:12 GMT+0100 (CET)",
-     //			…,
-     //			"Wed Nov 18 2011 20:05:12 GMT+0100 (CET)"
-     
-
-     */
+  
 }
 
 - (void) test6{
@@ -275,28 +258,7 @@
     STAssertTrue([occurences count]==2, @"too much results");
     STAssertTrue([occurences containsObject:d1], @"too much results");
     STAssertTrue([occurences containsObject:d2], @"too much results");
-    /*console.log("--- Daily for 5 occurrences, but get only 2 days ---");
-     d = new Date(2011, 10, 14, 20, 05, 12);
-     scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;COUNT=5", true);
-     start_at = new Date(2011, 10, 16);
-     end_at = new Date(2011, 10, 18);
-     occurrences = scheduler.occurrences_between(start_at, end_at);
-     console.assert(occurrences.length == 2);
-     console.assert(occurrences.in_array(new Date(2011, 10, 16, 20, 05, 12).getTime()));
-     console.assert(occurrences.in_array(new Date(2011, 10, 17, 20, 05, 12).getTime()));
-     
-     start_at = new Date(2012, 10, 16);
-     end_at = new Date(2012, 10, 18);
-     occurrences = scheduler.occurrences_between(start_at, end_at);
-     console.assert(occurrences.length == 0);
-     
-     //		==> 	"Mon Nov 14 2011 20:05:12 GMT+0100 (CET)",
-     //			"Tue Nov 15 2011 20:05:12 GMT+0100 (CET)",
-     //			…,
-     //			"Wed Nov 18 2011 20:05:12 GMT+0100 (CET)"
-*/
-    
-    
+      
 
 }
 
@@ -313,11 +275,7 @@
     Scheduler * s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY;COUNT=200"];
     NSArray * occurences = [s allOccurencesSince:nil until:nil];
     STAssertTrue([occurences count]==200, @"");
-   /* console.log("--- Daily for 200 occurrences ---");
-    d = new Date(2011, 10, 14, 20, 05, 12)
-    scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;COUNT=200", true);
-    console.assert(scheduler.all_occurrences().length == 200);
-*/
+  
 }
 
 
@@ -346,19 +304,7 @@
     STAssertTrue([occurences containsObject:d1], @"");
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertFalse([occurences containsObject:d3], @"");
-    /* 
-     console.log("--- Daily until 2 december ---");
-     d = new Date(2011, 10, 29, 20, 05, 12);
-     scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;UNTIL=20111202T000000Z", true);
-     occurrences = scheduler.all_occurrences();
-     console.assert(occurrences.in_array(d.getTime()));
-     console.assert(occurrences.in_array(new Date(2011, 10, 30, 20, 05, 12).getTime()));
-     console.assert(occurrences.in_array(new Date(2011, 11, 1, 20, 05, 12).getTime()));
-     //		==> 	"Mon Nov 29 2011 20:05:12 GMT+0100 (CET)",
-     //			"Tue Nov 30 2011 20:05:12 GMT+0100 (CET)",
-     //			"Wed Dec 01 2011 20:05:12 GMT+0100 (CET)"
-
-     */
+    
 }
 
 -(void) test9{
@@ -396,27 +342,6 @@
     STAssertTrue([occurences containsObject:d4], @"");
     STAssertTrue([occurences containsObject:d5], @"");
     STAssertFalse([occurences containsObject:d6], @"");
-/*
- console.log("--- Every other day - forever ---");
- d = new Date(2011, 10, 14, 20, 05, 12);
- start_at = new Date(2011, 10, 17, 20, 05, 12)
- end_at = new Date(2011, 10, 26, 20, 05, 12);
- scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;INTERVAL=2", true);
- console.assert(scheduler.all_occurrences() == null);
- occurrences = scheduler.occurrences_between(start_at, end_at);
- console.assert(occurrences.in_array(new Date(2011, 10, 18, 20, 05, 12).getTime()));
- console.assert(occurrences.in_array(new Date(2011, 10, 20, 20, 05, 12).getTime()));
- console.assert(occurrences.in_array(new Date(2011, 10, 22, 20, 05, 12).getTime()));
- console.assert(occurrences.in_array(new Date(2011, 10, 24, 20, 05, 12).getTime()));
- console.assert(occurrences.in_array(new Date(2011, 10, 26, 20, 05, 12).getTime()));
- //		==> 	"Nov 18 2011 20:05:12 GMT+0100 (CET)",
- //			"Nov 20 2011 20:05:12 GMT+0100 (CET)",
- //			"Nov 22 2011 20:05:12 GMT+0100 (CET)"
- //			"Nov 24 2011 20:05:12 GMT+0100 (CET)"
- //			"Nov 26 2011 20:05:12 GMT+0100 (CET)"
- 
-
- */
 
 }
 
@@ -450,26 +375,7 @@
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
-/*
- console.log("--- Every 10 days, 5 occurrences ---");
- d = new Date(2011, 10, 14, 20, 05, 12);
- scheduler = new Scheduler(d, "RRULE:FREQ=DAILY;INTERVAL=10;COUNT=5", true);
- occurrences = scheduler.all_occurrences();
- console.assert(occurrences.length == 5);
- console.assert(occurrences[0] == new Date(2011, 10, 14, 20, 05, 12).getTime());
- console.assert(occurrences[1] == new Date(2011, 10, 24, 20, 05, 12).getTime());
- console.assert(occurrences[2] == new Date(2011, 11, 4, 20, 05, 12).getTime());
- console.assert(occurrences[3] == new Date(2011, 11, 14, 20, 05, 12).getTime());
- console.assert(occurrences[4] == new Date(2011, 11, 24, 20, 05, 12).getTime());
- //		==> 	"Nov 14 2011 20:05:12 GMT+0100 (CET)",
- //                      ...,
- //			"Dec 24 2011 20:05:12 GMT+0100 (CET)"
- // ...modification...
- 
- 
 
- 
- */
 }
 
 -(void) test11
@@ -965,6 +871,27 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:6 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:13 hour:9 minute:0]], @"");
+    
+    
+}
+*/
+-(void) test28_more {
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:1 day:1 hour:9 minute:0];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:1996 month:1 day:1 hour:9 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:2010 month:1 day:18 hour:8 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=1"];
+    NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==4, @"");
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:1 day:1 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:1 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:1 day:1 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:2000 month:1 day:1 hour:9 minute:0]], @"");
     
     
 }

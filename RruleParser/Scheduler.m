@@ -226,7 +226,7 @@
         self.rrule_bysecond = [NSArray arrayWithObject: 
                            [NSString stringWithFormat:@"%d",
                             
-                            [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:_start_date].second
+                            [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:self.start_date].second
                             ,
                             nil]
                            
@@ -238,7 +238,7 @@
         self.rrule_byminute = [NSArray arrayWithObject: 
                            [NSString stringWithFormat:@"%d",
                             
-                            [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:_start_date].minute
+                            [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:self.start_date].minute
                             ,
                             nil]
                            
@@ -249,7 +249,7 @@
         self.rrule_byhour = [NSArray arrayWithObject: 
                            [NSString stringWithFormat:@"%d",
                             
-                            [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:_start_date].hour
+                            [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:self.start_date].hour
                             ,
                             nil]
                            
@@ -259,7 +259,7 @@
 
         self.rrule_byday = [NSArray arrayWithObject: 
                          
-                        [self dayFromNoDay:[[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:_start_date].weekday]
+                        [self dayFromNoDay:[[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:self.start_date].weekday]
                         ];
     
     }
@@ -269,7 +269,7 @@
         self.rrule_bymonthday = [NSArray arrayWithObject: 
                              [NSString stringWithFormat:@"%d",
                               
-                              [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:_start_date].day
+                              [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:self.start_date].day
                               ,
                               nil]
                              
@@ -281,7 +281,7 @@
         self.rrule_bymonth =  [NSArray arrayWithObject: 
                            [NSString stringWithFormat:@"%d",
                             
-                            [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:_start_date].month
+                            [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:self.start_date].month
                             ,
                             nil]
                            
@@ -501,7 +501,7 @@
         return nil; // infinity of results => must be processed with filter_begin_ts & filter_end_ts
     }
 
-    NSDate * current_date = _start_date;
+    NSDate * current_date = self.start_date;
     NSUInteger count = 0;
     NSUInteger count_period = 0;
   /*  if ([self.rrule_freq isEqualToString:@"WEEKLY"]) {

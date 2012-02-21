@@ -800,23 +800,25 @@
 }
 
 -(BOOL) isDaily{
-    return [self.rrule_freq isEqualToString:@"DAILY"];
+    return [self.rrule_freq isEqualToString:@"DAILY"] && ![self isComplex];
 }
 -(BOOL) isWeekly{
-     return [self.rrule_freq isEqualToString:@"WEEKLY"];
+     return [self.rrule_freq isEqualToString:@"WEEKLY"] && ![self isComplex];
 }
 -(BOOL) isBiWeekly{
-     return [self.rrule_freq isEqualToString:@"WEEKLY"];
+     return [self.rrule_freq isEqualToString:@"WEEKLY"] && ![self isComplex];
 }
 -(BOOL) isMonthly{
-     return [self.rrule_freq isEqualToString:@"MONTHLY"];
+     return [self.rrule_freq isEqualToString:@"MONTHLY"] && ![self isComplex];
 }
 -(BOOL) isYearly{
-     return [self.rrule_freq isEqualToString:@"YEARLY"];
+     return [self.rrule_freq isEqualToString:@"YEARLY"] && ![self isComplex];
 }
 
 -(BOOL) isComplex{
     return (self.rrule_byyearday || self.rrule_byweekno || self.rrule_bysetpos || self.rrule_bymonthday);
 }
+
+
 
 @end

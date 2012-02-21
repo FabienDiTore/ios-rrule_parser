@@ -97,7 +97,7 @@
     STAssertNil(s.rrule_bymonthday, @"");
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
-    
+      [s release];
 }
 
 
@@ -121,6 +121,7 @@
     STAssertTrue([s.rrule_freq isEqualToString:@"DAILY"], @"Failed to parse FREQ");
     STAssertTrue([s.rrule_count intValue] ==5,@"count: %d",[s.rrule_count intValue]);
     STAssertTrue(s.rrule_interval ==10,@"interval");
+      [s release];
 }
 
 - (void) test4{
@@ -151,7 +152,7 @@
     STAssertNil(s.rrule_bymonthday, @"");
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
-  
+    [s release];
 }
 
 - (void) test5{
@@ -228,7 +229,7 @@
     occurences = [s2 allOccurencesSince:nil until:nil];
     NSLog(@"%@",[occurences description]);
     STAssertNil(occurences, @"");
-  
+    [s release];
 }
 
 - (void) test6{
@@ -260,7 +261,7 @@
     STAssertTrue([occurences containsObject:d1], @"too much results");
     STAssertTrue([occurences containsObject:d2], @"too much results");
       
-
+  [s release];
 }
 
 -(void) test7{
@@ -276,7 +277,7 @@
     Scheduler * s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY;COUNT=200"];
     NSArray * occurences = [s allOccurencesSince:nil until:nil];
     STAssertTrue([occurences count]==200, @"");
-  
+    [s release];
 }
 
 
@@ -305,7 +306,7 @@
     STAssertTrue([occurences containsObject:d1], @"");
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertFalse([occurences containsObject:d3], @"");
-    
+      [s release];
 }
 
 -(void) test9{

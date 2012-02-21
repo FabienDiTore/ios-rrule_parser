@@ -816,7 +816,7 @@
 }
 
 -(BOOL) isComplex{
-    return (self.rrule_byyearday || self.rrule_byweekno || self.rrule_bysetpos || self.rrule_bymonthday);
+    return (self.rrule_byyearday || self.rrule_byweekno || self.rrule_bysetpos || self.rrule_bymonthday || self.rrule_count);
 }
 
 

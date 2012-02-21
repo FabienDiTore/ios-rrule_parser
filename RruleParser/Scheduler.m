@@ -806,7 +806,7 @@
      return [self.rrule_freq isEqualToString:@"WEEKLY"] && ![self isComplex];
 }
 -(BOOL) isBiWeekly{
-     return [self.rrule_freq isEqualToString:@"WEEKLY"] && ![self isComplex];
+     return [self.rrule_freq isEqualToString:@"WEEKLY"] && self.rrule_interval == 2 && ![self isComplex];
 }
 -(BOOL) isMonthly{
      return [self.rrule_freq isEqualToString:@"MONTHLY"] && ![self isComplex];

@@ -796,6 +796,27 @@
     if ([day isEqualToString:@"SA"]) {
         return 7;
     }
+    return 0;
+}
+
+-(BOOL) isDaily{
+    return [self.rrule_freq isEqualToString:@"DAILY"];
+}
+-(BOOL) isWeekly{
+     return [self.rrule_freq isEqualToString:@"WEEKLY"];
+}
+-(BOOL) isBiWeekly{
+     return [self.rrule_freq isEqualToString:@"WEEKLY"];
+}
+-(BOOL) isMonthly{
+     return [self.rrule_freq isEqualToString:@"MONTHLY"];
+}
+-(BOOL) isYearly{
+     return [self.rrule_freq isEqualToString:@"YEARLY"];
+}
+
+-(BOOL) isComplex{
+    return (self.rrule_byyearday || self.rrule_byweekno || self.rrule_bysetpos || self.rrule_bymonthday);
 }
 
 @end

@@ -77,4 +77,16 @@
 
 -(NSString*) dayFromNoDay:(NSInteger) day;
 -(NSUInteger) noDayFromDay:(NSString*) day;
+
+#pragma mark - 
+
+-(BOOL) isDaily;
+-(BOOL) isWeekly;
+-(BOOL) isBiWeekly;
+-(BOOL) isMonthly;
+-(BOOL) isYearly;
+-(BOOL) isComplex;
+
+
+
 @end

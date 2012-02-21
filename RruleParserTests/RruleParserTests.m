@@ -66,6 +66,7 @@
     STAssertNil(s.rrule_bymonthday, @"");
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
+    [s release];
 }
 
 

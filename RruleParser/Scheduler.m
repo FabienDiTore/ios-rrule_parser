@@ -14,10 +14,10 @@
 @implementation Scheduler
 
 
-
 #pragma mark -
 #pragma mark Properties
 @synthesize start_date = _start_date;
+
 @synthesize rrule_freq = _rrule_freq;
 @synthesize rrule_count = _rrule_count;
 @synthesize rrule_until = _rrule_until;
@@ -40,8 +40,8 @@
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rfc_rrule{
     if (self = [super init]) {
-        _rrule_wkst =   @"MO";
-        _start_date = start_date;
+        self.rrule_wkst =   @"MO";
+        self.start_date = start_date;
         _start_ts = [start_date timeIntervalSince1970];
         self.exception_dates =[NSMutableArray array];
         
@@ -77,24 +77,24 @@
     [super dealloc];
 }
 -(void) initReccurenceRules{
-    _rrule_freq = nil;
+    self.rrule_freq = nil;
     
     // both count & until are forbidden
-    _rrule_count = nil;
-    _rrule_until = nil;
+    self.rrule_count = nil;
+    self.rrule_until = nil;
     
     // facultative
-    _rrule_interval = 1;
-    _rrule_bysecond = nil;
-    _rrule_byminute = nil;
-    _rrule_byhour = nil;
-    _rrule_byday = nil; // +1, -2, etc. only for monthly or yearly
-    _rrule_bymonthday = nil;
-    _rrule_byyearday = nil;
-    _rrule_byweekno = nil; // only for yearly
-    _rrule_bymonth = nil;
-    _rrule_bysetpos = nil; // only in conjonction with others BYxxx rules
-    _rrule_wkst = @"MO"; // significant where weekly interval > 1 & where yearly byweekno is specified
+    self.rrule_interval = 1;
+    self.rrule_bysecond = nil;
+    self.rrule_byminute = nil;
+    self.rrule_byhour = nil;
+    self.rrule_byday = nil; // +1, -2, etc. only for monthly or yearly
+    self.rrule_bymonthday = nil;
+    self.rrule_byyearday = nil;
+    self.rrule_byweekno = nil; // only for yearly
+    self.rrule_bymonth = nil;
+    self.rrule_bysetpos = nil; // only in conjonction with others BYxxx rules
+    self.rrule_wkst = @"MO"; // significant where weekly interval > 1 & where yearly byweekno is specified
 
 }
 
@@ -114,7 +114,7 @@
         NSString * rule_value = [rule objectAtIndex:1];
         NSString * rule_name = [rule objectAtIndex:0];
         if([rule_name isEqualToString:@"FREQ"]){
-            _rrule_freq = rule_value;
+            self.rrule_freq = rule_value;
         }
         if([rule_name isEqualToString:@"UNTIL"]){
             NSString* until = rule_value;
@@ -131,99 +131,99 @@
                 dc.second = [[nf numberFromString:[until substringWithRange:NSMakeRange(13, 2)]]intValue];
             }
             NSDate * d =[[NSCalendar currentCalendar] dateFromComponents:dc] ;
-            _rrule_until = [NSNumber numberWithFloat:[d timeIntervalSince1970]];
+            self.rrule_until = [NSNumber numberWithFloat:[d timeIntervalSince1970]];
             
             [dc release];
             
         }
         
         if ([rule_name isEqualToString:@"COUNT"]) {
-            _rrule_count = [nf numberFromString:rule_value];
+            self.rrule_count = [nf numberFromString:rule_value];
         }
         
         if ([rule_name isEqualToString:@"INTERVAL"]) {
-            _rrule_interval = [[nf numberFromString:rule_value]intValue];
+            self.rrule_interval = [[nf numberFromString:rule_value]intValue];
         }
         if ([rule_name isEqualToString:@"BYSECOND"]) {
             if([rule_value isEqualToString:@""] || !rule_value){
-                _rrule_bysecond = nil;
+                self.rrule_bysecond = nil;
             }else{
-                _rrule_bysecond = [rule_value componentsSeparatedByString:@","];
+                self.rrule_bysecond = [rule_value componentsSeparatedByString:@","];
             }
         }
         if ([rule_name isEqualToString:@"BYMINUTE"]) {
             if([rule_value isEqualToString:@""] || !rule_value){
-                _rrule_byminute = nil;
+                self.rrule_byminute = nil;
             }else{
-                _rrule_byminute= [rule_value componentsSeparatedByString:@","];
+                self.rrule_byminute= [rule_value componentsSeparatedByString:@","];
             }
         }
         if ([rule_name isEqualToString:@"BYHOUR"]) {
             if([rule_value isEqualToString:@""] || !rule_value){
-                _rrule_byhour = nil;
+                self.rrule_byhour = nil;
             }else{
-                _rrule_byhour= [rule_value componentsSeparatedByString:@","];
+                self.rrule_byhour= [rule_value componentsSeparatedByString:@","];
             }
         }
         if ([rule_name isEqualToString:@"BYDAY"]) {
             if([rule_value isEqualToString:@""] || !rule_value){
-                _rrule_byday = nil;
+                self.rrule_byday = nil;
             }else{
-                _rrule_byday= [rule_value componentsSeparatedByString:@","];
+                self.rrule_byday= [rule_value componentsSeparatedByString:@","];
             }
         }
         if ([rule_name isEqualToString:@"BYMONTHDAY"]) {
-            if(![_rrule_freq isEqualToString:@"WEEKLY"]){
+            if(![self.rrule_freq isEqualToString:@"WEEKLY"]){
                 if([rule_value isEqualToString:@""] || !rule_value){
-                    _rrule_bymonthday = nil;
+                    self.rrule_bymonthday = nil;
                 }else{
-                    _rrule_bymonthday= [rule_value componentsSeparatedByString:@","];
+                    self.rrule_bymonthday= [rule_value componentsSeparatedByString:@","];
                 }
             }
         }
         if ([rule_name isEqualToString:@"BYYEARDAY"]) {
-            if(![_rrule_freq isEqualToString:@"YEARLY"]){
+            if(![self.rrule_freq isEqualToString:@"YEARLY"]){
                 if([rule_value isEqualToString:@""] || !rule_value){
-                    _rrule_byyearday = nil;
+                    self.rrule_byyearday = nil;
                 }else{
-                    _rrule_byyearday= [rule_value componentsSeparatedByString:@","];
+                    self.rrule_byyearday= [rule_value componentsSeparatedByString:@","];
                 }
             }
         }
         if ([rule_name isEqualToString:@"BYWEEKNO"]) {
-            if(![_rrule_freq isEqualToString:@"YEARLY"]){
+            if(![self.rrule_freq isEqualToString:@"YEARLY"]){
                 if([rule_value isEqualToString:@""] || !rule_value){
-                    _rrule_byweekno = nil;
+                    self.rrule_byweekno = nil;
                 }else{
-                    _rrule_byweekno= [rule_value componentsSeparatedByString:@","];
+                    self.rrule_byweekno= [rule_value componentsSeparatedByString:@","];
                 }
             }
         }
         if ([rule_name isEqualToString:@"BYMONTH"]) {
             if([rule_value isEqualToString:@""] || !rule_value){
-                _rrule_bymonth = nil;
+                self.rrule_bymonth = nil;
             }else{
-                _rrule_bymonth= [rule_value componentsSeparatedByString:@","];
+                self.rrule_bymonth= [rule_value componentsSeparatedByString:@","];
             }
         }
         if ([rule_name isEqualToString:@"BYSETPOS"]) {
             if([rule_value isEqualToString:@""] || !rule_value){
-                _rrule_bysetpos = nil;
+                self.rrule_bysetpos = nil;
             }else{
-                _rrule_bysetpos= [rule_value componentsSeparatedByString:@","];
+                self.rrule_bysetpos= [rule_value componentsSeparatedByString:@","];
             }
         }
         if ([rule_name isEqualToString:@"WKST"]) {
-            _rrule_wkst= rule_value;
+            self.rrule_wkst= rule_value;
         }
     }
     [nf release];
     
   //  NSDateComponents * dc = [[NSDateComponents alloc] init];
     
-    if(!_rrule_bysecond){
+    if(!self.rrule_bysecond){
         
-        _rrule_bysecond = [NSArray arrayWithObject: 
+        self.rrule_bysecond = [NSArray arrayWithObject: 
                            [NSString stringWithFormat:@"%d",
                             
                             [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:_start_date].second
@@ -233,9 +233,9 @@
                            ];
     }
     
-    if(!_rrule_byminute){
+    if(!self.rrule_byminute){
         
-        _rrule_byminute = [NSArray arrayWithObject: 
+        self.rrule_byminute = [NSArray arrayWithObject: 
                            [NSString stringWithFormat:@"%d",
                             
                             [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:_start_date].minute
@@ -244,9 +244,9 @@
                            
                            ];
     }
-    if(!_rrule_byhour){
+    if(!self.rrule_byhour){
         
-        _rrule_byhour = [NSArray arrayWithObject: 
+        self.rrule_byhour = [NSArray arrayWithObject: 
                            [NSString stringWithFormat:@"%d",
                             
                             [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:_start_date].hour
@@ -255,18 +255,18 @@
                            
                            ];
     }
-    if(!_rrule_byday && [_rrule_freq isEqualToString:@"WEEKLY"]){
+    if(!self.rrule_byday && [self.rrule_freq isEqualToString:@"WEEKLY"]){
 
-        _rrule_byday = [NSArray arrayWithObject: 
+        self.rrule_byday = [NSArray arrayWithObject: 
                          
                         [self dayFromNoDay:[[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:_start_date].weekday]
                         ];
     
     }
     
-    if(!_rrule_byday && ! _rrule_bymonthday && !_rrule_byyearday && ([_rrule_freq isEqualToString:@"MONTHLY"] || [_rrule_freq isEqualToString:@"YEARLY"])){
+    if(!self.rrule_byday && ! self.rrule_bymonthday && !self.rrule_byyearday && ([self.rrule_freq isEqualToString:@"MONTHLY"] || [self.rrule_freq isEqualToString:@"YEARLY"])){
       
-        _rrule_bymonthday = [NSArray arrayWithObject: 
+        self.rrule_bymonthday = [NSArray arrayWithObject: 
                              [NSString stringWithFormat:@"%d",
                               
                               [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:_start_date].day
@@ -274,11 +274,11 @@
                               nil]
                              
                              ];
-          NSLog(@"%@",_rrule_bymonthday);
+          NSLog(@"%@",self.rrule_bymonthday);
     }
  
-    if (!_rrule_byday && !_rrule_byyearday && !_rrule_bymonth && [_rrule_freq isEqualToString:@"YEARLY"]) {
-        _rrule_bymonth =  [NSArray arrayWithObject: 
+    if (!self.rrule_byday && !self.rrule_byyearday && !self.rrule_bymonth && [self.rrule_freq isEqualToString:@"YEARLY"]) {
+        self.rrule_bymonth =  [NSArray arrayWithObject: 
                            [NSString stringWithFormat:@"%d",
                             
                             [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:_start_date].month
@@ -318,31 +318,31 @@
     NSUInteger h =   [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:date].hour;
     NSUInteger min =   [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:date].minute;
     NSUInteger s =   [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:date].second;
-    if ([_rrule_freq isEqualToString:@"DAILY"]) {
-        return ((!_rrule_bymonth || [_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]) &&
-            (!_rrule_bymonthday || [_rrule_bymonthday containsObject:[NSString stringWithFormat:@"%d",d,nil]]) &&
-            (!_rrule_byday || [_rrule_byday containsObject:day])
+    if ([self.rrule_freq isEqualToString:@"DAILY"]) {
+        return ((!self.rrule_bymonth || [self.rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]) &&
+            (!self.rrule_bymonthday || [self.rrule_bymonthday containsObject:[NSString stringWithFormat:@"%d",d,nil]]) &&
+            (!self.rrule_byday || [self.rrule_byday containsObject:day])
                 );
     }
-    if ([_rrule_freq isEqualToString:@"WEEKLY"]) {
-        return ((!_rrule_bymonth || [_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]) &&
-                (!_rrule_bymonthday || [_rrule_bymonthday containsObject:[NSString stringWithFormat:@"%d",d,nil]])
+    if ([self.rrule_freq isEqualToString:@"WEEKLY"]) {
+        return ((!self.rrule_bymonth || [self.rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]) &&
+                (!self.rrule_bymonthday || [self.rrule_bymonthday containsObject:[NSString stringWithFormat:@"%d",d,nil]])
                 );
     }
-    if ([_rrule_freq isEqualToString:@"MONTHLY"]) {
-        return ((!_rrule_bymonth || [_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]])
+    if ([self.rrule_freq isEqualToString:@"MONTHLY"]) {
+        return ((!self.rrule_bymonth || [self.rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]])
                 
                 );
     }
-    if ([_rrule_freq isEqualToString:@"YEARLY"]) {
+    if ([self.rrule_freq isEqualToString:@"YEARLY"]) {
         return YES;
     } 
     return NO;
 }
 
 -(BOOL) checkDay:(NSDate*) date{
-    BOOL is_yearly = [_rrule_freq isEqualToString:@"YEARLY"];
-    BOOL is_weekly = [_rrule_freq isEqualToString:@"WEEKLY"];
+    BOOL is_yearly = [self.rrule_freq isEqualToString:@"YEARLY"];
+    BOOL is_weekly = [self.rrule_freq isEqualToString:@"WEEKLY"];
     NSString * day = [self dayFromNoDay:  
                       [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:date].weekday];
     
@@ -352,41 +352,41 @@
     NSUInteger week_no = [[NSCalendar currentCalendar] components:NSWeekOfYearCalendarUnit fromDate:date].weekOfYear;
   
     
-    if(_rrule_bymonth){
-      //  NSLog(@"%@",_rrule_bymonth);
-        if(![_rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]){
+    if(self.rrule_bymonth){
+      //  NSLog(@"%@",self.rrule_bymonth);
+        if(![self.rrule_bymonth containsObject:[NSString stringWithFormat:@"%d",m,nil]]){
             return NO;
         }
     }
     
-    if(_rrule_byday){
-     //   NSLog(@"%@",[_rrule_byday description]);
+    if(self.rrule_byday){
+     //   NSLog(@"%@",[self.rrule_byday description]);
         if(is_weekly){
-            if(![_rrule_byday containsObject:day]){
+            if(![self.rrule_byday containsObject:day]){
                 return NO;
             }
         } else {
-       //     NSLog(@"%@",[_rrule_byday description]);
+       //     NSLog(@"%@",[self.rrule_byday description]);
             NSError *error = NULL;
             NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"([A-Z]+)"
                                                                                    options:NSRegularExpressionCaseInsensitive
                                                                                      error:&error];
            
             BOOL found = NO;
-            for (int it_wd = 0; it_wd < [_rrule_byday count]; it_wd++) {
-                id matchesInString = [regex firstMatchInString:[_rrule_byday objectAtIndex:it_wd]
+            for (int it_wd = 0; it_wd < [self.rrule_byday count]; it_wd++) {
+                id matchesInString = [regex firstMatchInString:[self.rrule_byday objectAtIndex:it_wd]
                                                                     options:0
-                                                                      range:NSMakeRange(0, [[_rrule_byday objectAtIndex:it_wd] length])];
+                                                                      range:NSMakeRange(0, [[self.rrule_byday objectAtIndex:it_wd] length])];
             
                 NSRange range = [matchesInString range];
                 NSNumber* str_number=[NSNumber numberWithInt:0];
                 NSString* str_day=@"";
                 if (range.location != 0 && range.location != NSNotFound) {
                     NSNumberFormatter * nf = [[NSNumberFormatter alloc] init];
-                    str_number = [nf numberFromString:[[_rrule_byday objectAtIndex:it_wd] substringToIndex:range.location]];
-                    str_day = [[_rrule_byday objectAtIndex:it_wd] substringFromIndex:range.location];
+                    str_number = [nf numberFromString:[[self.rrule_byday objectAtIndex:it_wd] substringToIndex:range.location]];
+                    str_day = [[self.rrule_byday objectAtIndex:it_wd] substringFromIndex:range.location];
                 }else{
-                    str_day = [_rrule_byday objectAtIndex:it_wd];
+                    str_day = [self.rrule_byday objectAtIndex:it_wd];
                 }
                 
               //  NSLog(@"%@ %@",str_number,str_day);
@@ -408,7 +408,7 @@
     }
     
     if(!is_weekly){
-        if(_rrule_bymonthday){
+        if(self.rrule_bymonthday){
             
             NSDateComponents * dc = [[NSDateComponents alloc] init];
            
@@ -422,8 +422,8 @@
             NSUInteger month_days_count = range.length;
             NSInteger d_neg = d - 1 - month_days_count;
             BOOL found =NO;
-            for (int it_md=0; it_md < [_rrule_bymonthday count]; it_md++) {
-                int md = [[[_rrule_bymonthday objectAtIndex:it_md] toNumber] intValue];
+            for (int it_md=0; it_md < [self.rrule_bymonthday count]; it_md++) {
+                int md = [[[self.rrule_bymonthday objectAtIndex:it_md] toNumber] intValue];
                
                 if(d==md || d_neg == md){
                     found = YES;
@@ -438,10 +438,10 @@
     }
     
     if(is_yearly){
-        if (_rrule_byyearday) {
+        if (self.rrule_byyearday) {
             BOOL found = NO;
-            for (int it_yd= 0; it_yd < [_rrule_byyearday count] ; it_yd++) {
-                int year_day = [[[_rrule_byyearday objectAtIndex:it_yd] toNumber]intValue];
+            for (int it_yd= 0; it_yd < [self.rrule_byyearday count] ; it_yd++) {
+                int year_day = [[[self.rrule_byyearday objectAtIndex:it_yd] toNumber]intValue];
                 if (year_day > 0) {
                     NSDateComponents * dc =[[NSDateComponents alloc] init];
                     dc.year = y ;
@@ -458,19 +458,19 @@
 
 -(NSDate*) nextPeriod:(NSDate*) date{
     NSDateComponents * dc = [[NSDateComponents alloc] init];//[[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:date];
-    if([_rrule_freq isEqualToString:@"DAILY"]){
+    if([self.rrule_freq isEqualToString:@"DAILY"]){
         
         dc.day =1;
     }
-    if([_rrule_freq isEqualToString:@"WEEKLY"]){
+    if([self.rrule_freq isEqualToString:@"WEEKLY"]){
         
         dc.weekOfYear =1;
     }
-    if([_rrule_freq isEqualToString:@"MONTHLY"]){
+    if([self.rrule_freq isEqualToString:@"MONTHLY"]){
         
         dc.month =1;
     }
-    if([_rrule_freq isEqualToString:@"YEARLY"]){
+    if([self.rrule_freq isEqualToString:@"YEARLY"]){
         
         dc.year =1;
     }
@@ -497,19 +497,19 @@
 -(NSArray*) allOccurencesSince:(NSNumber*) filter_begin_ts until:(NSNumber*) filter_end_ts{
     NSMutableArray* occurences = [NSMutableArray array];
     if ((filter_begin_ts ==nil || filter_end_ts == nil) &&
-        _rrule_count == nil && _rrule_until == nil) { 
+        self.rrule_count == nil && self.rrule_until == nil) { 
         return nil; // infinity of results => must be processed with filter_begin_ts & filter_end_ts
     }
 
     NSDate * current_date = _start_date;
     NSUInteger count = 0;
     NSUInteger count_period = 0;
-  /*  if ([_rrule_freq isEqualToString:@"WEEKLY"]) {
+  /*  if ([self.rrule_freq isEqualToString:@"WEEKLY"]) {
         NSLog(@"%@",current_date);
-        NSLog(@"bla %d %d %d %f %f %d",(!_rrule_count || count < [_rrule_count intValue]),(!_rrule_until || [current_date timeIntervalSince1970] <= [_rrule_until floatValue]), (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts floatValue]),[current_date timeIntervalSince1970], [filter_end_ts floatValue],[current_date timeIntervalSince1970]<= [filter_end_ts floatValue]);
+        NSLog(@"bla %d %d %d %f %f %d",(!self.rrule_count || count < [self.rrule_count intValue]),(!self.rrule_until || [current_date timeIntervalSince1970] <= [self.rrule_until floatValue]), (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts floatValue]),[current_date timeIntervalSince1970], [filter_end_ts floatValue],[current_date timeIntervalSince1970]<= [filter_end_ts floatValue]);
     }*/
-    while ((!_rrule_count || count < [_rrule_count intValue])
-           && (!_rrule_until || [current_date timeIntervalSince1970] <= [_rrule_until floatValue])
+    while ((!self.rrule_count || count < [self.rrule_count intValue])
+           && (!self.rrule_until || [current_date timeIntervalSince1970] <= [self.rrule_until floatValue])
            && (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts floatValue])
            ){
 
@@ -527,28 +527,28 @@
         self.current_pos = 1;
         self.old_pos = [NSMutableArray array];
         
-        if(count_period % _rrule_interval ==0 && [self checkRule:current_date]){
-            if ([_rrule_freq isEqualToString:@"DAILY"]) {
-                for (int h_it = 0; h_it < [_rrule_byhour count]; h_it++) {
-                    for(int min_it = 0 ; min_it < [_rrule_byminute count];min_it++){
-                        for(int s_it = 0 ; s_it < [_rrule_byminute count];s_it++){
+        if(count_period % self.rrule_interval ==0 && [self checkRule:current_date]){
+            if ([self.rrule_freq isEqualToString:@"DAILY"]) {
+                for (int h_it = 0; h_it < [self.rrule_byhour count]; h_it++) {
+                    for(int min_it = 0 ; min_it < [self.rrule_byminute count];min_it++){
+                        for(int s_it = 0 ; s_it < [self.rrule_byminute count];s_it++){
                             NSDateComponents * dc = [[NSDateComponents alloc]init];
                             [dc setYear:y];
                             [dc setMonth:m];
                             [dc setDay:d];
-                            [dc setHour:[[[_rrule_byhour objectAtIndex:h_it] toNumber] intValue]];
-                            [dc setMinute:[[[_rrule_byminute objectAtIndex:min_it] toNumber] intValue]];
-                            [dc setSecond:[[[_rrule_bysecond objectAtIndex:s_it] toNumber] intValue]];
+                            [dc setHour:[[[self.rrule_byhour objectAtIndex:h_it] toNumber] intValue]];
+                            [dc setMinute:[[[self.rrule_byminute objectAtIndex:min_it] toNumber] intValue]];
+                            [dc setSecond:[[[self.rrule_bysecond objectAtIndex:s_it] toNumber] intValue]];
                             NSDate * date_to_push = [[NSCalendar currentCalendar] dateFromComponents:dc];
                             NSTimeInterval ts_to_push = [date_to_push timeIntervalSince1970];
                             [dc release];
                             
-                            if(_rrule_bysetpos !=nil && [_rrule_bysetpos containsObject:[NSString stringWithFormat:@"%d",self.current_pos,nil]]){
+                            if(self.rrule_bysetpos !=nil && [self.rrule_bysetpos containsObject:[NSString stringWithFormat:@"%d",self.current_pos,nil]]){
                                 self.current_pos++;
                                 [self.old_pos addObject:date_to_push];
                                 continue;
                             }
-                            if((_rrule_until !=nil && ts_to_push > [_rrule_until floatValue]) ||
+                            if((self.rrule_until !=nil && ts_to_push > [self.rrule_until floatValue]) ||
                                (filter_end_ts != nil && ts_to_push > [filter_end_ts floatValue])){
                                 goto period_loop;
                             }
@@ -560,7 +560,7 @@
                             }
                             self.current_pos++;
                             [self.old_pos addObject:date_to_push];
-                            if(_rrule_count != nil && count > [_rrule_count intValue]){
+                            if(self.rrule_count != nil && count > [self.rrule_count intValue]){
                                 goto period_loop;
                             }
                           
@@ -572,14 +572,14 @@
                 NSDate * until = nil;
                 NSDateComponents * dc = [[NSDateComponents alloc] init];
               
-                if([_rrule_freq isEqualToString:@"WEEKLY"]){
+                if([self.rrule_freq isEqualToString:@"WEEKLY"]){
                     [[NSCalendar currentCalendar] rangeOfUnit:NSWeekCalendarUnit startDate:&period_begin
                                             interval:NULL forDate: current_date];
                                       dc.weekOfYear =1;
                     until =[[NSCalendar currentCalendar] dateByAddingComponents:dc toDate:period_begin options:0];
                 }
                 
-                if([_rrule_freq isEqualToString:@"MONTHLY"]){
+                if([self.rrule_freq isEqualToString:@"MONTHLY"]){
                     [dc setDay:1];
                     [dc setMonth:m];
                     [dc setYear:y];
@@ -588,7 +588,7 @@
                     until = [[NSCalendar currentCalendar] dateFromComponents:dc];
                 } 
                 
-                if([_rrule_freq isEqualToString:@"YEARLY"]){
+                if([self.rrule_freq isEqualToString:@"YEARLY"]){
                     [dc setDay:1];
                     [dc setMonth:1];
                     [dc setYear:y];
@@ -600,7 +600,7 @@
                 NSDate * it_date = period_begin;
                 while ([it_date timeIntervalSince1970] < [until timeIntervalSince1970]) {
                     NSTimeInterval it_date_ts = [it_date timeIntervalSince1970];
-                    if ((_rrule_until && it_date_ts > [_rrule_until floatValue])||
+                    if ((self.rrule_until && it_date_ts > [self.rrule_until floatValue])||
                         (filter_end_ts && it_date_ts > [filter_end_ts floatValue])
                         ) 
                     {
@@ -608,21 +608,21 @@
                     
                     }
                     if([self checkDay:it_date]){
-                        for (int h_it = 0; h_it < [_rrule_byhour count]; h_it++) {
-                            for(int min_it = 0 ; min_it < [_rrule_byminute count];min_it++){
-                                for(int s_it = 0 ; s_it < [_rrule_byminute count];s_it++){
+                        for (int h_it = 0; h_it < [self.rrule_byhour count]; h_it++) {
+                            for(int min_it = 0 ; min_it < [self.rrule_byminute count];min_it++){
+                                for(int s_it = 0 ; s_it < [self.rrule_byminute count];s_it++){
                                     NSDateComponents * dc =[[NSCalendar currentCalendar] components:ALL_DATE_FLAGS fromDate:it_date];
-                                    [dc setHour:[[[_rrule_byhour objectAtIndex:h_it] toNumber] intValue]];
-                                    [dc setMinute:[[[_rrule_byminute objectAtIndex:min_it] toNumber] intValue]];
-                                    [dc setSecond:[[[_rrule_bysecond objectAtIndex:s_it] toNumber] intValue]];
+                                    [dc setHour:[[[self.rrule_byhour objectAtIndex:h_it] toNumber] intValue]];
+                                    [dc setMinute:[[[self.rrule_byminute objectAtIndex:min_it] toNumber] intValue]];
+                                    [dc setSecond:[[[self.rrule_bysecond objectAtIndex:s_it] toNumber] intValue]];
                                     NSDate * date_to_push = [[NSCalendar currentCalendar] dateFromComponents:dc];
                                     NSTimeInterval ts_to_push = [date_to_push timeIntervalSince1970];
-                                    if(_rrule_bysetpos && [_rrule_bysetpos containsObject:[NSString stringWithFormat:@"%d",self.current_pos,nil]]){
+                                    if(self.rrule_bysetpos && [self.rrule_bysetpos containsObject:[NSString stringWithFormat:@"%d",self.current_pos,nil]]){
                                         self.current_pos++;
                                         [self.old_pos addObject:date_to_push];
                                         continue;
                                     }
-                                    if ((_rrule_until && ts_to_push > [_rrule_until floatValue]) ||
+                                    if ((self.rrule_until && ts_to_push > [self.rrule_until floatValue]) ||
                                         (filter_end_ts && ts_to_push > [filter_end_ts floatValue])) {
                                         goto period_loop;
                                     }
@@ -636,7 +636,7 @@
                                     self.current_pos++;
                                     [self.old_pos addObject:date_to_push];
                                     
-                                    if (_rrule_count && count >= [_rrule_count intValue]) {
+                                    if (self.rrule_count && count >= [self.rrule_count intValue]) {
                                         goto period_loop;
                                     }
                                   
@@ -654,9 +654,9 @@
                     
                 }
                 
-                if ([_rrule_bysetpos isKindOfClass:[NSArray class]]) {
-                    for (int it_pos = 0; it_pos < [_rrule_bysetpos count]; it_pos++) {
-                        int pos = [[[_rrule_bysetpos objectAtIndex:it_pos]toNumber] intValue];
+                if ([self.rrule_bysetpos isKindOfClass:[NSArray class]]) {
+                    for (int it_pos = 0; it_pos < [self.rrule_bysetpos count]; it_pos++) {
+                        int pos = [[[self.rrule_bysetpos objectAtIndex:it_pos]toNumber] intValue];
                         if (pos < 0) {
                             pos = abs(pos);
                             NSArray * last_matching_dates = [self.old_pos reverse];
@@ -665,7 +665,7 @@
                                 [occurences addObject:matching_date];
                                 count ++;
                             }
-                            if (_rrule_count && count >= [_rrule_count intValue]) {
+                            if (self.rrule_count && count >= [self.rrule_count intValue]) {
                                 goto period_loop;
                             }
                         }

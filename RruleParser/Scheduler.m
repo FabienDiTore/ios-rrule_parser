@@ -110,111 +110,115 @@
     NSNumberFormatter * nf = [[NSNumberFormatter alloc]init];
     NSLog(@"%@",[rules description]);
     for (int i = 0; i < nb_rules; i++) {
-        NSArray*  rule = [[rules objectAtIndex:i] componentsSeparatedByString:@"="];
-        NSString * rule_value = [rule objectAtIndex:1];
-        NSString * rule_name = [rule objectAtIndex:0];
-        if([rule_name isEqualToString:@"FREQ"]){
-            self.rrule_freq = rule_value;
-        }
-        if([rule_name isEqualToString:@"UNTIL"]){
-            NSString* until = rule_value;
-            
-            NSDateComponents * dc = [[NSDateComponents alloc] init];
+        if ([rules objectAtIndex:i] && ![[rules objectAtIndex:i] isEqualToString:@""]) {
             
             
-            dc.year = [[nf numberFromString:[until substringWithRange:NSMakeRange(0, 4)]]intValue];
-            dc.month = [[nf numberFromString:[until substringWithRange:NSMakeRange(4, 2)]]intValue];
-            dc.day = [[nf numberFromString:[until substringWithRange:NSMakeRange(6, 2)]]intValue];
-            if( [until length] > 8){
-                dc.hour = [[nf numberFromString:[until substringWithRange:NSMakeRange(9, 2)]]intValue];
-                dc.minute = [[nf numberFromString:[until substringWithRange:NSMakeRange(11, 2)]]intValue];
-                dc.second = [[nf numberFromString:[until substringWithRange:NSMakeRange(13, 2)]]intValue];
+            NSArray*  rule = [[rules objectAtIndex:i] componentsSeparatedByString:@"="];
+            NSString * rule_value = [rule objectAtIndex:1];
+            NSString * rule_name = [rule objectAtIndex:0];
+            if([rule_name isEqualToString:@"FREQ"]){
+                self.rrule_freq = rule_value;
             }
-            NSDate * d =[[NSCalendar currentCalendar] dateFromComponents:dc] ;
-            self.rrule_until = [NSNumber numberWithFloat:[d timeIntervalSince1970]];
+            if([rule_name isEqualToString:@"UNTIL"]){
+                NSString* until = rule_value;
+                
+                NSDateComponents * dc = [[NSDateComponents alloc] init];
+                
+                
+                dc.year = [[nf numberFromString:[until substringWithRange:NSMakeRange(0, 4)]]intValue];
+                dc.month = [[nf numberFromString:[until substringWithRange:NSMakeRange(4, 2)]]intValue];
+                dc.day = [[nf numberFromString:[until substringWithRange:NSMakeRange(6, 2)]]intValue];
+                if( [until length] > 8){
+                    dc.hour = [[nf numberFromString:[until substringWithRange:NSMakeRange(9, 2)]]intValue];
+                    dc.minute = [[nf numberFromString:[until substringWithRange:NSMakeRange(11, 2)]]intValue];
+                    dc.second = [[nf numberFromString:[until substringWithRange:NSMakeRange(13, 2)]]intValue];
+                }
+                NSDate * d =[[NSCalendar currentCalendar] dateFromComponents:dc] ;
+                self.rrule_until = [NSNumber numberWithFloat:[d timeIntervalSince1970]];
+                
+                [dc release];
+                
+            }
             
-            [dc release];
+            if ([rule_name isEqualToString:@"COUNT"]) {
+                self.rrule_count = [nf numberFromString:rule_value];
+            }
             
-        }
-        
-        if ([rule_name isEqualToString:@"COUNT"]) {
-            self.rrule_count = [nf numberFromString:rule_value];
-        }
-        
-        if ([rule_name isEqualToString:@"INTERVAL"]) {
-            self.rrule_interval = [[nf numberFromString:rule_value]intValue];
-        }
-        if ([rule_name isEqualToString:@"BYSECOND"]) {
-            if([rule_value isEqualToString:@""] || !rule_value){
-                self.rrule_bysecond = nil;
-            }else{
-                self.rrule_bysecond = [rule_value componentsSeparatedByString:@","];
+            if ([rule_name isEqualToString:@"INTERVAL"]) {
+                self.rrule_interval = [[nf numberFromString:rule_value]intValue];
             }
-        }
-        if ([rule_name isEqualToString:@"BYMINUTE"]) {
-            if([rule_value isEqualToString:@""] || !rule_value){
-                self.rrule_byminute = nil;
-            }else{
-                self.rrule_byminute= [rule_value componentsSeparatedByString:@","];
-            }
-        }
-        if ([rule_name isEqualToString:@"BYHOUR"]) {
-            if([rule_value isEqualToString:@""] || !rule_value){
-                self.rrule_byhour = nil;
-            }else{
-                self.rrule_byhour= [rule_value componentsSeparatedByString:@","];
-            }
-        }
-        if ([rule_name isEqualToString:@"BYDAY"]) {
-            if([rule_value isEqualToString:@""] || !rule_value){
-                self.rrule_byday = nil;
-            }else{
-                self.rrule_byday= [rule_value componentsSeparatedByString:@","];
-            }
-        }
-        if ([rule_name isEqualToString:@"BYMONTHDAY"]) {
-            if(![self.rrule_freq isEqualToString:@"WEEKLY"]){
+            if ([rule_name isEqualToString:@"BYSECOND"]) {
                 if([rule_value isEqualToString:@""] || !rule_value){
-                    self.rrule_bymonthday = nil;
+                    self.rrule_bysecond = nil;
                 }else{
-                    self.rrule_bymonthday= [rule_value componentsSeparatedByString:@","];
+                    self.rrule_bysecond = [rule_value componentsSeparatedByString:@","];
                 }
             }
-        }
-        if ([rule_name isEqualToString:@"BYYEARDAY"]) {
-            if(![self.rrule_freq isEqualToString:@"YEARLY"]){
+            if ([rule_name isEqualToString:@"BYMINUTE"]) {
                 if([rule_value isEqualToString:@""] || !rule_value){
-                    self.rrule_byyearday = nil;
+                    self.rrule_byminute = nil;
                 }else{
-                    self.rrule_byyearday= [rule_value componentsSeparatedByString:@","];
+                    self.rrule_byminute= [rule_value componentsSeparatedByString:@","];
                 }
             }
-        }
-        if ([rule_name isEqualToString:@"BYWEEKNO"]) {
-            if(![self.rrule_freq isEqualToString:@"YEARLY"]){
+            if ([rule_name isEqualToString:@"BYHOUR"]) {
                 if([rule_value isEqualToString:@""] || !rule_value){
-                    self.rrule_byweekno = nil;
+                    self.rrule_byhour = nil;
                 }else{
-                    self.rrule_byweekno= [rule_value componentsSeparatedByString:@","];
+                    self.rrule_byhour= [rule_value componentsSeparatedByString:@","];
                 }
             }
-        }
-        if ([rule_name isEqualToString:@"BYMONTH"]) {
-            if([rule_value isEqualToString:@""] || !rule_value){
-                self.rrule_bymonth = nil;
-            }else{
-                self.rrule_bymonth= [rule_value componentsSeparatedByString:@","];
+            if ([rule_name isEqualToString:@"BYDAY"]) {
+                if([rule_value isEqualToString:@""] || !rule_value){
+                    self.rrule_byday = nil;
+                }else{
+                    self.rrule_byday= [rule_value componentsSeparatedByString:@","];
+                }
             }
-        }
-        if ([rule_name isEqualToString:@"BYSETPOS"]) {
-            if([rule_value isEqualToString:@""] || !rule_value){
-                self.rrule_bysetpos = nil;
-            }else{
-                self.rrule_bysetpos= [rule_value componentsSeparatedByString:@","];
+            if ([rule_name isEqualToString:@"BYMONTHDAY"]) {
+                if(![self.rrule_freq isEqualToString:@"WEEKLY"]){
+                    if([rule_value isEqualToString:@""] || !rule_value){
+                        self.rrule_bymonthday = nil;
+                    }else{
+                        self.rrule_bymonthday= [rule_value componentsSeparatedByString:@","];
+                    }
+                }
             }
-        }
-        if ([rule_name isEqualToString:@"WKST"]) {
-            self.rrule_wkst= rule_value;
+            if ([rule_name isEqualToString:@"BYYEARDAY"]) {
+                if(![self.rrule_freq isEqualToString:@"YEARLY"]){
+                    if([rule_value isEqualToString:@""] || !rule_value){
+                        self.rrule_byyearday = nil;
+                    }else{
+                        self.rrule_byyearday= [rule_value componentsSeparatedByString:@","];
+                    }
+                }
+            }
+            if ([rule_name isEqualToString:@"BYWEEKNO"]) {
+                if(![self.rrule_freq isEqualToString:@"YEARLY"]){
+                    if([rule_value isEqualToString:@""] || !rule_value){
+                        self.rrule_byweekno = nil;
+                    }else{
+                        self.rrule_byweekno= [rule_value componentsSeparatedByString:@","];
+                    }
+                }
+            }
+            if ([rule_name isEqualToString:@"BYMONTH"]) {
+                if([rule_value isEqualToString:@""] || !rule_value){
+                    self.rrule_bymonth = nil;
+                }else{
+                    self.rrule_bymonth= [rule_value componentsSeparatedByString:@","];
+                }
+            }
+            if ([rule_name isEqualToString:@"BYSETPOS"]) {
+                if([rule_value isEqualToString:@""] || !rule_value){
+                    self.rrule_bysetpos = nil;
+                }else{
+                    self.rrule_bysetpos= [rule_value componentsSeparatedByString:@","];
+                }
+            }
+            if ([rule_name isEqualToString:@"WKST"]) {
+                self.rrule_wkst= rule_value;
+            }
         }
     }
     [nf release];

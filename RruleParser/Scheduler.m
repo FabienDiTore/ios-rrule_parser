@@ -804,35 +804,82 @@ period_loop:
 }
 
 -(BOOL) isDaily{
-    return [self.rrule_freq isEqualToString:@"DAILY"];
+    return ([self.rrule_freq isEqualToString:@"DAILY"] && ![self isComplex] && (self.rrule_interval == 1));
 }
 -(BOOL) isWeekly{
-    return [self.rrule_freq isEqualToString:@"WEEKLY"];
+    return ([self.rrule_freq isEqualToString:@"WEEKLY"] && ![self isComplex] && (self.rrule_interval == 1));
 }
 -(BOOL) isBiWeekly{
-    return [self.rrule_freq isEqualToString:@"WEEKLY"];
+    return ([self.rrule_freq isEqualToString:@"WEEKLY"] && ![self isComplex] && (self.rrule_interval == 2));
 }
 -(BOOL) isMonthly{
-    return [self.rrule_freq isEqualToString:@"MONTHLY"];
+    return ([self.rrule_freq isEqualToString:@"MONTHLY"] && ![self isComplex] && (self.rrule_interval == 1));
 }
 -(BOOL) isYearly{
-    return [self.rrule_freq isEqualToString:@"YEARLY"];
+    return ([self.rrule_freq isEqualToString:@"YEARLY"] && ![self isComplex] && (self.rrule_interval == 1));
 }
 
 -(BOOL) isComplex{
-    return (self.rrule_byyearday || self.rrule_byweekno || self.rrule_bysetpos || self.rrule_bymonthday);
+    return (self.rrule_count /*|| self.rrule_bysecond || self.rrule_byminute || self.rrule_byhour */|| self.rrule_byday || self.rrule_bymonthday || self.rrule_byyearday || self.rrule_byweekno || self.rrule_bymonth || self.rrule_bysetpos );
 }
 
 -(NSString*) getRule{
-    NSString * rule = @"RRULE:";
+    NSString * rule = @"";
+    
     if(self.rrule_freq){
         rule = [rule stringByAppendingFormat:@"FREQ=%@;",self.rrule_freq,nil];
     }
+    
+    if(self.rrule_until){
+        rule = [rule stringByAppendingFormat:@"UNTIL=%@;",[[NSCalendar currentCalendar] rruleDateFromDate:[NSDate dateWithTimeIntervalSince1970:[self.rrule_until intValue]]],nil];
+    }
+    
+    if(self.rrule_interval && self.rrule_interval > 1){
+        rule = [rule stringByAppendingFormat:@"INTERVAL=%d;",self.rrule_interval,nil];
+    }
+    
+    if(self.rrule_count){
+        rule = [rule stringByAppendingFormat:@"COUNT=%d;",[self.rrule_count intValue],nil];
+    }
+ /*   
+    if(self.rrule_bysecond){
+        rule = [rule stringByAppendingFormat:@"BYSECOND=%@;",[self.rrule_bysecond componentsJoinedByString:@","],nil];
+    }
+    
+    if(self.rrule_byminute){
+        rule = [rule stringByAppendingFormat:@"BYMINUTE=%@;",[self.rrule_byminute componentsJoinedByString:@","],nil];
+    }
+    
+    if(self.rrule_byhour){
+        rule = [rule stringByAppendingFormat:@"BYHOUR=%@;",[self.rrule_byhour componentsJoinedByString:@","],nil];
+    }*/
+    
     if(self.rrule_byday && [self.rrule_byday count]>0){
         rule = [rule stringByAppendingFormat:@"BYDAY=%@;",[self.rrule_byday componentsJoinedByString:@","],nil];
     }
-    if(self.rrule_until){
-        rule = [rule stringByAppendingFormat:@"UNTIL=%@;",[[NSCalendar currentCalendar] rruleDateFromDate:[NSDate dateWithTimeIntervalSince1970:[self.rrule_until intValue]]],nil];
+    
+    if(self.rrule_bymonthday){
+        rule = [rule stringByAppendingFormat:@"BYMONTHDAY=%@;",[self.rrule_bymonthday componentsJoinedByString:@","],nil];
+    }
+    
+    if(self.rrule_byyearday){
+        rule = [rule stringByAppendingFormat:@"BYYEARDAY=%@;",[self.rrule_byyearday componentsJoinedByString:@","],nil];
+    }
+    
+    if(self.rrule_byweekno){
+        rule = [rule stringByAppendingFormat:@"BYWEEKNO=%@;",[self.rrule_byweekno componentsJoinedByString:@","],nil];
+    }
+    
+    if(self.rrule_bymonth){
+        rule = [rule stringByAppendingFormat:@"BYMONTH=%@;",[self.rrule_bymonth componentsJoinedByString:@","],nil];
+    }
+    
+    if(self.rrule_bysetpos){
+        rule = [rule stringByAppendingFormat:@"BYSETPOS=%@;",[self.rrule_bysetpos componentsJoinedByString:@","],nil];
+    }
+    
+    if(![self.rrule_wkst isEqualToString:@"MO"]){
+        rule = [rule stringByAppendingFormat:@"WKST=%@;",self.rrule_wkst,nil];
     }
     
     return rule;

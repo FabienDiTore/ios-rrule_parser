@@ -15,11 +15,14 @@
     NSString*   _rrule_freq;
     
     // both count & until are forbidden
-    NSNumber *   _rrule_count ;
+   
     NSNumber *   _rrule_until ;
     
     // facultative
     NSInteger   _rrule_interval;
+    
+    // use for complex
+    NSNumber *  _rrule_count ; // facultative
     NSArray*   _rrule_bysecond ;
     NSArray*   _rrule_byminute ;
     NSArray*   _rrule_byhour ;

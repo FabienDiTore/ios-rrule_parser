@@ -31,6 +31,7 @@
     return d;
 }
 
+
 - (NSString*) rruleDateFromDate:(NSDate*) date{
 	
 	NSDateFormatter * dateFormat = [[NSDateFormatter alloc]init];

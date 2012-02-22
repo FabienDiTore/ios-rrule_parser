@@ -13,4 +13,6 @@
 -(NSDate*) dateFromYear:(NSUInteger) year month:(NSUInteger) month day:(NSUInteger) day;
 
 -(NSDate*) dateFromYear:(NSUInteger) year month:(NSUInteger) month day:(NSUInteger) day hour:(NSUInteger) hour minute:(NSUInteger) minute;
+
+-(NSString*) rruleDateFromDate:(NSDate*) date;
 @end

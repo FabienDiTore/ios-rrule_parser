@@ -30,8 +30,8 @@
     NSArray*   _rrule_bymonth ;
     NSArray*   _rrule_bysetpos ; // only in conjonction with others BYxxx rules
     NSString*   _rrule_wkst;
-
-   
+    
+    
     
     NSMutableArray * _exception_dates;
     NSUInteger _current_pos;
@@ -86,7 +86,7 @@
 -(BOOL) isMonthly;
 -(BOOL) isYearly;
 -(BOOL) isComplex;
-
+-(NSString*) getRule;
 
 
 @end

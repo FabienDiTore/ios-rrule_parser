@@ -40,7 +40,7 @@
     NSDate * d = [[NSCalendar currentCalendar] dateFromComponents:dc];
     
     [dc release];
-   
+    
     dc = [[NSDateComponents alloc] init];
     [dc setYear:2011];
     [dc setMonth:12];
@@ -53,7 +53,7 @@
     
     [dc release];
     Scheduler * s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY;UNTIL=20111231T090000Z"];
-   
+    
     STAssertNotNil(d, @"date is nil");
     NSTimeInterval b = [d2 timeIntervalSince1970];
     STAssertTrue([s.rrule_freq isEqualToString:@"DAILY"], @"Failed to parse FREQ");
@@ -67,12 +67,7 @@
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
     
-    STAssertFalse([s isComplex],@"should not be complex");
-    STAssertTrue([s isDaily],@"Assert");
-    STAssertFalse([s isWeekly],@"Assert");
-    STAssertFalse([s isBiWeekly],@"Assert");
-    STAssertFalse([s isMonthly],@"Assert");
-    STAssertFalse([s isYearly],@"Assert");
+    NSLog(@"%@",[s getRule]);
     [s release];
 }
 
@@ -89,7 +84,7 @@
     NSDate * d = [[NSCalendar currentCalendar] dateFromComponents:dc];
     
     [dc release];
-   
+    
     
     Scheduler * s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY;COUNT=5"];
     
@@ -104,9 +99,7 @@
     STAssertNil(s.rrule_bymonthday, @"");
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
-    STAssertTrue([s isComplex],@"should be complex");
-
-      [s release];
+    
 }
 
 
@@ -130,8 +123,6 @@
     STAssertTrue([s.rrule_freq isEqualToString:@"DAILY"], @"Failed to parse FREQ");
     STAssertTrue([s.rrule_count intValue] ==5,@"count: %d",[s.rrule_count intValue]);
     STAssertTrue(s.rrule_interval ==10,@"interval");
-    STAssertTrue([s isComplex],@"should be complex");
-      [s release];
 }
 
 - (void) test4{
@@ -154,7 +145,7 @@
     STAssertNotNil(d, @"date is nil");
     STAssertTrue([s.rrule_freq isEqualToString:@"WEEKLY"], @"Failed to parse FREQ");
     STAssertTrue([s.rrule_count intValue] ==5,@"count: %d",[s.rrule_count intValue]);
-
+    
     STAssertTrue([s.rrule_bysecond containsObject:@"0"], @"");
     STAssertTrue([s.rrule_byminute containsObject:@"18"], @"");
     STAssertTrue([s.rrule_byhour containsObject:@"19"], @"");
@@ -162,8 +153,7 @@
     STAssertNil(s.rrule_bymonthday, @"");
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
-    STAssertTrue([s isComplex],@"should be complex");
-    [s release];
+    
 }
 
 - (void) test5{
@@ -233,16 +223,14 @@
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
-    STAssertTrue([s isComplex],@"should be complex");
+    
     NSLog(@"%@",[occurences description]);
     
     Scheduler * s2 = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY"];
     occurences = [s2 allOccurencesSince:nil until:nil];
     NSLog(@"%@",[occurences description]);
     STAssertNil(occurences, @"");
-    STAssertFalse([s2 isComplex],@"should not be complex");
-    [s release];
-    [s2 release];
+    
 }
 
 - (void) test6{
@@ -259,7 +247,7 @@
     NSDate * start_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
     [dc setDay:18];
     NSDate * end_at = [[NSCalendar currentCalendar] dateFromComponents:dc];
-  
+    
     [dc setDay:17];
     NSDate * d1 = [[NSCalendar currentCalendar] dateFromComponents:dc];
     [dc setDay:18];
@@ -273,8 +261,8 @@
     STAssertTrue([occurences count]==2, @"too much results");
     STAssertTrue([occurences containsObject:d1], @"too much results");
     STAssertTrue([occurences containsObject:d2], @"too much results");
-      STAssertTrue([s isComplex],@"should be complex");
-  [s release];
+    
+    
 }
 
 -(void) test7{
@@ -290,8 +278,7 @@
     Scheduler * s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY;COUNT=200"];
     NSArray * occurences = [s allOccurencesSince:nil until:nil];
     STAssertTrue([occurences count]==200, @"");
-    STAssertTrue([s isComplex],@"should be complex");
-    [s release];
+    
 }
 
 
@@ -320,7 +307,7 @@
     STAssertTrue([occurences containsObject:d1], @"");
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertFalse([occurences containsObject:d3], @"");
-      [s release];
+    
 }
 
 -(void) test9{
@@ -358,7 +345,7 @@
     STAssertTrue([occurences containsObject:d4], @"");
     STAssertTrue([occurences containsObject:d5], @"");
     STAssertFalse([occurences containsObject:d6], @"");
-
+    
 }
 
 -(void) test10{
@@ -391,7 +378,7 @@
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
-
+    
 }
 
 -(void) test11
@@ -439,11 +426,11 @@
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
-
+    
 }
 
 -(void) test12{
-   NSDateComponents * dc = [[NSDateComponents alloc] init];
+    NSDateComponents * dc = [[NSDateComponents alloc] init];
     [dc setYear:1997];
     [dc setMonth:8];
     [dc setDay:2];
@@ -476,7 +463,7 @@
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertTrue([occurences containsObject:d3], @"");
     
-
+    
 }
 
 -(void) test13{
@@ -545,8 +532,8 @@
     STAssertTrue([occurences containsObject:d2], @"");
     
     STAssertTrue([occurences containsObject:d3], @"");
-
-
+    
+    
 }
 
 -(void) test15{
@@ -599,16 +586,16 @@
     STAssertTrue([occurences containsObject:d2], @"");
     
     STAssertTrue([occurences containsObject:d3], @"");
-     STAssertTrue([occurences containsObject:d4], @"");
-     STAssertTrue([occurences containsObject:d5], @"");
-     STAssertTrue([occurences containsObject:d6], @"");
-
+    STAssertTrue([occurences containsObject:d4], @"");
+    STAssertTrue([occurences containsObject:d5], @"");
+    STAssertTrue([occurences containsObject:d6], @"");
+    
 }
 -(void) test16{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;UNTIL=19971007T000000Z;WKST=SU;BYDAY=TU,TH"];
     NSArray *occurences = [s allOccurencesSince:nil until:nil];
-     NSLog(@"%@",[occurences description]);
+    NSLog(@"%@",[occurences description]);
     STAssertTrue([s checkRule:d], @"");
     
     STAssertTrue([occurences count]==10, @"");
@@ -622,7 +609,7 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:25 hour:8 minute:0]], @"");
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:30 hour:8 minute:0]], @"");
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:2 hour:8 minute:0]], @"");
-
+    
 }
 
 -(void) test17{
@@ -643,7 +630,7 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:25 hour:8 minute:0]], @"");
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:30 hour:8 minute:0]], @"");
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:2 hour:8 minute:0]], @"");
-
+    
 }
 
 -(void) test18{
@@ -681,7 +668,7 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:12 hour:8 minute:0]], @"");
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:22 hour:8 minute:0]], @"");
     
-   
+    
 }
 
 -(void) test19{
@@ -725,7 +712,7 @@
     STAssertTrue([occurences count]==0, @"");
 }
 -(void) test21{
-
+    
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:7 hour:9 minute:0];
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;INTERVAL=2;COUNT=5;BYDAY=1SU,-1SU"];
     NSArray *occurences = [s allOccurencesSince:nil until:nil];
@@ -740,7 +727,7 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:4 hour:9 minute:0]], @"");
     
     
-   
+    
 }
 
 -(void) test22{
@@ -761,7 +748,7 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:19 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:16 hour:9 minute:0]], @"");
-
+    
 }
 
 -(void) test23{
@@ -785,7 +772,7 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:29 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:26 hour:9 minute:0]], @"");
-
+    
     
 }
 
@@ -808,11 +795,11 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:2 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:15 hour:9 minute:0]], @"");
-
+    
 }
 
 -(void) test26{
-
+    
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:30 hour:9 minute:0];
     
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=10;BYMONTHDAY=1,-1"];
@@ -833,7 +820,7 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:1 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:31 hour:9 minute:0]], @"");
-
+    
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:1 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:31 hour:9 minute:0]], @"");
@@ -864,11 +851,11 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:10 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:11 hour:9 minute:0]], @"");
-
+    
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:12 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:13 hour:9 minute:0]], @"");
-
+    
 }
 -(void) test28 {
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:9 minute:0];
@@ -914,7 +901,7 @@
 
 
 /*
-
+ 
  
  console.log("--- Yearly in June and July for 10 occurrences ---");
  d = new Date(1997, 5, 10, 9);

@@ -67,7 +67,21 @@
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
     
-    NSLog(@"%@",[s getRule]);
+    
+    STAssertFalse([s isComplex],@"");
+    STAssertTrue([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+    
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==3,@"");
+    STAssertTrue([r containsObject:@"FREQ=DAILY"],@"");
+    STAssertTrue([r containsObject:@"UNTIL=20111231T090000Z"],@"");
+    
+    
     [s release];
 }
 
@@ -100,6 +114,20 @@
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+    
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+     STAssertTrue([r count]==3,@"");
+    STAssertTrue([r containsObject:@"FREQ=DAILY"],@"");
+    STAssertTrue([r containsObject:@"COUNT=5"],@"");
+    [s release];
 }
 
 
@@ -123,6 +151,23 @@
     STAssertTrue([s.rrule_freq isEqualToString:@"DAILY"], @"Failed to parse FREQ");
     STAssertTrue([s.rrule_count intValue] ==5,@"count: %d",[s.rrule_count intValue]);
     STAssertTrue(s.rrule_interval ==10,@"interval");
+    
+ 
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+    
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==4,@"");
+    STAssertTrue([r containsObject:@"FREQ=DAILY"],@"");
+    STAssertTrue([r containsObject:@"INTERVAL=10"],@"");
+    STAssertTrue([r containsObject:@"COUNT=5"],@"");
+    [s release];
+    
 }
 
 - (void) test4{
@@ -154,6 +199,13 @@
     STAssertNil(s.rrule_bymonth, @"");
     STAssertTrue([s.rrule_wkst isEqualToString:@"MO"], @"");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
 }
 
 - (void) test5{
@@ -262,6 +314,15 @@
     STAssertTrue([occurences containsObject:d1], @"too much results");
     STAssertTrue([occurences containsObject:d2], @"too much results");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+    //STAssertTrue([[s getRule] isEqualToString:@"RRULE:FREQ=DAILY;COUNT=5;"],@"");
+    
     
 }
 
@@ -278,6 +339,15 @@
     Scheduler * s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=DAILY;COUNT=200"];
     NSArray * occurences = [s allOccurencesSince:nil until:nil];
     STAssertTrue([occurences count]==200, @"");
+    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+    //STAssertTrue([[s getRule] isEqualToString:@"RRULE:FREQ=DAILY;COUNT=200;"],@"");
     
 }
 
@@ -346,6 +416,13 @@
     STAssertTrue([occurences containsObject:d5], @"");
     STAssertFalse([occurences containsObject:d6], @"");
     
+    //test
+    
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==3,@"");
+    STAssertTrue([r containsObject:@"FREQ=DAILY"],@"");
+    STAssertTrue([r containsObject:@"INTERVAL=2"],@"");
 }
 
 -(void) test10{
@@ -416,6 +493,14 @@
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
     
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==4,@"");
+    STAssertTrue([r containsObject:@"FREQ=DAILY"],@"");
+    STAssertTrue([r containsObject:@"UNTIL=20130131T090000Z"],@"");
+    STAssertTrue([r containsObject:@"BYMONTH=1"],@"");
+    
     //[s release];
     s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;UNTIL=20130131T090000Z;BYMONTH=1;BYDAY=SU,MO,TU,WE,TH,FR,SA"];
     occurences = [s allOccurencesSince:nil until:nil];
@@ -427,6 +512,24 @@
     STAssertTrue([occurences containsObject:d3], @"");
     STAssertTrue([occurences containsObject:d4], @"");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+   
+    //STAssertTrue([[s getRule] isEqualToString:@"RRULE:FREQ=YEARLY;UNTIL=20130131T090000Z;BYMONTH=1;BYDAY=SU,MO,TU,WE,TH,FR,SA;"],@"");
+    
+    //test
+    NSArray * r2 = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r2 description]);
+    STAssertTrue([r2 count]==5,@"");
+    STAssertTrue([r2 containsObject:@"FREQ=YEARLY"],@"");
+    STAssertTrue([r2 containsObject:@"UNTIL=20130131T090000Z"],@"");
+    STAssertTrue([r2 containsObject:@"BYMONTH=1"],@"");
+    STAssertTrue([r2 containsObject:@"BYDAY=SU,MO,TU,WE,TH,FR,SA"],@"");
 }
 
 -(void) test12{
@@ -463,6 +566,21 @@
     STAssertTrue([occurences containsObject:d2], @"");
     STAssertTrue([occurences containsObject:d3], @"");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==4,@"");
+    STAssertTrue([r containsObject:@"FREQ=WEEKLY"],@"");
+    STAssertTrue([r containsObject:@"COUNT=10"],@"");
+    STAssertTrue([r containsObject:@"BYDAY=SA"],@"");
     
 }
 
@@ -495,6 +613,14 @@
     STAssertTrue([occurences count]==2, @"");
     STAssertTrue([occurences containsObject:d1], @"");
     STAssertTrue([occurences containsObject:d2], @"");
+    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
 }
 
 -(void) test14{
@@ -533,7 +659,13 @@
     
     STAssertTrue([occurences containsObject:d3], @"");
     
-    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
 }
 
 -(void) test15{
@@ -590,6 +722,13 @@
     STAssertTrue([occurences containsObject:d5], @"");
     STAssertTrue([occurences containsObject:d6], @"");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@""); 
 }
 -(void) test16{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
@@ -610,6 +749,15 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:30 hour:8 minute:0]], @"");
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:10 day:2 hour:8 minute:0]], @"");
     
+    
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==5,@"");
+    STAssertTrue([r containsObject:@"FREQ=WEEKLY"],@"");
+    //STAssertTrue([r containsObject:@"UNTIL=19971007T000000Z"],@"");
+    STAssertTrue([r containsObject:@"WKST=SU"],@"");
+    STAssertTrue([r containsObject:@"BYDAY=TU,TH"],@"");
 }
 
 -(void) test17{
@@ -668,7 +816,13 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:12 hour:8 minute:0]], @"");
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:12 day:22 hour:8 minute:0]], @"");
     
-    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");    
 }
 
 -(void) test19{
@@ -689,6 +843,14 @@
     
     
     STAssertTrue([occurences count]==0, @"");
+    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
 }
 
 -(void) test20{
@@ -726,8 +888,22 @@
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:4 hour:9 minute:0]], @"");
     
-    
-    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==5,@"");
+    STAssertTrue([r containsObject:@"FREQ=MONTHLY"],@"");
+    STAssertTrue([r containsObject:@"INTERVAL=2"],@"");
+    STAssertTrue([r containsObject:@"COUNT=5"],@"");
+    STAssertTrue([r containsObject:@"BYDAY=1SU,-1SU"],@"");
 }
 
 -(void) test22{
@@ -749,6 +925,21 @@
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:16 hour:9 minute:0]], @"");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+    
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==4,@"");
+    STAssertTrue([r containsObject:@"FREQ=MONTHLY"],@"");
+    STAssertTrue([r containsObject:@"COUNT=6"],@"");
+    STAssertTrue([r containsObject:@"BYDAY=-2MO"],@"");
 }
 
 -(void) test23{
@@ -773,7 +964,12 @@
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:26 hour:9 minute:0]], @"");
     
-    
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==3,@"");
+    STAssertTrue([r containsObject:@"FREQ=MONTHLY"],@"");
+    STAssertTrue([r containsObject:@"BYMONTHDAY=-3"],@"");
 }
 
 -(void) test24{
@@ -796,6 +992,21 @@
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:15 hour:9 minute:0]], @"");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+    
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    STAssertTrue([r count]==4,@"");
+    STAssertTrue([r containsObject:@"FREQ=MONTHLY"],@"");
+    STAssertTrue([r containsObject:@"COUNT=6"],@"");
+    STAssertTrue([r containsObject:@"BYMONTHDAY=2,15"],@"");
 }
 
 -(void) test26{
@@ -826,6 +1037,14 @@
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:31 hour:9 minute:0]], @"");
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:1 hour:9 minute:0]], @"");
+    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
 }
 
 -(void) test27 {
@@ -856,7 +1075,15 @@
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:3 day:13 hour:9 minute:0]], @"");
     
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
 }
+
 -(void) test28 {
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:9 minute:0];
     NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:1997 month:11 day:18 hour:9 minute:0];
@@ -875,7 +1102,13 @@
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:1 day:13 hour:9 minute:0]], @"");
     
-    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
 }
 
 -(void) test28_more {
@@ -896,7 +1129,13 @@
     
     STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:2014 month:1 day:1 hour:9 minute:0]], @"");
     
-    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
 }
 
 

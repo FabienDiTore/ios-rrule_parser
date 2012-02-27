@@ -340,6 +340,10 @@
     NSArray * occurences = [s allOccurencesSince:nil until:nil];
     STAssertTrue([occurences count]==200, @"");
     
+   
+    
+    
+    
     NSLog(@"%@",[s getRule]);
     STAssertTrue([s isComplex],@"");
     STAssertFalse([s isDaily],@"");
@@ -347,10 +351,16 @@
     STAssertFalse([s isBiWeekly],@"");
     STAssertFalse([s isMonthly],@"");
     STAssertFalse([s isYearly],@"");
+    
+    NSDate * exception = [[NSCalendar currentCalendar] dateFromYear:2011 month:10 day:16 hour:20 minute:05];
+    
+    
+    [s addExceptionDates:[NSArray arrayWithObject:exception]];
+    occurences = [s allOccurencesSince:nil until:nil];
+    STAssertFalse([occurences containsObject:exception],@"");
     //STAssertTrue([[s getRule] isEqualToString:@"RRULE:FREQ=DAILY;COUNT=200;"],@"");
     
 }
-
 
 -(void) test8{
     NSDateComponents * dc = [[NSDateComponents alloc] init];
@@ -723,9 +733,9 @@
     STAssertTrue([occurences containsObject:d6], @"");
     
     NSLog(@"%@",[s getRule]);
-    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isComplex],@"");
     STAssertFalse([s isDaily],@"");
-    STAssertFalse([s isWeekly],@"");
+    STAssertTrue([s isWeekly],@"");
     STAssertFalse([s isBiWeekly],@"");
     STAssertFalse([s isMonthly],@"");
     STAssertFalse([s isYearly],@""); 
@@ -758,6 +768,21 @@
     //STAssertTrue([r containsObject:@"UNTIL=19971007T000000Z"],@"");
     STAssertTrue([r containsObject:@"WKST=SU"],@"");
     STAssertTrue([r containsObject:@"BYDAY=TU,TH"],@"");
+}
+
+-(void) test16bis{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=WEEKLY;UNTIL=19971007T000000Z;"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+  //  STAssertTrue([r count]==5,@"");
+    STAssertTrue([r containsObject:@"FREQ=WEEKLY"],@"");
+    STAssertTrue([s isWeekly],@"");
 }
 
 -(void) test17{
@@ -852,6 +877,23 @@
     STAssertFalse([s isMonthly],@"");
     STAssertFalse([s isYearly],@"");
 }
+
+-(void) test19bis{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=3"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    //  STAssertTrue([r count]==5,@"");
+    STAssertTrue([r containsObject:@"FREQ=MONTHLY"],@"");
+    STAssertTrue([s isMonthly],@"");
+}
+
+
 
 -(void) test20{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:5 hour:8 minute:0];
@@ -1111,6 +1153,24 @@
     STAssertFalse([s isYearly],@"");
 }
 
+-(void) test28bis {
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:2014 month:1 day:1 hour:9 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=1"];
+    NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    //  STAssertTrue([r count]==5,@"");
+    STAssertTrue([r containsObject:@"FREQ=YEARLY"],@"");
+    STAssertTrue([s isYearly],@"");
+}
+
 -(void) test28_more {
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0];
     NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0];
@@ -1139,6 +1199,37 @@
 }
 
 
+-(void) test29{
+
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:8 day:2 hour:9 minute:0];
+    NSDate * exception = [[NSCalendar currentCalendar] dateFromYear:1998 month:8 day:2 hour:9 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;UNTIL=19991231T090000Z;BYDAY=FR;BYMONTHDAY=13"];
+    [s addExceptionDates:[NSArray arrayWithObject:exception]];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    STAssertTrue([occurences count]==4, @"");
+    STAssertFalse([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:13 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:3 day:13 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:11 day:13 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:8 day:13 hour:9 minute:0]], @"");
+    
+    NSLog(@"%@",[s getRule]);
+    STAssertTrue([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertFalse([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+
+    
+}
 /*
  
  
@@ -1338,25 +1429,7 @@
  //			...
  // ...modified...
  
- 
- console.log("--- Every Friday the 13th, forever (exdate) ---");
- d = new Date(1997, 8, 2, 9);
- scheduler = new Scheduler(d, "RRULE:FREQ=MONTHLY;UNTIL=19991231T090000Z;BYDAY=FR;BYMONTHDAY=13", true);
- scheduler.add_exception_dates([ new Date(1997, 8, 2, 9) ]);
- occurrences = scheduler.all_occurrences();
- console.assert(occurrences.length == 4);
- //console.assert(occurrences.in_array(new Date(1997, 8, 2, 9).getTime())); <-- exdate not matched !
- console.assert(occurrences.in_array(new Date(1998, 1, 13, 9).getTime()));
- console.assert(occurrences.in_array(new Date(1998, 2, 13, 9).getTime()));
- console.assert(occurrences.in_array(new Date(1998, 10, 13, 9).getTime()));
- console.assert(occurrences.in_array(new Date(1999, 7, 13, 9).getTime()));
- //		==>	(1998 9:00 AM EST)February 13;March 13;November 13
- //			(1999 9:00 AM EDT)August 13
- //			(2000 9:00 AM EDT)October 13
- //			...
- // ...added...
- 
- 
+
  
  console.log("--- Every four years, the first Tuesday after a Monday in November, forever (U.S. Presidential Election day) ---")
  d = new Date(1996, 10, 5, 9);

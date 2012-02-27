@@ -39,16 +39,22 @@
     NSMutableArray * _exception_dates;
     NSUInteger _current_pos;
     NSMutableArray * _old_pos;
+    
+    BOOL _rrule_byday_weeklyDefault;
+    BOOL _rrule_bymonthday_monthlyDefault;
+    BOOL _rrule_bymonthday_yearlyDefault;
+    BOOL _rrule_bymonth_yearlyDefault;
 }
 
 
 #pragma mark -
 #pragma mark Properties
 @property (nonatomic, copy) NSDate *start_date;
+@property (nonatomic) NSTimeInterval start_ts;
 @property (nonatomic, copy) NSString *rrule_freq;
-@property (nonatomic, copy) NSNumber *rrule_count;
 @property (nonatomic, copy) NSNumber *rrule_until;
 @property (nonatomic) NSInteger rrule_interval;
+@property (nonatomic, copy) NSNumber *rrule_count;
 @property (nonatomic, copy) NSArray *rrule_bysecond;
 @property (nonatomic, copy) NSArray *rrule_byminute;
 @property (nonatomic, copy) NSArray *rrule_byhour;
@@ -62,6 +68,10 @@
 @property (nonatomic, retain) NSMutableArray *exception_dates;
 @property (nonatomic) NSUInteger current_pos;
 @property (nonatomic, retain) NSMutableArray *old_pos;
+@property (nonatomic, getter=isRrule_byday_weeklyDefault) BOOL rrule_byday_weeklyDefault;
+@property (nonatomic, getter=isRrule_bymonthday_monthlyDefault) BOOL rrule_bymonthday_monthlyDefault;
+@property (nonatomic, getter=isRrule_bymonthday_yearlyDefault) BOOL rrule_bymonthday_yearlyDefault;
+@property (nonatomic, getter=isRrule_bymonth_yearlyDefault) BOOL rrule_bymonth_yearlyDefault;
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rrule;
 -(void) initReccurenceRules;

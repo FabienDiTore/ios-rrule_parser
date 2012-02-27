@@ -14,14 +14,15 @@
 @implementation Scheduler
 
 
+
 #pragma mark -
 #pragma mark Properties
 @synthesize start_date = _start_date;
-
+@synthesize start_ts = _start_ts;
 @synthesize rrule_freq = _rrule_freq;
-@synthesize rrule_count = _rrule_count;
 @synthesize rrule_until = _rrule_until;
 @synthesize rrule_interval = _rrule_interval;
+@synthesize rrule_count = _rrule_count;
 @synthesize rrule_bysecond = _rrule_bysecond;
 @synthesize rrule_byminute = _rrule_byminute;
 @synthesize rrule_byhour = _rrule_byhour;
@@ -35,8 +36,10 @@
 @synthesize exception_dates = _exception_dates;
 @synthesize current_pos = _current_pos;
 @synthesize old_pos = _old_pos;
-
-
+@synthesize rrule_byday_weeklyDefault = _rrule_byday_weeklyDefault;
+@synthesize rrule_bymonthday_monthlyDefault = _rrule_bymonthday_monthlyDefault;
+@synthesize rrule_bymonthday_yearlyDefault = _rrule_bymonthday_yearlyDefault;
+@synthesize rrule_bymonth_yearlyDefault = _rrule_bymonth_yearlyDefault;
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rfc_rrule{
     if (self = [super init]) {
@@ -78,7 +81,10 @@
 }
 -(void) initReccurenceRules{
     self.rrule_freq = nil;
-    
+    self.rrule_byday_weeklyDefault = NO;
+    self.rrule_bymonthday_monthlyDefault = NO;
+    self.rrule_bymonthday_yearlyDefault = NO;
+    self.rrule_bymonth_yearlyDefault = NO;
     // both count & until are forbidden
     self.rrule_count = nil;
     self.rrule_until = nil;
@@ -248,6 +254,7 @@
                                
                                ];
     }
+    
     if(!self.rrule_byhour){
         
         self.rrule_byhour = [NSArray arrayWithObject: 
@@ -259,8 +266,9 @@
                              
                              ];
     }
+    
     if(!self.rrule_byday && [self.rrule_freq isEqualToString:@"WEEKLY"]){
-        
+        self.rrule_byday_weeklyDefault = YES;
         self.rrule_byday = [NSArray arrayWithObject: 
                             
                             [self dayFromNoDay:[[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:self.start_date].weekday]
@@ -269,6 +277,9 @@
     }
     
     if(!self.rrule_byday && ! self.rrule_bymonthday && !self.rrule_byyearday && ([self.rrule_freq isEqualToString:@"MONTHLY"] || [self.rrule_freq isEqualToString:@"YEARLY"])){
+        
+        self.rrule_bymonthday_monthlyDefault = YES;
+        self.rrule_bymonthday_yearlyDefault = YES;
         
         self.rrule_bymonthday = [NSArray arrayWithObject: 
                                  [NSString stringWithFormat:@"%d",
@@ -282,6 +293,7 @@
     }
     
     if (!self.rrule_byday && !self.rrule_byyearday && !self.rrule_bymonth && [self.rrule_freq isEqualToString:@"YEARLY"]) {
+        self.rrule_bymonth_yearlyDefault = YES;
         self.rrule_bymonth =  [NSArray arrayWithObject: 
                                [NSString stringWithFormat:@"%d",
                                 
@@ -686,8 +698,36 @@
     
 period_loop:
     
+    /*
+     // removes exdates
+     var nb_occurrences = occurrences.length;
+     var occurrences_without_exdates = [];
+     for (var i = 0; i < nb_occurrences; i++) {
+        var occurrence = occurrences[i];
+        var ts = occurrence.getTime();
+        if (!(this.exception_dates.in_array(ts))) {
+            occurrences_without_exdates.push(this.test_mode ? ts : occurrence);
+        }
+     }
+     return occurrences_without_exdates;
+     
+     */
     
-    return occurences;
+    NSLog(@"%@",[occurences description]);
+
+    NSLog(@"%@",[self.exception_dates description]);
+    
+    NSMutableArray * occurrences_without_exdates = [NSMutableArray array];
+    
+    for (int i =0; i<[occurences count]; i++) {
+        NSDate * occurence = [occurences objectAtIndex:i];
+        NSNumber * ts = [NSNumber numberWithFloat:[occurence timeIntervalSince1970]];
+        if (![self.exception_dates containsObject:ts]) {
+            [occurrences_without_exdates addObject:occurence];
+        }
+    }
+    
+    return occurrences_without_exdates;
 }
 -(NSArray*) findWeeksDay:(NSNumber*) year :(NSNumber*) month :(NSNumber*) ordinal :(NSString*)week_day{
     NSUInteger week_day_n = [self noDayFromDay:week_day];
@@ -820,7 +860,7 @@ period_loop:
 }
 
 -(BOOL) isComplex{
-    return (self.rrule_count /*|| self.rrule_bysecond || self.rrule_byminute || self.rrule_byhour */|| self.rrule_byday || self.rrule_bymonthday || self.rrule_byyearday || self.rrule_byweekno || self.rrule_bymonth || self.rrule_bysetpos );
+    return (self.rrule_count /*|| self.rrule_bysecond || self.rrule_byminute || self.rrule_byhour */|| (self.rrule_byday && [self.rrule_byday count]>0  && !self.rrule_byday_weeklyDefault)  || (self.rrule_bymonthday && [self.rrule_bymonthday count]>0 && !self.rrule_bymonthday_yearlyDefault) || self.rrule_byyearday || self.rrule_byweekno || (self.rrule_bymonth && [self.rrule_bymonth count]>0 && !self.rrule_bymonth_yearlyDefault) || self.rrule_bysetpos );
 }
 
 -(NSString*) getRule{

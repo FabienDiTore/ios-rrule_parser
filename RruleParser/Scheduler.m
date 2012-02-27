@@ -14,14 +14,15 @@
 @implementation Scheduler
 
 
+
 #pragma mark -
 #pragma mark Properties
 @synthesize start_date = _start_date;
-
+@synthesize start_ts = _start_ts;
 @synthesize rrule_freq = _rrule_freq;
-@synthesize rrule_count = _rrule_count;
 @synthesize rrule_until = _rrule_until;
 @synthesize rrule_interval = _rrule_interval;
+@synthesize rrule_count = _rrule_count;
 @synthesize rrule_bysecond = _rrule_bysecond;
 @synthesize rrule_byminute = _rrule_byminute;
 @synthesize rrule_byhour = _rrule_byhour;
@@ -35,6 +36,7 @@
 @synthesize exception_dates = _exception_dates;
 @synthesize current_pos = _current_pos;
 @synthesize old_pos = _old_pos;
+@synthesize rrule_byday_weeklyDefault = _rrule_byday_weeklyDefault;
 
 
 
@@ -78,7 +80,7 @@
 }
 -(void) initReccurenceRules{
     self.rrule_freq = nil;
-    
+    self.rrule_byday_weeklyDefault = NO;
     // both count & until are forbidden
     self.rrule_count = nil;
     self.rrule_until = nil;
@@ -260,7 +262,7 @@
                              ];
     }
     if(!self.rrule_byday && [self.rrule_freq isEqualToString:@"WEEKLY"]){
-        
+        self.rrule_byday_weeklyDefault = YES;
         self.rrule_byday = [NSArray arrayWithObject: 
                             
                             [self dayFromNoDay:[[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:self.start_date].weekday]
@@ -848,7 +850,7 @@ period_loop:
 }
 
 -(BOOL) isComplex{
-    return (self.rrule_count /*|| self.rrule_bysecond || self.rrule_byminute || self.rrule_byhour */|| self.rrule_byday || self.rrule_bymonthday || self.rrule_byyearday || self.rrule_byweekno || self.rrule_bymonth || self.rrule_bysetpos );
+    return (self.rrule_count /*|| self.rrule_bysecond || self.rrule_byminute || self.rrule_byhour */|| (self.rrule_byday && [self.rrule_byday count]>0  && !self.rrule_byday_weeklyDefault)  || self.rrule_bymonthday || self.rrule_byyearday || self.rrule_byweekno || self.rrule_bymonth || self.rrule_bysetpos );
 }
 
 -(NSString*) getRule{

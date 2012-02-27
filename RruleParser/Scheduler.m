@@ -686,8 +686,36 @@
     
 period_loop:
     
+    /*
+     // removes exdates
+     var nb_occurrences = occurrences.length;
+     var occurrences_without_exdates = [];
+     for (var i = 0; i < nb_occurrences; i++) {
+        var occurrence = occurrences[i];
+        var ts = occurrence.getTime();
+        if (!(this.exception_dates.in_array(ts))) {
+            occurrences_without_exdates.push(this.test_mode ? ts : occurrence);
+        }
+     }
+     return occurrences_without_exdates;
+     
+     */
     
-    return occurences;
+    NSLog(@"%@",[occurences description]);
+
+    NSLog(@"%@",[self.exception_dates description]);
+    
+    NSMutableArray * occurrences_without_exdates = [NSMutableArray array];
+    
+    for (int i =0; i<[occurences count]; i++) {
+        NSDate * occurence = [occurences objectAtIndex:i];
+        NSNumber * ts = [NSNumber numberWithFloat:[occurence timeIntervalSince1970]];
+        if (![self.exception_dates containsObject:ts]) {
+            [occurrences_without_exdates addObject:occurence];
+        }
+    }
+    
+    return occurrences_without_exdates;
 }
 -(NSArray*) findWeeksDay:(NSNumber*) year :(NSNumber*) month :(NSNumber*) ordinal :(NSString*)week_day{
     NSUInteger week_day_n = [self noDayFromDay:week_day];

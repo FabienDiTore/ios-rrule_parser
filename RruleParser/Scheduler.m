@@ -37,8 +37,9 @@
 @synthesize current_pos = _current_pos;
 @synthesize old_pos = _old_pos;
 @synthesize rrule_byday_weeklyDefault = _rrule_byday_weeklyDefault;
-
-
+@synthesize rrule_bymonthday_monthlyDefault = _rrule_bymonthday_monthlyDefault;
+@synthesize rrule_bymonthday_yearlyDefault = _rrule_bymonthday_yearlyDefault;
+@synthesize rrule_bymonth_yearlyDefault = _rrule_bymonth_yearlyDefault;
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rfc_rrule{
     if (self = [super init]) {
@@ -81,6 +82,9 @@
 -(void) initReccurenceRules{
     self.rrule_freq = nil;
     self.rrule_byday_weeklyDefault = NO;
+    self.rrule_bymonthday_monthlyDefault = NO;
+    self.rrule_bymonthday_yearlyDefault = NO;
+    self.rrule_bymonth_yearlyDefault = NO;
     // both count & until are forbidden
     self.rrule_count = nil;
     self.rrule_until = nil;
@@ -250,6 +254,7 @@
                                
                                ];
     }
+    
     if(!self.rrule_byhour){
         
         self.rrule_byhour = [NSArray arrayWithObject: 
@@ -261,6 +266,7 @@
                              
                              ];
     }
+    
     if(!self.rrule_byday && [self.rrule_freq isEqualToString:@"WEEKLY"]){
         self.rrule_byday_weeklyDefault = YES;
         self.rrule_byday = [NSArray arrayWithObject: 
@@ -271,6 +277,9 @@
     }
     
     if(!self.rrule_byday && ! self.rrule_bymonthday && !self.rrule_byyearday && ([self.rrule_freq isEqualToString:@"MONTHLY"] || [self.rrule_freq isEqualToString:@"YEARLY"])){
+        
+        self.rrule_bymonthday_monthlyDefault = YES;
+        self.rrule_bymonthday_yearlyDefault = YES;
         
         self.rrule_bymonthday = [NSArray arrayWithObject: 
                                  [NSString stringWithFormat:@"%d",
@@ -284,6 +293,7 @@
     }
     
     if (!self.rrule_byday && !self.rrule_byyearday && !self.rrule_bymonth && [self.rrule_freq isEqualToString:@"YEARLY"]) {
+        self.rrule_bymonth_yearlyDefault = YES;
         self.rrule_bymonth =  [NSArray arrayWithObject: 
                                [NSString stringWithFormat:@"%d",
                                 
@@ -850,7 +860,7 @@ period_loop:
 }
 
 -(BOOL) isComplex{
-    return (self.rrule_count /*|| self.rrule_bysecond || self.rrule_byminute || self.rrule_byhour */|| (self.rrule_byday && [self.rrule_byday count]>0  && !self.rrule_byday_weeklyDefault)  || self.rrule_bymonthday || self.rrule_byyearday || self.rrule_byweekno || self.rrule_bymonth || self.rrule_bysetpos );
+    return (self.rrule_count /*|| self.rrule_bysecond || self.rrule_byminute || self.rrule_byhour */|| (self.rrule_byday && [self.rrule_byday count]>0  && !self.rrule_byday_weeklyDefault)  || (self.rrule_bymonthday && [self.rrule_bymonthday count]>0 && !self.rrule_bymonthday_yearlyDefault) || self.rrule_byyearday || self.rrule_byweekno || (self.rrule_bymonth && [self.rrule_bymonth count]>0 && !self.rrule_bymonth_yearlyDefault) || self.rrule_bysetpos );
 }
 
 -(NSString*) getRule{

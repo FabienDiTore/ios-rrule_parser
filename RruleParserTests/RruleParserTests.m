@@ -362,7 +362,6 @@
     
 }
 
-
 -(void) test8{
     NSDateComponents * dc = [[NSDateComponents alloc] init];
     [dc setYear:2011];
@@ -777,10 +776,7 @@
     NSArray *occurences = [s allOccurencesSince:nil until:nil];
     NSLog(@"%@",[occurences description]);
     STAssertTrue([s checkRule:d], @"");
-    
-   
-    
-    
+
     //test
     NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
     NSLog(@"%@",[r description]);
@@ -881,6 +877,23 @@
     STAssertFalse([s isMonthly],@"");
     STAssertFalse([s isYearly],@"");
 }
+
+-(void) test19bis{
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=3"];
+    NSArray *occurences = [s allOccurencesSince:nil until:nil];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    //  STAssertTrue([r count]==5,@"");
+    STAssertTrue([r containsObject:@"FREQ=MONTHLY"],@"");
+    STAssertTrue([s isMonthly],@"");
+}
+
+
 
 -(void) test20{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:5 hour:8 minute:0];
@@ -1138,6 +1151,24 @@
     STAssertFalse([s isBiWeekly],@"");
     STAssertFalse([s isMonthly],@"");
     STAssertFalse([s isYearly],@"");
+}
+
+-(void) test28bis {
+    NSDate * d = [[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:2011 month:1 day:1 hour:9 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:2014 month:1 day:1 hour:9 minute:0];
+    
+    Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=YEARLY;INTERVAL=1"];
+    NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:d], @"");
+    
+    //test
+    NSArray * r = [[s getRule] componentsSeparatedByString:@";"];
+    NSLog(@"%@",[r description]);
+    //  STAssertTrue([r count]==5,@"");
+    STAssertTrue([r containsObject:@"FREQ=YEARLY"],@"");
+    STAssertTrue([s isYearly],@"");
 }
 
 -(void) test28_more {

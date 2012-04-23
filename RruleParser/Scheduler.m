@@ -754,9 +754,9 @@ period_loop:
     NSLog(@"%d %d",week_day_n, [ordinal intValue]);
     
     
-    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+   // NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
      
-    if(year){
+   /* if(year){
         dateComponents.year = [year intValue]; // set the current year or whatever year you want here
     }
     if(month){
@@ -766,17 +766,42 @@ period_loop:
      dateComponents.weekdayOrdinal = [ordinal intValue]; // this means, the first of whatever weekday you specified
      
     NSLog(@"%@",[calendar dateFromComponents:dateComponents]);
-    
+    */
     int count = 0;
     if([ordinal intValue] >=0){
         if (!month) {
             
         }else{
-         
             
+            NSDateComponents * dc = [[NSDateComponents alloc] init];
+            [dc setYear:[year intValue]];
+            [dc setMonth:[month intValue]];
+            dc.weekday = week_day_n; 
+            NSRange range = [calendar rangeOfUnit:NSDayCalendarUnit
+                                           inUnit:NSMonthCalendarUnit
+                                          forDate:[calendar dateFromComponents:dc]];
+            //   NSLog(@"%d", range.length);
             
-            /*  NSDateComponents * dc = [[NSDateComponents alloc] init];
-            dc.year = [year intValue];
+            NSUInteger month_days_count = range.length;
+            CGFloat b = ceil(month_days_count / 7.0f);
+            NSLog(@"%f",b);
+            NSUInteger z = ((int) b- [ordinal intValue])+1;
+            if( [ordinal intValue] == 0){
+            for (int i = 1 ; i < z; i++) {
+                dc.weekdayOrdinal = [ordinal intValue]+i; // this means, the first of whatever weekday you specified
+                NSDate * date = [calendar dateFromComponents:dc];
+                [dates addObject:date];
+                 NSLog(@"%@",[calendar dateFromComponents:dc]);
+            }
+            }else{
+                dc.weekdayOrdinal = [ordinal intValue];
+                NSDate * date = [calendar dateFromComponents:dc];
+                [dates addObject:date];
+                 NSLog(@"%@",[calendar dateFromComponents:dc]);
+            }
+            
+            //  NSDateComponents * dc = [[NSDateComponents alloc] init];
+         /*   dc.year = [year intValue];
             dc.month = [month intValue];
             dc.day = 1;
             NSDate * date = [calendar dateFromComponents:dc];
@@ -789,15 +814,17 @@ period_loop:
                 if (dc.weekday == week_day_n) {
                     count++;
                     if ([ordinal intValue] == 0 || count == [ordinal intValue]) {
-                        [dates addObject:date];
+                //        [dates addObject:date];
+                          NSLog(@"2: %@",date);
                     }
                 }
                 dc.day+=1;
                 date = [calendar dateFromComponents:dc];
-            }
+              
+            }*/
             
-            //  [dc release];
-           */
+           //   [dc release];
+           
         }
         
     }else{
@@ -807,7 +834,7 @@ period_loop:
             
             
             
-            /*NSUInteger nth = abs([ordinal intValue]);
+            NSUInteger nth = abs([ordinal intValue]);
             NSDate * date = [calendar dateFromYear:[year intValue] month:[month intValue]+1 day:0];
             NSTimeInterval begin_month_ts = [[calendar dateFromYear:[year intValue] month:[month intValue] day:1] timeIntervalSince1970];
             count = 0;
@@ -823,7 +850,7 @@ period_loop:
                 dc.day-=1;
                 date = [calendar dateFromComponents:dc];
             }
-            */
+            
         }
     }
     NSLog(@"%@",dates);

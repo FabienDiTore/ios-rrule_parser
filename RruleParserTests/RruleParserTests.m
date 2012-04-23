@@ -325,7 +325,7 @@
     
     
 }
-/*
+
 -(void) test7{
     NSDateComponents * dc = [[NSDateComponents alloc] init];
     [dc setYear:2011];
@@ -1229,5 +1229,5 @@
     STAssertFalse([s isYearly],@"");
 
     
-}*/
+}
 @end

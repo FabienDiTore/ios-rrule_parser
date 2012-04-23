@@ -121,7 +121,7 @@ static NSCalendar * calendar=nil;
     NSArray * rules = [rfc_rrule componentsSeparatedByString:@";"];
     NSUInteger nb_rules = [rules count];
     NSNumberFormatter * nf = [[NSNumberFormatter alloc]init];
-    NSLog(@"%@",[rules description]);
+   // NSLog(@"%@",[rules description]);
      NSDateComponents * dc = [[NSDateComponents alloc] init];
     for (int i = 0; i < nb_rules; i++) {
         if ([rules objectAtIndex:i] && ![[rules objectAtIndex:i] isEqualToString:@""]) {
@@ -298,7 +298,7 @@ static NSCalendar * calendar=nil;
                                   nil]
                                  
                                  ];
-        NSLog(@"%@",self.rrule_bymonthday);
+       // NSLog(@"%@",self.rrule_bymonthday);
     }
     
     if (!self.rrule_byday && !self.rrule_byyearday && !self.rrule_bymonth && [self.rrule_freq isEqualToString:@"YEARLY"]) {

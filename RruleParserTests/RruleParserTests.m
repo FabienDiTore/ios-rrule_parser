@@ -946,7 +946,7 @@
     STAssertTrue([r containsObject:@"COUNT=5"],@"");
     STAssertTrue([r containsObject:@"BYDAY=1SU,-1SU"],@"");
 }
-/*
+
 -(void) test22{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:7 hour:9 minute:0];
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=6;BYDAY=-2MO"];
@@ -1228,5 +1228,5 @@
     STAssertFalse([s isYearly],@"");
 
     
-}*/
+}
 @end

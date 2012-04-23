@@ -366,14 +366,16 @@ static NSCalendar * calendar=nil;
 }
 
 -(BOOL) checkDay:(NSDate*) date{
-    BOOL is_yearly = [self.rrule_freq isEqualToString:@"YEARLY"];
-    BOOL is_weekly = [self.rrule_freq isEqualToString:@"WEEKLY"];
-    NSString * day = [self dayFromNoDay:  
-                      [calendar components:NSWeekdayCalendarUnit fromDate:date].weekday];
+   
+   
+   
+    NSDateComponents * dc = [calendar components:ALL_DATE_FLAGS fromDate:date];
     
-    NSUInteger d =   [calendar components:NSDayCalendarUnit fromDate:date].day;
-    NSUInteger m =   [calendar components:NSMonthCalendarUnit fromDate:date].month;
-    NSUInteger y =   [calendar components:NSYearCalendarUnit fromDate:date].year;
+    NSUInteger d =   dc.day;
+    NSUInteger m =   dc.month;
+    NSUInteger y =   dc.year;
+    
+    NSString * day = [self dayFromNoDay:dc.weekday];
    // NSUInteger week_no = [calendar components:NSWeekOfYearCalendarUnit fromDate:date].weekOfYear;
     
     
@@ -383,7 +385,7 @@ static NSCalendar * calendar=nil;
             return NO;
         }
     }
-    
+     BOOL is_weekly = [self.rrule_freq isEqualToString:@"WEEKLY"];
     if(self.rrule_byday){
         //   NSLog(@"%@",[self.rrule_byday description]);
         if(is_weekly){
@@ -461,7 +463,9 @@ static NSCalendar * calendar=nil;
             [dc release];
         }
         
-    }
+    } 
+    
+    BOOL is_yearly = [self.rrule_freq isEqualToString:@"YEARLY"];
     
     if(is_yearly){
         if (self.rrule_byyearday) {
@@ -599,7 +603,7 @@ static NSCalendar * calendar=nil;
             }else{
                 NSDate * period_begin=nil;
                 NSDate * until = nil;
-           //    NSDateComponents * dc = [[NSDateComponents alloc] init];
+           //   NSDateComponents * dc = [[NSDateComponents alloc] init];
                 
                 if([self.rrule_freq isEqualToString:@"WEEKLY"]){
                     [calendar rangeOfUnit:NSWeekCalendarUnit startDate:&period_begin
@@ -747,12 +751,31 @@ period_loop:
     NSMutableArray* dates = [NSMutableArray array];
     //if only year is specified returning each month occurence 
     // if ordinal is == 0 return all occurences
+    NSLog(@"%d %d",week_day_n, [ordinal intValue]);
+    
+    
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+     
+    if(year){
+        dateComponents.year = [year intValue]; // set the current year or whatever year you want here
+    }
+    if(month){
+        dateComponents.month = [month intValue];
+    }
+     dateComponents.weekday = week_day_n; // sunday is 1, monday is 2, ...
+     dateComponents.weekdayOrdinal = [ordinal intValue]; // this means, the first of whatever weekday you specified
+     
+    NSLog(@"%@",[calendar dateFromComponents:dateComponents]);
+    
     int count = 0;
     if([ordinal intValue] >=0){
         if (!month) {
             
         }else{
-            NSDateComponents * dc = [[NSDateComponents alloc] init];
+         
+            
+            
+            /*  NSDateComponents * dc = [[NSDateComponents alloc] init];
             dc.year = [year intValue];
             dc.month = [month intValue];
             dc.day = 1;
@@ -774,13 +797,17 @@ period_loop:
             }
             
             //  [dc release];
+           */
         }
         
     }else{
         if(!month){
             
         }else{
-            NSUInteger nth = abs([ordinal intValue]);
+            
+            
+            
+            /*NSUInteger nth = abs([ordinal intValue]);
             NSDate * date = [calendar dateFromYear:[year intValue] month:[month intValue]+1 day:0];
             NSTimeInterval begin_month_ts = [[calendar dateFromYear:[year intValue] month:[month intValue] day:1] timeIntervalSince1970];
             count = 0;
@@ -796,9 +823,10 @@ period_loop:
                 dc.day-=1;
                 date = [calendar dateFromComponents:dc];
             }
-            
+            */
         }
     }
+    NSLog(@"%@",dates);
     return dates;
 }
 

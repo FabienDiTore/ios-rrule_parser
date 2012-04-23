@@ -33,7 +33,7 @@
     NSArray*   _rrule_bymonth ;
     NSArray*   _rrule_bysetpos ; // only in conjonction with others BYxxx rules
     NSString*   _rrule_wkst;
-    
+   
     
     
     NSMutableArray * _exception_dates;
@@ -44,7 +44,10 @@
     BOOL _rrule_bymonthday_monthlyDefault;
     BOOL _rrule_bymonthday_yearlyDefault;
     BOOL _rrule_bymonth_yearlyDefault;
+    
+    
 }
+
 
 
 #pragma mark -
@@ -72,6 +75,7 @@
 @property (nonatomic, getter=isRrule_bymonthday_monthlyDefault) BOOL rrule_bymonthday_monthlyDefault;
 @property (nonatomic, getter=isRrule_bymonthday_yearlyDefault) BOOL rrule_bymonthday_yearlyDefault;
 @property (nonatomic, getter=isRrule_bymonth_yearlyDefault) BOOL rrule_bymonth_yearlyDefault;
+
 
 -(id) initWithDate:(NSDate*)start_date andRule:(NSString*) rrule;
 -(void) initReccurenceRules;

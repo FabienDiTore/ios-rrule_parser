@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  /*  [self test1];
+   [self test1];
     [self test2];
     [self test3];
     [self test4];
@@ -53,7 +53,7 @@
     [self test24];
     [self test26];
     [self test27];
-    [self test28];*/
+    [self test28];
    // Do any additional setup after loading the view, typically from a nib.
 }
 

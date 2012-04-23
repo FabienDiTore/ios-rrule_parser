@@ -877,7 +877,7 @@
     STAssertFalse([s isMonthly],@"");
     STAssertFalse([s isYearly],@"");
 }
-/*
+
 -(void) test19bis{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=3"];
@@ -891,9 +891,8 @@
     //  STAssertTrue([r count]==5,@"");
     STAssertTrue([r containsObject:@"FREQ=MONTHLY"],@"");
    // STAssertTrue([s isMonthly],@"");
-}*/
+}
 
-/*
 
 -(void) test20{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:5 hour:8 minute:0];
@@ -946,7 +945,7 @@
     STAssertTrue([r containsObject:@"INTERVAL=2"],@"");
     STAssertTrue([r containsObject:@"COUNT=5"],@"");
     STAssertTrue([r containsObject:@"BYDAY=1SU,-1SU"],@"");
-}*/
+}
 /*
 -(void) test22{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:7 hour:9 minute:0];

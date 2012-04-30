@@ -26,7 +26,7 @@
 }
 
 
-/*
+
 
 - (void) test1{
     NSDateComponents * dc = [[NSDateComponents alloc] init];
@@ -849,7 +849,7 @@
     STAssertFalse([s isMonthly],@"");
     STAssertFalse([s isYearly],@"");    
 }
-*/
+
 -(void) test19{
     NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:9 day:2 hour:8 minute:0];
     Scheduler *s = [[Scheduler alloc] initWithDate:d andRule:@"RRULE:FREQ=MONTHLY;COUNT=3;BYDAY=1FR"];
@@ -1227,6 +1227,42 @@
     STAssertFalse([s isMonthly],@"");
     STAssertFalse([s isYearly],@"");
 
+    
+}
+
+-(void) test30{
+    
+  //  NSDate * d = [[NSCalendar currentCalendar] dateFromYear:1997 month:8 day:2 hour:9 minute:0];
+    NSDate * exception = [[NSCalendar currentCalendar] dateFromYear:2012 month:4 day:30 hour:9 minute:0];
+    NSDate * start_at = [[NSCalendar currentCalendar] dateFromYear:2012 month:4 day:2 hour:9 minute:0];
+    NSDate * end_at = [[NSCalendar currentCalendar] dateFromYear:2012 month:5 day:1 hour:9 minute:0];
+    Scheduler *s = [[Scheduler alloc] initWithDate:start_at andRule:@"FREQ=WEEKLY;INTERVAL=1"];
+    [s addExceptionDates:[NSArray arrayWithObject:exception]];
+    
+   
+    
+    NSArray *occurences = [s occurencesBetween:start_at andDate:end_at];
+    NSLog(@"%@",[occurences description]);
+    STAssertTrue([s checkRule:start_at], @"");
+    STAssertTrue([occurences count]==3, @"");
+    STAssertFalse([occurences containsObject:exception], @"");
+    
+    /*STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:2 day:13 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:3 day:13 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1998 month:11 day:13 hour:9 minute:0]], @"");
+    
+    STAssertTrue([occurences containsObject:[[NSCalendar currentCalendar] dateFromYear:1999 month:8 day:13 hour:9 minute:0]], @"");
+    */
+    NSLog(@"%@",[s getRule]);
+    STAssertFalse([s isComplex],@"");
+    STAssertFalse([s isDaily],@"");
+    STAssertTrue([s isWeekly],@"");
+    STAssertFalse([s isBiWeekly],@"");
+    STAssertFalse([s isMonthly],@"");
+    STAssertFalse([s isYearly],@"");
+    
     
 }
 @end

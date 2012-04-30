@@ -278,11 +278,12 @@ static NSCalendar * calendar=nil;
     
     if(!self.rrule_byday && [self.rrule_freq isEqualToString:@"WEEKLY"]){
         self.rrule_byday_weeklyDefault = YES;
+    //     NSLog(@"%d",[calendar components:NSWeekdayCalendarUnit fromDate:self.start_date].weekday);
         self.rrule_byday = [NSArray arrayWithObject: 
-                            
+                           
                             [self dayFromNoDay:[calendar components:NSWeekdayCalendarUnit fromDate:self.start_date].weekday]
                             ];
-        
+     //   NSLog(@"%@",[self.rrule_byday description]);
     }
     
     if(!self.rrule_byday && ! self.rrule_bymonthday && !self.rrule_byyearday && ([self.rrule_freq isEqualToString:@"MONTHLY"] || [self.rrule_freq isEqualToString:@"YEARLY"])){
@@ -323,7 +324,7 @@ static NSCalendar * calendar=nil;
      this.exception_dates.sort();*/
     NSInteger nb_date = [dates count];
     for (int i =0 ; i< nb_date; i++) {
-        [self.exception_dates addObject:[NSNumber numberWithInt:[[dates objectAtIndex:i] timeIntervalSince1970]]];
+        [self.exception_dates addObject:[NSNumber numberWithFloat:[[dates objectAtIndex:i] timeIntervalSince1970]]];
     }
 }
 
@@ -752,10 +753,11 @@ static NSCalendar * calendar=nil;
     
     
    
-    
+  //  NSLog(@"%@",[self.exception_dates description]);
     for (int i =0; i<[occurences count]; i++) {
         NSDate * occurence = [occurences objectAtIndex:i];
         NSNumber * ts = [NSNumber numberWithFloat:[occurence timeIntervalSince1970]];
+   //     NSLog(@"%@ , %d",[occurence description],[ts intValue]);
         if (![self.exception_dates containsObject:ts]) {
             [occurrences_without_exdates addObject:occurence];
         }

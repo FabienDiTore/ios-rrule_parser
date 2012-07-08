@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B56E54615AA36DA00EE2B17 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4B56E54515AA36DA00EE2B17 /* license.txt */; };
 		4B5F288D14B5DA4C00507B6F /* NSArray+Atipik.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F288C14B5DA4C00507B6F /* NSArray+Atipik.m */; };
 		4B5F289114B5DC1D00507B6F /* NSMutableArray+Atipik.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F289014B5DC1D00507B6F /* NSMutableArray+Atipik.m */; };
 		4B705FF214B71A540005BAF7 /* NSCalendar+NSCalendar_Atipik.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B705FF114B71A540005BAF7 /* NSCalendar+NSCalendar_Atipik.m */; };
-		4BA24E0C14B46A7C005AB614 /* NSString+Atipik.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */; };
 		4BF7C11C14B36B7600EA8786 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11B14B36B7600EA8786 /* UIKit.framework */; };
 		4BF7C11E14B36B7600EA8786 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11D14B36B7600EA8786 /* Foundation.framework */; };
 		4BF7C12014B36B7600EA8786 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF7C11F14B36B7600EA8786 /* CoreGraphics.framework */; };
@@ -39,14 +39,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B56E54515AA36DA00EE2B17 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		4B5F288B14B5DA4C00507B6F /* NSArray+Atipik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Atipik.h"; sourceTree = "<group>"; };
 		4B5F288C14B5DA4C00507B6F /* NSArray+Atipik.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Atipik.m"; sourceTree = "<group>"; };
 		4B5F288F14B5DC1D00507B6F /* NSMutableArray+Atipik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Atipik.h"; sourceTree = "<group>"; };
 		4B5F289014B5DC1D00507B6F /* NSMutableArray+Atipik.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Atipik.m"; sourceTree = "<group>"; };
 		4B705FF014B71A540005BAF7 /* NSCalendar+NSCalendar_Atipik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCalendar+NSCalendar_Atipik.h"; sourceTree = "<group>"; };
 		4B705FF114B71A540005BAF7 /* NSCalendar+NSCalendar_Atipik.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCalendar+NSCalendar_Atipik.m"; sourceTree = "<group>"; };
-		4BA24E0A14B46A7C005AB614 /* NSString+Atipik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Atipik.h"; sourceTree = "<group>"; };
-		4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Atipik.m"; sourceTree = "<group>"; };
 		4BF7C11714B36B7600EA8786 /* RruleParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RruleParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF7C11B14B36B7600EA8786 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4BF7C11D14B36B7600EA8786 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -98,10 +97,9 @@
 		4BF7C10C14B36B7400EA8786 = {
 			isa = PBXGroup;
 			children = (
+				4B56E54515AA36DA00EE2B17 /* license.txt */,
 				4B705FF014B71A540005BAF7 /* NSCalendar+NSCalendar_Atipik.h */,
 				4B705FF114B71A540005BAF7 /* NSCalendar+NSCalendar_Atipik.m */,
-				4BA24E0A14B46A7C005AB614 /* NSString+Atipik.h */,
-				4BA24E0B14B46A7C005AB614 /* NSString+Atipik.m */,
 				4B5F288B14B5DA4C00507B6F /* NSArray+Atipik.h */,
 				4B5F288C14B5DA4C00507B6F /* NSArray+Atipik.m */,
 				4B5F288F14B5DC1D00507B6F /* NSMutableArray+Atipik.h */,
@@ -253,6 +251,7 @@
 				4BF7C12614B36B7600EA8786 /* InfoPlist.strings in Resources */,
 				4BF7C13214B36B7600EA8786 /* ViewController_iPhone.xib in Resources */,
 				4BF7C13514B36B7600EA8786 /* ViewController_iPad.xib in Resources */,
+				4B56E54615AA36DA00EE2B17 /* license.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,7 +290,6 @@
 				4BF7C12C14B36B7600EA8786 /* AppDelegate.m in Sources */,
 				4BF7C12F14B36B7600EA8786 /* ViewController.m in Sources */,
 				4BF7C15514B36BDB00EA8786 /* Scheduler.m in Sources */,
-				4BA24E0C14B46A7C005AB614 /* NSString+Atipik.m in Sources */,
 				4B5F288D14B5DA4C00507B6F /* NSArray+Atipik.m in Sources */,
 				4B5F289114B5DC1D00507B6F /* NSMutableArray+Atipik.m in Sources */,
 				4B705FF214B71A540005BAF7 /* NSCalendar+NSCalendar_Atipik.m in Sources */,

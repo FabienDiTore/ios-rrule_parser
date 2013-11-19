@@ -147,8 +147,12 @@ static NSCalendar * calendar=nil;
                     dc.minute = [[nf numberFromString:[until substringWithRange:NSMakeRange(11, 2)]]intValue];
                     dc.second = [[nf numberFromString:[until substringWithRange:NSMakeRange(13, 2)]]intValue];
                 }
+                if ([until rangeOfString:@"Z"].location != NSNotFound) {
+                    dc.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+                }
+                
                 NSDate * d =[calendar dateFromComponents:dc] ;
-                self.rrule_until = [NSNumber numberWithFloat:[d timeIntervalSince1970]];
+                self.rrule_until = [NSNumber numberWithDouble:[d timeIntervalSince1970]];
                 
                 
                 
@@ -324,7 +328,7 @@ static NSCalendar * calendar=nil;
      this.exception_dates.sort();*/
     NSInteger nb_date = [dates count];
     for (int i =0 ; i< nb_date; i++) {
-        [self.exception_dates addObject:[NSNumber numberWithFloat:[[dates objectAtIndex:i] timeIntervalSince1970]]];
+        [self.exception_dates addObject:[NSNumber numberWithDouble:[[dates objectAtIndex:i] timeIntervalSince1970]]];
     }
 }
 
@@ -516,13 +520,9 @@ static NSCalendar * calendar=nil;
 -(NSArray*) occurencesBetween:(NSDate*) start  andDate:(NSDate*) end{
     
     return [self allOccurencesSince:
-            [NSNumber numberWithFloat:
-             [start timeIntervalSince1970]
-             ] 
+            [NSNumber numberWithDouble:[start timeIntervalSince1970]]
                               until:
-            [NSNumber numberWithFloat:
-             [end timeIntervalSince1970]
-             ]
+            [NSNumber numberWithDouble:[end timeIntervalSince1970]]
             ];
     
 }
@@ -539,14 +539,14 @@ static NSCalendar * calendar=nil;
     NSUInteger count_period = 0;
     /*  if ([self.rrule_freq isEqualToString:@"WEEKLY"]) {
      NSLog(@"%@",current_date);
-     NSLog(@"bla %d %d %d %f %f %d",(!self.rrule_count || count < [self.rrule_count intValue]),(!self.rrule_until || [current_date timeIntervalSince1970] <= [self.rrule_until floatValue]), (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts floatValue]),[current_date timeIntervalSince1970], [filter_end_ts floatValue],[current_date timeIntervalSince1970]<= [filter_end_ts floatValue]);
+     NSLog(@"bla %d %d %d %f %f %d",(!self.rrule_count || count < [self.rrule_count intValue]),(!self.rrule_until || [current_date timeIntervalSince1970] <= [self.rrule_until doubleValue]), (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts doubleValue]),[current_date timeIntervalSince1970], [filter_end_ts doubleValue],[current_date timeIntervalSince1970]<= [filter_end_ts doubleValue]);
      }*/
      NSDateComponents * dc = [[NSDateComponents alloc]init];
     BOOL dobreak=NO;
 
     while (!dobreak && (!self.rrule_count || count < [self.rrule_count intValue])
-           && (!self.rrule_until || [current_date timeIntervalSince1970] <= [self.rrule_until floatValue])
-           && (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts floatValue])
+           && (!self.rrule_until || [current_date timeIntervalSince1970] <= [self.rrule_until doubleValue])
+           && (!filter_end_ts || [current_date timeIntervalSince1970] <= [filter_end_ts doubleValue])
            ){
         
         NSDateComponents * current_date_components = [calendar components:ALL_DATE_FLAGS fromDate:current_date];
@@ -585,14 +585,14 @@ static NSCalendar * calendar=nil;
                                 [self.old_pos addObject:date_to_push];
                                 continue;
                             }
-                            if((self.rrule_until !=nil && ts_to_push > [self.rrule_until floatValue]) ||
-                               (filter_end_ts != nil && ts_to_push > [filter_end_ts floatValue])){
+                            if((self.rrule_until !=nil && ts_to_push > [self.rrule_until doubleValue]) ||
+                               (filter_end_ts != nil && ts_to_push > [filter_end_ts doubleValue])){
                                // goto period_loop;
                                 dobreak=YES;
                                 break;
                             }
                             if (ts_to_push >= _start_ts) {
-                                if(filter_begin_ts ==nil || ts_to_push >= [filter_begin_ts floatValue]){
+                                if(filter_begin_ts ==nil || ts_to_push >= [filter_begin_ts doubleValue]){
                                     [occurences addObject:date_to_push];
                                 }
                                 count++;
@@ -641,8 +641,8 @@ static NSCalendar * calendar=nil;
                 NSDate * it_date = period_begin;
                 while ([it_date timeIntervalSince1970] < [until timeIntervalSince1970]) {
                     NSTimeInterval it_date_ts = [it_date timeIntervalSince1970];
-                    if ((self.rrule_until && it_date_ts > [self.rrule_until floatValue])||
-                        (filter_end_ts && it_date_ts > [filter_end_ts floatValue])
+                    if ((self.rrule_until && it_date_ts > [self.rrule_until doubleValue])||
+                        (filter_end_ts && it_date_ts > [filter_end_ts doubleValue])
                         ) 
                     {
                       //  goto period_loop;
@@ -664,14 +664,14 @@ static NSCalendar * calendar=nil;
                                         [self.old_pos addObject:date_to_push];
                                         continue;
                                     }
-                                    if ((self.rrule_until && ts_to_push > [self.rrule_until floatValue]) ||
-                                        (filter_end_ts && ts_to_push > [filter_end_ts floatValue])) {
+                                    if ((self.rrule_until && ts_to_push > [self.rrule_until doubleValue]) ||
+                                        (filter_end_ts && ts_to_push > [filter_end_ts doubleValue])) {
                                        // goto period_loop;
                                         dobreak = YES;
                                         break;
                                     }
                                     if (ts_to_push >= _start_ts) {
-                                        if (!filter_begin_ts ||  ts_to_push>= [filter_begin_ts floatValue]) {
+                                        if (!filter_begin_ts ||  ts_to_push>= [filter_begin_ts doubleValue]) {
                                             [occurences addObject:date_to_push];
                                         }
                                         count++;
@@ -756,7 +756,7 @@ static NSCalendar * calendar=nil;
   //  NSLog(@"%@",[self.exception_dates description]);
     for (int i =0; i<[occurences count]; i++) {
         NSDate * occurence = [occurences objectAtIndex:i];
-        NSNumber * ts = [NSNumber numberWithFloat:[occurence timeIntervalSince1970]];
+        NSNumber * ts = [NSNumber numberWithDouble:[occurence timeIntervalSince1970]];
    //     NSLog(@"%@ , %d",[occurence description],[ts intValue]);
         if (![self.exception_dates containsObject:ts]) {
             [occurrences_without_exdates addObject:occurence];
